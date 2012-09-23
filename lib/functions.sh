@@ -23,7 +23,11 @@ newitem="$1" listname="$2" filepath="$3";
 sed -i "s/\(${listname}.*\)\()\)/\1 ${newitem}\2/" "${filepath}";
 }
 
-AnyKey () { read -sn 1 -p "$@"; }
+AnyKey () {
+echo -e "$@\nPress ENTER to continue..."
+read CONTINUE
+}
+
 
 InstallPackage () { pacman -S --noconfirm "$@"; }
 
