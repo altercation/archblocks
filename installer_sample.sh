@@ -50,6 +50,10 @@ fi
 # if we are in chroot
 #if [ -n ${INCHROOT:-} ]; then
 if [ -n ${INCHROOT:-} ] && [ ! -d "${MOUNT_PATH/%\//}/etc" ]; then
+# load fs again since chroot is new and we need fs variables in bootloader
+# todo make pre-bootloader function which generalizes the variable used by
+# bootloader. we also need to run the post chroot filesystem function.
+LoadBlock FILESYSTEM_gpt_luks_ext4_root
 FILESYSTEM_POST_CHROOT # remount efi boot part
 LoadBlock LOCALE_default
 LoadBlock TIME_ntp
@@ -58,10 +62,6 @@ LoadBlock HOSTNAME_default
 LoadBlock NETWORK_wired_wireless_minimal
 LoadBlock KERNEL_default
 LoadBlock RAMDISK_default
-# load fs again since chroot is new and we need fs variables in bootloader
-# todo make pre-bootloader function which generalizes the variable used by
-# bootloader
-LoadBlock FILESYSTEM_gpt_luks_ext4_root
 LoadBlock BOOTLOADER_efi_gummiboot
 LoadBlock POSTFLIGHT_add_sudo_user 
 LoadBlock POWER_acpi # could be system specific
