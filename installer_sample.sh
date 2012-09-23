@@ -42,10 +42,7 @@ FILESYSTEM_PRE_BASEINSTALL # make filesystem
 LoadBlock BASEINSTALL_pacstrap
 FILESYSTEM_POST_BASEINSTALL # write configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part
-echo "MANUAL TEST"
-exit
 CHROOT_CONTINUE
-exit
 fi
 
 if [ -n ${INCHROOT:-} ]; then # IN CHROOT; INSTALL & CONFIG
