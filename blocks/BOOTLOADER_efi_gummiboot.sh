@@ -7,6 +7,7 @@ echo "HERE IN BOOTLOADER"
 #taking care of this post-chroot
 #modprobe efivars
 #modprobe dm-mod
+LoadEFIModules || exit
 
 echo "HERE IN BOOTLOADER 2"
 

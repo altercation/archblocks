@@ -43,6 +43,16 @@ else pkg=packer; orig="$(pwd)"
 fi
 }
 
+LoadEFIModules () {
+modprobe efivars || true
+if ls -l /sys/firmware/efi/vars/ >/dev/null; then
+echo "Kernel EFI module loaded, continuing..."
+else
+echo "Failed to boot into EFI mode, exiting..."
+exit 1
+fi
+}
+
 LoadBlock () {
 . /dev/stdin <<< "$(curl -fs ${RAW_REPO_URL/%\//}/blocks/${1}.sh)"
 }
