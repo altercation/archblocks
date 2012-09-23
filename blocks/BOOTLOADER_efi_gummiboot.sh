@@ -2,14 +2,14 @@
 # 9 BOOTLOADER
 # ------------------------------------------------------------------------
 
-echo "HERE IN BOOTLOADER"
+AnyKey ">>>>>>>>>>>> HERE IN BOOTLOADER"
 
 #taking care of this post-chroot
 #modprobe efivars
 #modprobe dm-mod
 LoadEFIModules || exit
 
-echo "HERE IN BOOTLOADER 2"
+AnyKey ">>>>>>>>>>>> HERE IN BOOTLOADER AGAIN"
 
 InstallPackage wget efibootmgr #gummiboot-efi-x86_64
 InstallAURPackage gummiboot-efi-x86_64 #gummiboot in extra now

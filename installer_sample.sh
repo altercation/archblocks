@@ -19,6 +19,7 @@ DEBUG=true
 ( [ -n $DEBUG ] && bash -x /tmp/archblocks.sh || sh /tmp/archblocks.sh )
 
 #set -o errexit; set -o nounset # buckle up
+set -o errexit
 RAW_REPO_URL=https://raw.github.com/altercation/archblocks/master/
 . /dev/stdin <<< "$(curl -f -s ${RAW_REPO_URL}/lib/functions.sh)"
 
@@ -46,7 +47,9 @@ FILESYSTEM_PRE_CHROOT # unmount efi boot part
 CHROOT_CONTINUE
 fi
 
-if [ -n ${INCHROOT:-} ]; then # IN CHROOT; INSTALL & CONFIG
+# if we are in chroot
+#if [ -n ${INCHROOT:-} ]; then
+if [ -n ${INCHROOT:-} ] && [ ! -d "${MOUNT_PATH/%\//}/etc" ]; then
 FILESYSTEM_POST_CHROOT # remount efi boot part
 LoadBlock LOCALE_default
 LoadBlock TIME_ntp
@@ -71,6 +74,8 @@ LoadBlock VIDEO_mesa_basic
 #LoadBlock HOMESETUP_${USERNAME}
 unset INCHROOT
 fi
+
+exit
 
 # ready to rock
 if [ -z ${INCHROOT:-} ]; then # OUT OF CHROOT; WRAP UP
