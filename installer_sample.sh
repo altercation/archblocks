@@ -35,7 +35,7 @@ HOOKS="usb usbinput consolefont encrypt filesystems"
 #DRIVE=/dev/sda (default depends on FILESYSTEM block)
 
 # if we haven't installed yet
-if [ -z ${INCHROOT:-} && ! -d "${MOUNT_PATH/%\//}/etc" ]; then
+if [ -z ${INCHROOT:-} ] && [ ! -d "${MOUNT_PATH/%\//}/etc" ]; then
 LoadBlock WARN_impending_doom
 LoadBlock PREFLIGHT_default
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
