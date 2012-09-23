@@ -4,8 +4,9 @@
 
 echo "HERE IN BOOTLOADER"
 
-modprobe efivars
-modprobe dm-mod
+#taking care of this post-chroot
+#modprobe efivars
+#modprobe dm-mod
 
 echo "HERE IN BOOTLOADER 2"
 
