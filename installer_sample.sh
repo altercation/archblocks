@@ -10,7 +10,7 @@
 # sh <(curl -sfL https://raw.github.com/altercation/archblocks/master/installer_sample.sh)
 # ------------------------------------------------------------------------
 # alternate short url:
-# sh <(curl -sfL http://git.io/Lf3AIQ)
+# sh <(curl -sfL http://git.io/7PEHOg
 
 DEBUG=true
 
@@ -20,7 +20,7 @@ DEBUG=true
 
 #set -o errexit; set -o nounset # buckle up
 RAW_REPO_URL=https://raw.github.com/altercation/archblocks/master/
-. /dev/stdin <<< "$(curl -f -s ${RAW_REPO_URL}/lib/helpers.sh)"
+. /dev/stdin <<< "$(curl -f -s ${RAW_REPO_URL}/lib/functions.sh)"
 
 HOSTNAME=tau
 SYSTEMTYPE=thinkpad_x220
