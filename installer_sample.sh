@@ -17,7 +17,7 @@ DEBUG=true
 # if running via curl, copy self to local file first
 #[ -f "$0" ] || cat "$0" > /tmp/archblocks.sh && \
 #( [ -n $DEBUG ] && bash -x /tmp/archblocks.sh || sh /tmp/archblocks.sh )
-if [ !-f "$0" ]; then # we're redirecting curl output
+if [ ! -f "$0" ]; then # we're redirecting curl output
 cat "$0" > /tmp/archblocks.sh # write to a file
 [ -n $DEBUG ] && bash -x /tmp/archblocks.sh || sh /tmp/archblocks.sh
 exit
