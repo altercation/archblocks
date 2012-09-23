@@ -1,4 +1,4 @@
 archblocks
 ==========
 
-Arch Linux Modular Install Script
+Arch Linux Modular Install Scripts
