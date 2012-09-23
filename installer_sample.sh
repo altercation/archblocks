@@ -55,6 +55,10 @@ LoadBlock HOSTNAME_default
 LoadBlock NETWORK_wired_wireless_minimal
 LoadBlock KERNEL_default
 LoadBlock RAMDISK_default
+# load fs again since chroot is new and we need fs variables in bootloader
+# todo make pre-bootloader function which generalizes the variable used by
+# bootloader
+LoadBlock FILESYSTEM_gpt_luks_ext4_root
 LoadBlock BOOTLOADER_efi_gummiboot
 LoadBlock POSTFLIGHT_add_sudo_user 
 LoadBlock POWER_acpi # could be system specific
