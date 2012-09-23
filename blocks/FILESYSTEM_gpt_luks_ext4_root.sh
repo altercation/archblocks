@@ -80,6 +80,15 @@ FSTAB_EOF
 }
 
 FILESYSTEM_PRE_CHROOT () { umount ${MOUNT_PATH}${EFI_BOOT_PATH}; }
-FILESYSTEM_POST_CHROOT () { mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_BOOT_PATH}; }
+FILESYSTEM_POST_CHROOT () {
+modprobe efivars || true
+if ls -1 /sys/firmware/efi/vars/ >/dev/null; then
+echo "Kernel EFI module loaded, continuing..."
+else
+echo "Failed to boot into EFI mode, exiting..."
+exit 1
+fi
+mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_BOOT_PATH};
+}
 
 
