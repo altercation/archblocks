@@ -24,8 +24,8 @@ sed -i "s/\(${listname}.*\)\()\)/\1 ${newitem}\2/" "${filepath}";
 }
 
 AnyKey () {
-echo -e "$@\nPress ENTER to continue..."
-read CONTINUE
+echo -e "\n\n$@\nPress ENTER to continue..."
+read -p CONTINUE
 }
 
 
