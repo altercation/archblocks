@@ -34,7 +34,8 @@ MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
 HOOKS="usb usbinput consolefont encrypt filesystems"
 #DRIVE=/dev/sda (default depends on FILESYSTEM block)
 
-if [ -z ${INCHROOT:-} ]; then # NOT IN CHROOT; PREINSTALL PREP
+# if we haven't installed yet
+if [ -z ${INCHROOT:-} && ! -d "${MOUNT_PATH/%\//}/etc" ]; then
 LoadBlock WARN_impending_doom
 LoadBlock PREFLIGHT_default
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
@@ -64,9 +65,13 @@ LoadBlock VIDEO_mesa_basic
 #LoadBlock SYSTEM_${SYSTEMTYPE} # other system tweaks for specific hw
 #LoadBlock UTILS_${USERNAME}
 #LoadBlock HOMESETUP_${USERNAME}
+unset INCHROOT
 fi
 
 # ready to rock
 if [ -z ${INCHROOT:-} ]; then # OUT OF CHROOT; WRAP UP
-UNMOUNT_REBOOT
+echo "WRAP UP"
+exit
+#UNMOUNT_REBOOT
 fi
+
