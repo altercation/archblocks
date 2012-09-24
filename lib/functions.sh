@@ -59,7 +59,7 @@ fi
 
 LoadBlock () {
 #. /dev/stdin <<< "$(curl -fs ${RAW_REPO_URL/%\//}/blocks/${1}.sh)"
-. /dev/stdin << <(curl -fs ${RAW_REPO_URL/%\//}/blocks/${1}.sh)
+. /dev/stdin <<< <(curl -fs ${RAW_REPO_URL/%\//}/blocks/${1}.sh)
 }
 
 CHROOT_CONTINUE () {
