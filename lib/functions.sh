@@ -48,7 +48,7 @@ fi
 }
 
 LoadEFIModules () {
-modprobe efivars || true
+modprobe efivars #|| true
 if ls -l /sys/firmware/efi/vars/ >/dev/null; then
 echo "Kernel EFI module loaded, continuing..."
 else
@@ -58,7 +58,8 @@ fi
 }
 
 LoadBlock () {
-. /dev/stdin <<< "$(curl -fs ${RAW_REPO_URL/%\//}/blocks/${1}.sh)"
+#. /dev/stdin <<< "$(curl -fs ${RAW_REPO_URL/%\//}/blocks/${1}.sh)"
+. /dev/stdin << <(curl -fs ${RAW_REPO_URL/%\//}/blocks/${1}.sh)
 }
 
 CHROOT_CONTINUE () {
