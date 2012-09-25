@@ -43,8 +43,57 @@ sh install.sh
 
 Each system I install gets a single config file (the "tau" script in the example above is a laptop). This script loads a few very lightweight helper functions (maintained in a lib file for reuse across "config" scripts) and then loads blocks from the (surprise) blocks directory (local or remote). These blocks are almost all just simple blocks of bash script. The only exceptions should be very clear from the example: there are a few functions that are very specific to the filesytem configuration that must be sprinkled throughout the code. These functions and their intended sequence in the script are easily identified by name such as FILESYSTEM_PRE_BASEINSTALL (in this case FILESYSTEM_PRE_BASEINSTALL is either a null function or does something as defined in the FILESYSTEM block).
 
-A config script (the only script you need to manually execute) looks like this:
+A config/install script (the only script you need to manually execute) looks like this (actual script I use to install Arch on a Thinkpad x220):
 
+    # CONFIG -----------------------------------------------------------------
+    REMOTE=https://raw.github.com/altercation/archblocks/master
+    HOSTNAME=tau
+    SYSTEMTYPE=thinkpad_x220
+    USERNAME=es
+    USERSHELL=/bin/bash
+    FONT=Lat2-Terminus16
+    LANGUAGE=en_US.UTF-8
+    KEYMAP=us
+    TIMEZONE=US/Pacific
+    MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
+    HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
+    #DRIVE=/dev/sda (doesn't need to be set unless overriding default in FILESYSTEM block)
+    
+    # LOAD HELPER FUNCTIONS (local if avail, remote otherwise) ---------------
+    LoadFailCheck () { exit 1; }; [ -f "$(dirname $0)/blocks/${_LIB}" ] \
+    && URL="file://blocks/_LIB.sh" || URL="${REMOTE/%\//}/blocks/_LIB.sh";
+    eval "$(curl -fsL ${URL})"; LoadFailCheck
+    
+    # PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
+    if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT/%\//}/${POSTSCRIPT}" ]; then
+    LoadBlock WARN_impending_doom
+    LoadEFIModules
+    LoadBlock PREFLIGHT_default
+    LoadBlock FILESYSTEM_gpt_luks_ext4_root
+    FILESYSTEM_PRE_BASEINSTALL # make filesystem
+    LoadBlock BASEINSTALL_pacstrap
+    FILESYSTEM_POST_BASEINSTALL # write filesystem configs
+    FILESYSTEM_PRE_CHROOT # unmount efi boot part
+    LoadEFIModules
+    Chroot_And_Continue
+    fi
+    
+    # PHASE TWO - CHROOTED, CONFIGURE SYSTEM
+    if [ -e "${POSTSCRIPT}" ]; then
+    LoadBlock FILESYSTEM_gpt_luks_ext4_root
+    LoadEFIModules
+    FILESYSTEM_POST_CHROOT # remount efi boot part
+    LoadBlock LOCALE_default
+    LoadBlock TIME_ntp
+    LoadBlock DAEMONS_default
+    LoadBlock HOSTNAME_default
+    LoadBlock NETWORK_wired_wireless_minimal
+    LoadBlock KERNEL_default
+    LoadBlock RAMDISK_default
+    LoadBlock BOOTLOADER_efi_gummiboot
+    LoadBlock POSTFLIGHT_add_sudo_user 
+    fi
+    
 That's it, really. Nothing fancy. Comprehensible, reusable, modular.
 
 If you want to use something like this, fork away.

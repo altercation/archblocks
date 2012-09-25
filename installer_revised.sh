@@ -38,7 +38,7 @@ FILESYSTEM_PRE_BASEINSTALL # make filesystem
 LoadBlock BASEINSTALL_pacstrap
 FILESYSTEM_POST_BASEINSTALL # write filesystem configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part
-LoadEFIModules #DEBUG - IMPORTANT TO TEST REMOVAL
+#LoadEFIModules #DEBUG - IMPORTANT TO TEST REMOVAL
 Chroot_And_Continue
 fi
 
