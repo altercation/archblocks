@@ -9,7 +9,6 @@
 # boot into Arch Install media and run:
 # sh <(curl -sfL http://git.io/c42guA)
 
-
 # INSTALLATION TARGET VALUES ---------------------------------------------
 HOSTNAME=tau
 SYSTEMTYPE=thinkpad_x220
@@ -42,7 +41,7 @@ set -o errexit
 LoadBlock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${URL_REMOTE/%\//}/${FILE}"; eval "$(curl -fsL ${URL})" }
 
 LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${URL_REMOTE/%\//}/${FILE}"; curl -fsL ${URL} > "${TMP}/${1/%.sh/}.sh" && eval "${TMP}/${1/%.sh/}.sh" || return 1 }
-AnyKey () { echo "$@"; read -sn 1 -p; }
+AnyKey () { echo -e "$@"; read -sn 1 -p; }
 
 SetValue () { valuename="$1" newvalue="$2" filepath="$3"; sed -i "s+^#\?\(${valuename}\)=.*$+\1=${newvalue}+" "${filepath}"; }
 
@@ -81,11 +80,9 @@ fi
 }
 
 
-
 # if we haven't installed yet
 [ ! -d "${MNT/%\//}/etc" ]; then
-echo -e "\nPHASE 1: Filesystem & Base Install --------------------------------"
-AnyKey
+AnyKey "\nPHASE 1: Filesystem & Base Install --------------------------------"
 LoadBlock WARN_impending_doom
 LoadBlock PREFLIGHT_default
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
@@ -105,8 +102,7 @@ fi
 # todo make pre-bootloader function which generalizes the variable used by
 # bootloader. we also need to run the post chroot filesystem function.
 [ ! -d "${MNT/%\//}/etc" ]; then
-echo -e "\nPHASE 2: chroot and system configuration --------------------------"
-AnyKey
+AnyKey "\nPHASE 2: chroot and system configuration --------------------------"
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
 modprobe efivars #DEBUG
 FILESYSTEM_POST_CHROOT # remount efi boot part
@@ -130,7 +126,7 @@ LoadBlock VIDEO_mesa_basic
 unset INCHROOT
 fi
 
-echo -e "\nPHASE 3: Exit -----------------------------------------------------"
+AnyKey "\nPHASE 3: Exit -----------------------------------------------------"
 exit
 
 # ready to rock
