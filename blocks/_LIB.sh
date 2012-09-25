@@ -9,6 +9,13 @@ DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PRESCRIPT="${DIR/%\//}$(basename ${0})"; # normalize prescript to full script path
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+AnyKey () { echo -e "\n$@"; read -sn 1 -p "Any key to continue..."; echo; }
+
+echo $DIR
+echo $PRESCRIPT
+echo TEST
+AnyKey
+
 LoadFailCheck () { :; }
 
 LoadBlock () {
@@ -16,8 +23,6 @@ LoadBlock () {
 FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; }
 
 LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; curl -fsL ${URL} > "${TMP}/blocks/${FILE}" && eval "${TMP}/blocks/${FILE}" || return 1; }
-
-AnyKey () { echo -e "\n$@"; read -sn 1 -p "Any key to continue..."; echo; }
 
 SetValue () { valuename="$1" newvalue="$2" filepath="$3"; sed -i "s+^#\?\(${valuename}\)=.*$+\1=${newvalue}+" "${filepath}"; }
 
