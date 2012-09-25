@@ -9,6 +9,17 @@
 # boot into Arch Install media and run:
 # sh <(curl -sfL http://git.io/c42guA)
 
+# REMOTE INSTALL SCRIPT REPO ---------------------------------------------
+REMOTE=https://raw.github.com/altercation/archblocks/master
+
+# SCRIPT EXECUTION SETTINGS ----------------------------------------------
+DEBUG=true
+set -o errexit #set -o errexit; set -o nounset # buckle up
+MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
+[ -f "${0}" ] && DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" || DIR="${TMP}"
+rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${TMP}/installer.sh" # don't need this if non atomic
+
+
 # INSTALLATION TARGET VALUES ---------------------------------------------
 HOSTNAME=tau
 SYSTEMTYPE=thinkpad_x220
@@ -21,16 +32,6 @@ TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
 HOOKS="usb usbinput consolefont encrypt filesystems"
 #DRIVE=/dev/sda (default depends on FILESYSTEM block)
-
-# REMOTE INSTALL SCRIPT REPO ---------------------------------------------
-REMOTE=https://raw.github.com/altercation/archblocks/master
-
-# SCRIPT EXECUTION SETTINGS ----------------------------------------------
-DEBUG=true
-set -o errexit #set -o errexit; set -o nounset # buckle up
-MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
-[ -f "${0}" ] && DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" || DIR="${TMP}"
-rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${TMP}" # don't need this if non atomic
 
 # HELPER FUNCTIONS ------------------------------------------------
 #LoadBlock () { [ -f "$0" ] && [ -f "${DIR/%\//}/${1/%.sh/}.sh" ] && URL="file://" || URL="${REMOTE/%\//}/"; . /dev/stdin <<< "$(curl -fsL ${URL}${1/%.sh/}.sh)"; }; # LoadBlock _FUNCTIONS
