@@ -23,7 +23,7 @@ HOOKS="usb usbinput consolefont encrypt filesystems"
 #DRIVE=/dev/sda (default depends on FILESYSTEM block)
 
 # REMOTE INSTALL SCRIPT REPO ---------------------------------------------
-REMOTE=https://raw.github.com/altercation/bashio-test/master
+REMOTE=https://raw.github.com/altercation/archblocks/master
 
 # SCRIPT EXECUTION SETTINGS ----------------------------------------------
 DEBUG=true
