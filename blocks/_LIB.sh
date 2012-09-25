@@ -3,6 +3,7 @@
 [ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
 # rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
 
+set -o errexit
 MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PRESCRIPT="${DIR/%\//}$(basename ${0})"; # normalize prescript to full script path

@@ -10,7 +10,6 @@
 # sh <(curl -sfL http://git.io/c42guA)
 
 # CONFIG -----------------------------------------------------------------
-set -o errexit
 REMOTE=https://raw.github.com/altercation/archblocks/master
 HOSTNAME=tau
 SYSTEMTYPE=thinkpad_x220
@@ -21,7 +20,7 @@ LANGUAGE=en_US.UTF-8
 KEYMAP=us
 TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
-HOOKS="usb usbinput consolefont encrypt filesystems"
+HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
 #DRIVE=/dev/sda (doesn't need to be set unless overriding default in FILESYSTEM block)
 
 # LOAD HELPER FUNCTIONS (local if avail, remote otherwise) ---------------
