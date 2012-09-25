@@ -9,16 +9,24 @@
 # boot into Arch Install media and run:
 # sh <(curl -sfL http://git.io/c42guA)
 
-# REMOTE INSTALL SCRIPT REPO ---------------------------------------------
-REMOTE=https://raw.github.com/altercation/archblocks/master
 
 # SCRIPT EXECUTION SETTINGS ----------------------------------------------
 DEBUG=true
 set -o errexit #set -o errexit; set -o nounset # buckle up
 MNT=/mnt; TMP=/tmp/archblocks; PRESCRIPT="${TMP}/installer.sh"; POSTSCRIPT="/post-chroot.sh"
-[ -f "${0}" ] && DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" || DIR="${TMP}"
+if [ -f "${0}" ]; then
+DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+else
+DIR="${TMP}"
+fi
 rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}" # don't need this if non atomic
 
+DEBUG=true
+set -o errexit #set -o errexit; set -o nounset # buckle up
+MNT=/mnt; TMP=/tmp/archblocks; PRESCRIPT="${TMP}/installer.sh"; POSTSCRIPT="/post-chroot.sh"
+
+# REMOTE INSTALL SCRIPT REPO ---------------------------------------------
+REMOTE=https://raw.github.com/altercation/archblocks/master
 
 # INSTALLATION TARGET VALUES ---------------------------------------------
 HOSTNAME=tau
@@ -101,6 +109,7 @@ fi
 # load fs again since chroot is new and we need fs variables in bootloader
 # todo make pre-bootloader function which generalizes the variable used by
 # bootloader. we also need to run the post chroot filesystem function.
+echo -e "\n\n>>>>>>>>>>>TEST FOR ${POSTSCRIPT} \n\n----------------------------------------------------"
 if [ -e "${POSTSCRIPT}" ]; then # chrooted into new system
 AnyKey "\nPHASE 2: chroot and system configuration --------------------------"
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
