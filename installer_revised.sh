@@ -35,9 +35,9 @@ rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${TMP}" # don't need this if non 
 # HELPER FUNCTIONS ------------------------------------------------
 #LoadBlock () { [ -f "$0" ] && [ -f "${DIR/%\//}/${1/%.sh/}.sh" ] && URL="file://" || URL="${REMOTE/%\//}/"; . /dev/stdin <<< "$(curl -fsL ${URL}${1/%.sh/}.sh)"; }; # LoadBlock _FUNCTIONS
 
-LoadBlock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/${FILE}/blocks"; eval "$(curl -fsL ${URL})"; }
+LoadBlock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; }
 
-LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/${FILE}/blocks"; curl -fsL ${URL} > "${TMP}/blocks/${1/%.sh/}.sh" && eval "${TMP}/blocks/${1/%.sh/}.sh" || return 1; }
+LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; curl -fsL ${URL} > "${TMP}/blocks/${FILE}" && eval "${TMP}/blocks/${FILE}" || return 1; }
 
 AnyKey () { read -sn 1 -p "$@"; }
 
