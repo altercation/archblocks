@@ -43,8 +43,7 @@ sgdisk -c ${PARTITION_CRYPT_SWAP}:"${LABEL_SWAP}" ${DRIVE}
 sgdisk -c ${PARTITION_CRYPT_ROOT}:"${LABEL_ROOT}" ${DRIVE}
 
 # format LUKS on root
-cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 \
-luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT}
+cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT}
 cryptsetup luksOpen ${DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}
 
 # make filesystems
@@ -80,9 +79,6 @@ FSTAB_EOF
 }
 
 FILESYSTEM_PRE_CHROOT () { umount ${MOUNT_PATH}${EFI_BOOT_PATH}; }
-FILESYSTEM_POST_CHROOT () {
-LoadEFIModules || exit
-mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_BOOT_PATH};
-}
+FILESYSTEM_POST_CHROOT () { LoadEFIModules && mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_BOOT_PATH} || return 1; }
 
 

@@ -95,7 +95,7 @@ fi
 # if we haven't installed yet
 #if [ ! -d "${MNT/%\//}/etc" ]; then
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT/%\//}/${POSTSCRIPT}" ]; then # in arch installer image, not chrooted, system not yet installed
-AnyKey "\nPHASE 1: Filesystem & Base Install --------------------------------"
+echo "PHASE 1: Filesystem & Base Install --------------------------------"
 LoadBlock WARN_impending_doom
 LoadEFIModules #DEBUG - IMPORTANT TO LOAD THIS HERE
 LoadBlock PREFLIGHT_default
@@ -105,20 +105,11 @@ LoadBlock BASEINSTALL_pacstrap
 FILESYSTEM_POST_BASEINSTALL # write configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part
 LoadEFIModules #DEBUG - IMPORTANT TO TEST REMOVAL
-#modprobe efivars #DEBUG
-#CHROOT_CONTINUE
 cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}";  chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"
 fi
 
-# if we are in chroot
-#if [ -n ${INCHROOT:-} ]; then
-###if [ -n ${INCHROOT:-} ] && [ ! -d "${MOUNT_PATH/%\//}/etc" ]; then
-# load fs again since chroot is new and we need fs variables in bootloader
-# todo make pre-bootloader function which generalizes the variable used by
-# bootloader. we also need to run the post chroot filesystem function.
-echo -e "\n\n>>>>>>>>>>>TEST FOR ${POSTSCRIPT} \n\n----------------------------------------------------"
 if [ -e "${POSTSCRIPT}" ]; then # chrooted into new system
-AnyKey "\nPHASE 2: chroot and system configuration --------------------------"
+echo "PHASE 2: chroot and system configuration --------------------------"
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
 LoadEFIModules #DEBUG - MAY NOT BE NEEDED HERE, BUT LIKELY
 FILESYSTEM_POST_CHROOT # remount efi boot part
@@ -130,6 +121,7 @@ LoadBlock NETWORK_wired_wireless_minimal
 LoadBlock KERNEL_default
 LoadBlock RAMDISK_default
 LoadBlock BOOTLOADER_efi_gummiboot
+exit
 LoadBlock POSTFLIGHT_add_sudo_user 
 LoadBlock POWER_acpi # could be system specific
 LoadBlock AUDIO_alsa_basic
@@ -141,7 +133,7 @@ LoadBlock VIDEO_mesa_basic
 #LoadBlock HOMESETUP_${USERNAME}
 fi
 
-AnyKey "\nPHASE 3: Exit -----------------------------------------------------"
+echo "PHASE 3: Exit -----------------------------------------------------"
 exit
 
 # ready to rock
