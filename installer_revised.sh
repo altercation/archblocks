@@ -42,7 +42,15 @@ HOOKS="usb usbinput consolefont encrypt filesystems"
 # HELPER FUNCTIONS ------------------------------------------------
 #LoadBlock () { [ -f "$0" ] && [ -f "${DIR/%\//}/${1/%.sh/}.sh" ] && URL="file://" || URL="${REMOTE/%\//}/"; . /dev/stdin <<< "$(curl -fsL ${URL}${1/%.sh/}.sh)"; }; # LoadBlock _FUNCTIONS
 
-LoadBlock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; }
+PreFlight () {
+# check if initial (main) install script has been properly saved to local file
+[ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
+rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
+}
+
+LoadBlock () {
+# source locally if available, based on current script path, otherwise from remote
+FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; }
 
 LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; curl -fsL ${URL} > "${TMP}/blocks/${FILE}" && eval "${TMP}/blocks/${FILE}" || return 1; }
 
@@ -91,7 +99,7 @@ else
 fi
 }
 
-_Chroot_And_Continue () {
+Chroot_And_Continue () {
 cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"
 arch-chroot "${MNT}" "${POSTSCRIPT}"
 }
@@ -105,10 +113,10 @@ LoadBlock PREFLIGHT_default
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
 FILESYSTEM_PRE_BASEINSTALL # make filesystem
 LoadBlock BASEINSTALL_pacstrap
-FILESYSTEM_POST_BASEINSTALL # write configs
+FILESYSTEM_POST_BASEINSTALL # write filesystem configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part
 LoadEFIModules #DEBUG - IMPORTANT TO TEST REMOVAL
-cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}";  chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"
+Chroot_And_Continue
 fi
 
 # PHASE TWO - CHROOTED, CONFIGURE SYSTEM
