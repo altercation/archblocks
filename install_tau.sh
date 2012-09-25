@@ -6,8 +6,13 @@
 # http://github.com/altercation/archblocks
 
 # INSTRUCTIONS -----------------------------------------------------------
-# boot into Arch Install media and run:
-# sh <(curl -sfL http://git.io/c42guA)
+# boot into Arch Install media and run (for this script only):
+#
+# curl -sfL https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; sh install
+#
+#     or (short url)
+#
+# curl -sfL http://git.io/rQx7Xw > install.sh; sh install
 
 # CONFIG -----------------------------------------------------------------
 REMOTE=https://raw.github.com/altercation/archblocks/master
