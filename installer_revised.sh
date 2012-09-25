@@ -15,7 +15,7 @@ DEBUG=true
 set -o errexit #set -o errexit; set -o nounset # buckle up
 MNT=/mnt; TMP=/tmp/archblocks; PRESCRIPT="${TMP}/installer.sh"; POSTSCRIPT="/post-chroot.sh"
 
-if [ -f "${0}" ]; then echo "Don't run this directly from curl. Save to file first."; exit; fi
+if [ ! -f "${0}" ]; then echo "Don't run this directly from curl. Save to file first."; exit; fi
 #DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 #else
 #DIR="${TMP}"
