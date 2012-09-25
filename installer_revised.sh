@@ -7,7 +7,7 @@
 
 # INSTRUCTIONS -----------------------------------------------------------
 # boot into Arch Install media and run:
-# sh <(curl -sfL http://git.io/7PEHOg)
+# sh <(curl -sfL http://git.io/c42guA)
 
 
 # INSTALLATION TARGET VALUES ---------------------------------------------
