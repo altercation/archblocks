@@ -8,6 +8,8 @@ DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PRESCRIPT="${DIR/%\//}$(basename ${0})"; # normalize prescript to full script path
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+LoadFailCheck () { :; }
+
 LoadBlock () {
 # source locally if available, based on current script path, otherwise from remote
 FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; }

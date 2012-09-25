@@ -25,9 +25,9 @@ HOOKS="usb usbinput consolefont encrypt filesystems"
 #DRIVE=/dev/sda (doesn't need to be set unless overriding default in FILESYSTEM block)
 
 # LOAD HELPER FUNCTIONS (local if avail, remote otherwise) ---------------
-[ -f "$(basedir $0)/blocks/${_LIB}" ] \
+LoadFailCheck () { exit 1; }; [ -f "$(dirname $0)/blocks/${_LIB}" ] \
 && URL="file://blocks/_LIB.sh" || URL="${REMOTE/%\//}/blocks/_LIB.sh";
-eval "$(curl -fsL ${URL})"; 
+eval "$(curl -fsL ${URL})"; LoadFailCheck
 
 # PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT/%\//}/${POSTSCRIPT}" ]; then
