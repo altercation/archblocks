@@ -75,10 +75,10 @@ fi
 }
 
 ConfirmedRead () {
-set p1 p2
+set p1 p2; echo
 while [ "${p1}" != "${p2}" ]; do
-read -s -p "$@"
-read -s -p "Confirm $@"
+read -s -p "Enter $@:"
+read -s -p "Confirm $@:"
 done
 echo "${p1}"
 }
@@ -110,7 +110,7 @@ FILESYSTEM_POST_BASEINSTALL # write configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part
 modprobe efivars #DEBUG
 #CHROOT_CONTINUE
-cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}";  chmod a+x "${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"
+cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}";  chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"
 fi
 
 # if we are in chroot
