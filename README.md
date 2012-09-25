@@ -34,16 +34,17 @@ Many somewhat experienced Arch users end up building lightweight install scripts
 
 AND YET it's easy to make something like this far too complex. To paraphrase the Ruby community: Arch is Simple so Our Utilities Are Simple. ArchBlocks kickstarts off a *single* "configuration" script and loads blocks from a *single* directory (remote or local, doesn't matter).
 
-(I've previously written extensive additions to AIF before it was frozen in carbonite, and that experience convinced me of the value of non-interactive, simple install script based approach).
+(I've previously written extensive additions to AIF before it was frozen in carbonite, and that experience convinced me of the value of a non-interactive, simple install script based approach).
 
 ## NO REALLY, WHY NOT JUST MONOLITHIC INSTALL SCRIPTS, WHY MODULAR:
 
 There is install code that may be impacted by changes to Arch, or I sometimes want to improve the way I handle some part of the installation. This may impact multiple systems. Rather than update and maintain five different manual install scripts, modular is better approach. A simple example is the various `NETWORK_*` blocks. I can keep using the default network setup method in most of my scripts and use a light weight / minimal network install method by just swapping out a block. This minimal install script can be revised and all systems that I install with it in future will make use of the revision.
 
-## EXAMPLE:
+## BUT INSTALLING ARCH IS EASY
 
-curl -sfL http://git.io/ > install.sh
-sh install.sh
+It is. It's mostly the filesystem and bootloader varieties which create complexity for me. This addresses that.
+
+Another benefit of this modular approach is I can include post-flight app installation a per machine basis (my server gets nginx, my laptop gets dwarffortress). All automated.
 
 ## DETAILS:
 
