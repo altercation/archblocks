@@ -2,15 +2,7 @@
 # 9 BOOTLOADER
 # ------------------------------------------------------------------------
 
-AnyKey ">>>>>>>>>>>> HERE IN BOOTLOADER"
-
-#taking care of this post-chroot
-#modprobe efivars
-#modprobe dm-mod
 LoadEFIModules || exit
-
-AnyKey ">>>>>>>>>>>> HERE IN BOOTLOADER AGAIN"
-
 InstallPackage wget efibootmgr #gummiboot-efi-x86_64
 InstallAURPackage gummiboot-efi-x86_64 #gummiboot in extra now
 install -Dm0644 /usr/lib/gummiboot/gummiboot.efi /boot/efi/EFI/arch/gummiboot.efi
@@ -27,7 +19,5 @@ GUMMILOADER
 cat >> ${EFI_BOOT_PATH}/loader/entries/arch.conf <<GUMMIENTRIES
 title          Arch Linux
 efi            \\EFI\\arch\\vmlinuz-linux.efi
-options        initrd=\\EFI\\arch\initramfs-linux.img \
-cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} \
-root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4 
+options        initrd=\\EFI\\arch\initramfs-linux.img cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4 
 GUMMIENTRIES
