@@ -1,0 +1,8 @@
+ArchBlocks - a minimal, modular, manual install framework
+
+Many somewhat experienced Arch users end up building lightweight install scripts to set up their systems. I've been wanting to modularize my own install scripts such that they were applicable to multiple disparate systems (desktop/headless/laptop/server) without increasing complexity too much.
+
+To paraphrase the Ruby community: Arch is Simple so Our Utilities Are Simple.
+
+(I've previously written extensive additions to AIF before it was frozen in carbonite, and that experience convinced me of the value of non-interactive, simple install script based approach).
+

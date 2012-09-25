@@ -62,8 +62,7 @@ FILESYSTEM_POST_BASEINSTALL () {
 # note: only /dev/disk/by-partuuid, /dev/disk/by-partlabel and
 # /dev/sda2 formats work here
 cat > ${MOUNT_PATH}/etc/crypttab <<CRYPTTAB_EOF
-${LABEL_SWAP_CRYPT} /dev/disk/by-partlabel/${LABEL_SWAP} \
-/dev/urandom swap,allow-discards
+${LABEL_SWAP_CRYPT} /dev/disk/by-partlabel/${LABEL_SWAP} /dev/urandom swap,allow-discards
 CRYPTTAB_EOF
 
 # not using genfstab here since it doesn't record partlabel labels
@@ -72,9 +71,9 @@ cat > ${MOUNT_PATH}/etc/fstab <<FSTAB_EOF
 #
 # <file system>					<dir>		<type>	<options>				<dump>	<pass>
 tmpfs						/tmp		tmpfs	nodev,nosuid				0	0
-/dev/mapper/${LABEL_ROOT_CRYPT}			/      		ext4	rw,relatime,data=ordered,discard	0	1
-/dev/disk/by-partlabel/${LABEL_BOOT_EFI}	$EFI_BOOT_PATH	vfat	rw,relatime,discard			0	2
-/dev/mapper/${LABEL_SWAP_CRYPT}			none		swap	defaults,discard			0	0
+/dev/disk/by-partlabel/${LABEL_BOOT_EFI}		$EFI_BOOT_PATH	vfat	rw,relatime,discard			0	2
+/dev/mapper/${LABEL_SWAP_CRYPT}				none		swap	defaults,discard			0	0
+/dev/mapper/${LABEL_ROOT_CRYPT}				/      		ext4	rw,relatime,data=ordered,discard	0	1
 FSTAB_EOF
 }
 
