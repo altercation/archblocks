@@ -35,9 +35,9 @@ rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${TMP}" # don't need this if non 
 # HELPER FUNCTIONS ------------------------------------------------
 #LoadBlock () { [ -f "$0" ] && [ -f "${DIR/%\//}/${1/%.sh/}.sh" ] && URL="file://" || URL="${REMOTE/%\//}/"; . /dev/stdin <<< "$(curl -fsL ${URL}${1/%.sh/}.sh)"; }; # LoadBlock _FUNCTIONS
 
-LoadBlock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/${FILE}/blocks"; eval "$(curl -fsL ${URL})" }
+LoadBlock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/${FILE}/blocks"; eval "$(curl -fsL ${URL})"; }
 
-LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/${FILE}/blocks"; curl -fsL ${URL} > "${TMP}/blocks/${1/%.sh/}.sh" && eval "${TMP}/blocks/${1/%.sh/}.sh" || return 1 }
+LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/${FILE}/blocks"; curl -fsL ${URL} > "${TMP}/blocks/${1/%.sh/}.sh" && eval "${TMP}/blocks/${1/%.sh/}.sh" || return 1; }
 
 AnyKey () { echo -e "$@"; read -sn 1 -p; }
 
@@ -121,7 +121,6 @@ LoadBlock VIDEO_mesa_basic
 #LoadBlock SYSTEM_${SYSTEMTYPE} # other system tweaks for specific hw
 #LoadBlock UTILS_${USERNAME}
 #LoadBlock HOMESETUP_${USERNAME}
-unset INCHROOT
 fi
 
 AnyKey "\nPHASE 3: Exit -----------------------------------------------------"
