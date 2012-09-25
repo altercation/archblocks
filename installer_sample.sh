@@ -49,6 +49,7 @@ FILESYSTEM_PRE_BASEINSTALL # make filesystem
 LoadBlock BASEINSTALL_pacstrap
 FILESYSTEM_POST_BASEINSTALL # write configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part
+modprobe efivars #DEBUG
 CHROOT_CONTINUE
 fi
 
@@ -59,6 +60,7 @@ if [ -n ${INCHROOT:-} ] && [ ! -d "${MOUNT_PATH/%\//}/etc" ]; then
 # todo make pre-bootloader function which generalizes the variable used by
 # bootloader. we also need to run the post chroot filesystem function.
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
+modprobe efivars #DEBUG
 FILESYSTEM_POST_CHROOT # remount efi boot part
 LoadBlock LOCALE_default
 LoadBlock TIME_ntp
