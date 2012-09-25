@@ -15,9 +15,6 @@ Example repo at https://github.com/altercation/archblocks
 
 Boot Arch install media (in the example config I expect an EFI boot, but it's trivial to make this work for non EFI):
 
-    curl -sfL http://git.io/ > install.sh
-    sh install.sh
-
     # curl -sfL https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; sh install.sh
 
 or in short url form:
