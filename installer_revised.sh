@@ -23,24 +23,22 @@ HOOKS="usb usbinput consolefont encrypt filesystems"
 #DRIVE=/dev/sda (default depends on FILESYSTEM block)
 
 # REMOTE INSTALL SCRIPT REPO ---------------------------------------------
-GITHUB=https://raw.github.com/altercation/bashio-test/master
-TMP=/tmp/archblocks
-URL_REMOTE="${GITHUB/%\//}/"
+REMOTE=https://raw.github.com/altercation/bashio-test/master
+
+# SCRIPT EXECUTION SETTINGS ----------------------------------------------
+DEBUG=true
+set -o errexit #set -o errexit; set -o nounset # buckle up
+MNT=/mnt; TMP=/tmp/archblocks
 [ -f "${0}" ] && DIR="$( cd -P \"$( dirname \"${BASH_SOURCE[0]}\" )\" && pwd )" || DIR="${TMP}"
 rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${TMP}" # don't need this if non atomic
 
-# SCRIPT EXECUTION SETTINGS ----------------------------------------------
-MNT=/mnt
-DEBUG=true
-#set -o errexit; set -o nounset # buckle up
-set -o errexit
-
 # HELPER FUNCTIONS ------------------------------------------------
-#LoadBlock () { [ -f "$0" ] && [ -f "${DIR/%\//}/${1/%.sh/}.sh" ] && URL="file://" || URL="${URL_REMOTE/%\//}/"; . /dev/stdin <<< "$(curl -fsL ${URL}${1/%.sh/}.sh)"; }; # LoadBlock _FUNCTIONS
+#LoadBlock () { [ -f "$0" ] && [ -f "${DIR/%\//}/${1/%.sh/}.sh" ] && URL="file://" || URL="${REMOTE/%\//}/"; . /dev/stdin <<< "$(curl -fsL ${URL}${1/%.sh/}.sh)"; }; # LoadBlock _FUNCTIONS
 
-LoadBlock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${URL_REMOTE/%\//}/${FILE}"; eval "$(curl -fsL ${URL})" }
+LoadBlock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/${FILE}/blocks"; eval "$(curl -fsL ${URL})" }
 
-LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${URL_REMOTE/%\//}/${FILE}"; curl -fsL ${URL} > "${TMP}/${1/%.sh/}.sh" && eval "${TMP}/${1/%.sh/}.sh" || return 1 }
+LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/${FILE}/blocks"; curl -fsL ${URL} > "${TMP}/blocks/${1/%.sh/}.sh" && eval "${TMP}/blocks/${1/%.sh/}.sh" || return 1 }
+
 AnyKey () { echo -e "$@"; read -sn 1 -p; }
 
 SetValue () { valuename="$1" newvalue="$2" filepath="$3"; sed -i "s+^#\?\(${valuename}\)=.*$+\1=${newvalue}+" "${filepath}"; }
@@ -81,7 +79,7 @@ fi
 
 
 # if we haven't installed yet
-[ ! -d "${MNT/%\//}/etc" ]; then
+if [ ! -d "${MNT/%\//}/etc" ]; then
 AnyKey "\nPHASE 1: Filesystem & Base Install --------------------------------"
 LoadBlock WARN_impending_doom
 LoadBlock PREFLIGHT_default
@@ -101,7 +99,7 @@ fi
 # load fs again since chroot is new and we need fs variables in bootloader
 # todo make pre-bootloader function which generalizes the variable used by
 # bootloader. we also need to run the post chroot filesystem function.
-[ ! -d "${MNT/%\//}/etc" ]; then
+if [ ! -d "${MNT/%\//}/etc" ]; then
 AnyKey "\nPHASE 2: chroot and system configuration --------------------------"
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
 modprobe efivars #DEBUG
