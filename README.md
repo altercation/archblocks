@@ -10,6 +10,7 @@ ArchBlocks is a very lightweight framework for creating quick, modular, *non-int
 ## WHERE:
 
 Example repo at https://github.com/altercation/archblocks
+Arch BBS: https://bbs.archlinux.org/viewtopic.php?id=149597
 
 ## EXAMPLE:
 
