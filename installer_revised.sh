@@ -14,16 +14,14 @@
 DEBUG=true
 set -o errexit #set -o errexit; set -o nounset # buckle up
 MNT=/mnt; TMP=/tmp/archblocks; PRESCRIPT="${TMP}/installer.sh"; POSTSCRIPT="/post-chroot.sh"
-if [ -f "${0}" ]; then
-DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-else
-DIR="${TMP}"
-fi
-rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}" # don't need this if non atomic
 
-DEBUG=true
-set -o errexit #set -o errexit; set -o nounset # buckle up
-MNT=/mnt; TMP=/tmp/archblocks; PRESCRIPT="${TMP}/installer.sh"; POSTSCRIPT="/post-chroot.sh"
+if [ -f "${0}" ]; then echo "Don't run this directly from curl. Save to file first."; exit; fi
+#DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+#else
+#DIR="${TMP}"
+#fi
+rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
+
 
 # REMOTE INSTALL SCRIPT REPO ---------------------------------------------
 REMOTE=https://raw.github.com/altercation/archblocks/master
@@ -103,7 +101,7 @@ FILESYSTEM_POST_BASEINSTALL # write configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part
 modprobe efivars #DEBUG
 #CHROOT_CONTINUE
-cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" <<< "sh ${POSTSCRIPT}"
+cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}";  chmod a+x "${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"
 fi
 
 # if we are in chroot
