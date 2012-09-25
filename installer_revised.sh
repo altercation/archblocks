@@ -92,6 +92,7 @@ fi
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT/%\//}/${POSTSCRIPT}" ]; then # in arch installer image, not chrooted, system not yet installed
 AnyKey "\nPHASE 1: Filesystem & Base Install --------------------------------"
 LoadBlock WARN_impending_doom
+LoadEFIModules #DEBUG
 LoadBlock PREFLIGHT_default
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
 FILESYSTEM_PRE_BASEINSTALL # make filesystem
