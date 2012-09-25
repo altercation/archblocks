@@ -74,8 +74,17 @@ else pkg=packer; orig="$(pwd)"
 fi
 }
 
+ConfirmedRead () {
+set p1 p2
+while [ "${p1}" != "${p2}" ]; do
+read -s -p "$@"
+read -s -p "Confirm $@"
+done
+echo "${p1}"
+}
+
 LoadEFIModules () {
-ls -l /sys/firmware/efi/vars/ >/dev/null && return
+ls -l /sys/firmware/efi/vars/ &>/dev/null && return
 modprobe efivars #|| true
 if ls -l /sys/firmware/efi/vars/ >/dev/null; then
 AnyKey "Kernel EFI module loaded, continuing..."
