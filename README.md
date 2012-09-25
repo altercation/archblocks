@@ -13,10 +13,18 @@ Example repo at https://github.com/altercation/archblocks
 
 ## EXAMPLE:
 
+Boot Arch install media (in the example config I expect an EFI boot, but it's trivial to make this work for non EFI):
+
     curl -sfL http://git.io/ > install.sh
     sh install.sh
 
-(this then sources the blocks of code remotely and configures the system based on the specific blocks called and variables set in its configuration)
+    # curl -sfL https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; sh install.sh
+
+or in short url form:
+
+    # curl -sfL http://git.io/rQx7Xw > install.sh; sh install.sh
+
+(this then sources the blocks of code remotely and configures the system based on the specific blocks called and variables set in in; see below)
 
 ## WHAT IT ISN'T:
 
@@ -93,6 +101,32 @@ A config/install script (the only script you need to manually execute) looks lik
     LoadBlock BOOTLOADER_efi_gummiboot
     LoadBlock POSTFLIGHT_add_sudo_user 
     fi
+
+The blocks subdirectory (the only subdirectory used) contains blocks of simple bash script and looks something like this (note the variants in items like NETWORK... I am working on alternates for FILESYSTEM and BOOTLOADER as well, but the principle should be clear)::
+
+    AUDIO_alsa_basic.sh
+    BASEINSTALL_pacstrap.sh
+    BOOTLOADER_efi_gummiboot.sh
+    DESKTOP_xmonad-minimal.sh
+    FILESYSTEM_gpt_lukspassphrase_ext4_root.sh
+    HOMESETUP_es.sh
+    HOSTNAME_default.sh
+    KERNEL_default.sh
+    LOCALE_default.sh
+    NETWORK_wired_wireless_default.sh
+    NETWORK_wired_wireless_minimal.sh
+    POSTFLIGHT_add_sudo_user.sh
+    POWER_acpi.sh
+    PREFLIGHT_default.sh
+    PREFLIGHT_efi.sh
+    RAMDISK_default.sh
+    SYSTEM_thinkpad_x220.sh
+    TIME_ntp.sh
+    UTILS_es.sh
+    VIDEO_mesa_basic.sh
+    WARN_impending_doom.sh
+    XORG_wacom_fonts.sh
+    _LIB.sh
     
 That's it, really. Nothing fancy. Comprehensible, reusable, modular.
 
