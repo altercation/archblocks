@@ -77,12 +77,14 @@ fi
 }
 
 LoadEFIModules () {
+ls -l /sys/firmware/efi/vars/ >/dev/null && return
 modprobe efivars #|| true
 if ls -l /sys/firmware/efi/vars/ >/dev/null; then
-echo "Kernel EFI module loaded, continuing..."
+AnyKey "Kernel EFI module loaded, continuing..."
+return
 else
-echo "Failed to boot into EFI mode, exiting..."
-exit 1
+AnyKey "Failed to boot into EFI mode, exiting..."
+return 1
 fi
 }
 
@@ -92,7 +94,7 @@ fi
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT/%\//}/${POSTSCRIPT}" ]; then # in arch installer image, not chrooted, system not yet installed
 AnyKey "\nPHASE 1: Filesystem & Base Install --------------------------------"
 LoadBlock WARN_impending_doom
-LoadEFIModules #DEBUG
+LoadEFIModules #DEBUG - IMPORTANT TO LOAD THIS HERE
 LoadBlock PREFLIGHT_default
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
 FILESYSTEM_PRE_BASEINSTALL # make filesystem
