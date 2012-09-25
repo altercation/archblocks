@@ -15,9 +15,9 @@ REMOTE=https://raw.github.com/altercation/archblocks/master
 # SCRIPT EXECUTION SETTINGS ----------------------------------------------
 DEBUG=true
 set -o errexit #set -o errexit; set -o nounset # buckle up
-MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
+MNT=/mnt; TMP=/tmp/archblocks; PRESCRIPT="${TMP}/installer.sh"; POSTSCRIPT="/post-chroot.sh"
 [ -f "${0}" ] && DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" || DIR="${TMP}"
-rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${TMP}/installer.sh" # don't need this if non atomic
+rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}" # don't need this if non atomic
 
 
 # INSTALLATION TARGET VALUES ---------------------------------------------
@@ -40,7 +40,7 @@ LoadBlock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file:/
 
 LoadBlockAtomic () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; curl -fsL ${URL} > "${TMP}/blocks/${FILE}" && eval "${TMP}/blocks/${FILE}" || return 1; }
 
-AnyKey () { read -sn 1 -p "$@\n\nAny key to continue..."; }
+AnyKey () { echo -e "\n$@"; read -sn 1 -p "Any key to continue..."; }
 
 SetValue () { valuename="$1" newvalue="$2" filepath="$3"; sed -i "s+^#\?\(${valuename}\)=.*$+\1=${newvalue}+" "${filepath}"; }
 
@@ -92,7 +92,7 @@ FILESYSTEM_POST_BASEINSTALL # write configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part
 modprobe efivars #DEBUG
 #CHROOT_CONTINUE
-cp /tmp/archblocks/install.sh "${MNT}/post-chroot.sh"; arch-chroot <<< "/post-chroot.sh"
+cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" <<< "sh ${POSTSCRIPT}"
 fi
 
 # if we are in chroot
@@ -101,7 +101,7 @@ fi
 # load fs again since chroot is new and we need fs variables in bootloader
 # todo make pre-bootloader function which generalizes the variable used by
 # bootloader. we also need to run the post chroot filesystem function.
-if [ ! -e "${POSTSCRIPT}" ]; then # chrooted into new system
+if [ -e "${POSTSCRIPT}" ]; then # chrooted into new system
 AnyKey "\nPHASE 2: chroot and system configuration --------------------------"
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
 modprobe efivars #DEBUG
