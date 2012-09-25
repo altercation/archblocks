@@ -43,9 +43,10 @@ sgdisk -c ${PARTITION_CRYPT_SWAP}:"${LABEL_SWAP}" ${DRIVE}
 sgdisk -c ${PARTITION_CRYPT_ROOT}:"${LABEL_ROOT}" ${DRIVE}
 
 # format LUKS on root
+_pwd="$(ConfirmRead Password)"
 cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 \
-luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT}
-cryptsetup luksOpen ${DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}
+luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT} <<< "$_pwd"
+cryptsetup luksOpen ${DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT} <<< "$_pwd"
 
 # make filesystems
 mkfs.vfat ${DRIVE}${PARTITION_EFI_BOOT}

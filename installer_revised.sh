@@ -74,13 +74,9 @@ else pkg=packer; orig="$(pwd)"
 fi
 }
 
-ConfirmedRead () {
-set p1 p2; echo
-while [ "${p1}" != "${p2}" ]; do
-read -s -p "Enter $@:"
-read -s -p "Confirm $@:"
-done
-echo "${p1}"
+ConfirmRead () {
+unset _match; echo; while [ -z "${_match}" ]; do read -s -p "Enter $1: " p1; echo; read -s -p "Confirm $1: " p2
+[ "${p1}" == "${p2}" ] && _match=true || echo "$1 does not match"; done; echo "${p1}"
 }
 
 LoadEFIModules () {
