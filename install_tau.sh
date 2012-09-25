@@ -49,7 +49,7 @@ fi
 
 # PHASE TWO - CHROOTED, CONFIGURE SYSTEM
 if [ -e "${POSTSCRIPT}" ]; then
-LoadBlock FILESYSTEM_gpt_luks_ext4_root
+LoadBlock FILESYSTEM_gpt_lukspassphrase_ext4_root
 LoadEFIModules #DEBUG - MAY NOT BE NEEDED HERE, BUT LIKELY
 FILESYSTEM_POST_CHROOT # remount efi boot part
 LoadBlock LOCALE_default
