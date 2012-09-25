@@ -6,7 +6,8 @@
 set -o errexit
 MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PRESCRIPT="${DIR/%\//}$(basename ${0})"; # normalize prescript to full script path
+#PRESCRIPT="${DIR/%\//}$(basename ${0})"; # normalize prescript to full script path
+PRESCRIPT="${0}"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 AnyKey () { echo -e "\n$@"; read -sn 1 -p "Any key to continue..."; echo; }
