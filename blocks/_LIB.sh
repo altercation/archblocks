@@ -6,16 +6,9 @@
 set -o errexit
 MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-#PRESCRIPT="${DIR/%\//}$(basename ${0})"; # normalize prescript to full script path
-PRESCRIPT="${0}"
+PRESCRIPT="${DIR/%\//}/$(basename ${0})"; # normalize prescript to full script path
+#PRESCRIPT="${0}"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-AnyKey () { echo -e "\n$@"; read -sn 1 -p "Any key to continue..."; echo; }
-
-echo $DIR
-echo $PRESCRIPT
-echo TEST
-AnyKey
 
 LoadFailCheck () { :; }
 
@@ -32,6 +25,8 @@ CommentOutValue () { valuename="$1" filepath="$2"; sed -i "s/^\(${valuename}.*\)
 UncommentValue () { valuename="$1" filepath="$2"; sed -i "s/^#\(${valuename}.*\)$/\1/" "${filepath}"; }
 
 AddToList () { newitem="$1" listname="$2" filepath="$3"; sed -i "s/\(${listname}.*\)\()\)/\1 ${newitem}\2/" "${filepath}"; }
+
+AnyKey () { echo -e "\n$@"; read -sn 1 -p "Any key to continue..."; echo; }
 
 InstallPackage () { pacman -S --noconfirm "$@"; }
 
