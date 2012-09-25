@@ -114,7 +114,7 @@ echo -e "\n\n>>>>>>>>>>>TEST FOR ${POSTSCRIPT} \n\n-----------------------------
 if [ -e "${POSTSCRIPT}" ]; then # chrooted into new system
 AnyKey "\nPHASE 2: chroot and system configuration --------------------------"
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
-modprobe efivars #DEBUG
+LoadEFIModules #DEBUG - MAY NOT BE NEEDED HERE, BUT LIKELY
 FILESYSTEM_POST_CHROOT # remount efi boot part
 LoadBlock LOCALE_default
 LoadBlock TIME_ntp
