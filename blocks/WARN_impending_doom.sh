@@ -5,4 +5,4 @@ cool about this, right? It's not like some code you just met in bar or something
 that? Ok, then, let's go.
 WARNING
 
-AnyKey "Any key to continue..."
+AnyKey

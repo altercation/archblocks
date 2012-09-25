@@ -83,11 +83,11 @@ LoadEFIModules () {
 ls -l /sys/firmware/efi/vars/ &>/dev/null && return
 modprobe efivars #|| true
 if ls -l /sys/firmware/efi/vars/ >/dev/null; then
-AnyKey "Kernel EFI module loaded, continuing..."
-return
+	echo "Kernel EFI module loaded, continuing..."
+	return
 else
-AnyKey "Failed to boot into EFI mode, exiting..."
-return 1
+	echo "Failed to boot into EFI mode, exiting..."
+	return 1
 fi
 }
 
@@ -104,7 +104,8 @@ FILESYSTEM_PRE_BASEINSTALL # make filesystem
 LoadBlock BASEINSTALL_pacstrap
 FILESYSTEM_POST_BASEINSTALL # write configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part
-modprobe efivars #DEBUG
+LoadEFIModules #DEBUG - IMPORTANT TO TEST REMOVAL
+#modprobe efivars #DEBUG
 #CHROOT_CONTINUE
 cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}";  chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"
 fi
