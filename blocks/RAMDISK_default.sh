@@ -2,12 +2,9 @@
 # RAMDISK
 # ------------------------------------------------------------------------
 
+# set default values if not set from variables in the config file
 MODULES="${MODULES:-}"
-HOOKS="${HOOKS:-base udev autodetect pata scsi sata filesystems}"
-
-echo -e "MODULES are:\n${MODULES}"
-echo -e "HOOKS are:\n${HOOKS}"
-AnyKey
+HOOKS="${HOOKS:-base udev autodetect pata scsi sata filesystems usbinput fsck}"
 
 cp /etc/mkinitcpio.conf /etc/mkinitcpio.orig
 sed -i "s/^MODULES.*$/MODULES=\"${MODULES}\"/" /etc/mkinitcpio.conf

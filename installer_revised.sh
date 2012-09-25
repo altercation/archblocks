@@ -91,11 +91,14 @@ else
 fi
 }
 
+_Chroot_And_Continue () {
+cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"
+arch-chroot "${MNT}" "${POSTSCRIPT}"
+}
 
-# if we haven't installed yet
-#if [ ! -d "${MNT/%\//}/etc" ]; then
-if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT/%\//}/${POSTSCRIPT}" ]; then # in arch installer image, not chrooted, system not yet installed
-echo "PHASE 1: Filesystem & Base Install --------------------------------"
+
+# PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
+if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT/%\//}/${POSTSCRIPT}" ]; then
 LoadBlock WARN_impending_doom
 LoadEFIModules #DEBUG - IMPORTANT TO LOAD THIS HERE
 LoadBlock PREFLIGHT_default
@@ -108,8 +111,8 @@ LoadEFIModules #DEBUG - IMPORTANT TO TEST REMOVAL
 cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}";  chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"
 fi
 
-if [ -e "${POSTSCRIPT}" ]; then # chrooted into new system
-echo "PHASE 2: chroot and system configuration --------------------------"
+# PHASE TWO - CHROOTED, CONFIGURE SYSTEM
+if [ -e "${POSTSCRIPT}" ]; then
 LoadBlock FILESYSTEM_gpt_luks_ext4_root
 LoadEFIModules #DEBUG - MAY NOT BE NEEDED HERE, BUT LIKELY
 FILESYSTEM_POST_CHROOT # remount efi boot part
@@ -133,7 +136,8 @@ LoadBlock VIDEO_mesa_basic
 #LoadBlock HOMESETUP_${USERNAME}
 fi
 
-echo "PHASE 3: Exit -----------------------------------------------------"
+# PHASE THREE - EXITED CHROOT - OPTIONAL UNMOUNT AND REBOOT
+#if [ ! -e "${POSTSCRIPT}" ] && [ -e "${MNT/%\//}/${POSTSCRIPT}" ]; then
 exit
 
 # ready to rock
