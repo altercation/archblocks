@@ -29,7 +29,7 @@ REMOTE=https://raw.github.com/altercation/bashio-test/master
 DEBUG=true
 set -o errexit #set -o errexit; set -o nounset # buckle up
 MNT=/mnt; TMP=/tmp/archblocks
-[ -f "${0}" ] && DIR="$( cd -P \"$( dirname \"${BASH_SOURCE[0]}\" )\" && pwd )" || DIR="${TMP}"
+[ -f "${0}" ] && DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" || DIR="${TMP}"
 rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${TMP}" # don't need this if non atomic
 
 # HELPER FUNCTIONS ------------------------------------------------
