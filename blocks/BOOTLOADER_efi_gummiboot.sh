@@ -17,7 +17,7 @@ InstallPackage wget efibootmgr gummiboot-efi
 install -Dm0644 /usr/lib/gummiboot/gummibootx64.efi /boot/efi/EFI/gummiboot/gummiboot.efi
 
 if $EFI_MODE; then
-    efibootmgr -c -l '\EFI\gummiboot\gummiboot.efi\' -L "Arch Linux"
+    efibootmgr -c -L "Gummiboot" -l '\EFI\gummiboot\gummiboot.efi'
 elif $FAIL_TO_DEFAULT_EFI; then
     install -Dm0644 /usr/lib/gummiboot/gummibootx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
 else
