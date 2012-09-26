@@ -34,7 +34,7 @@ LoadFailCheck () { exit 1; }; [ -f "$(dirname $0)/blocks/${_LIB}" ] \
 && URL="file://blocks/_LIB.sh" || URL="${REMOTE/%\//}/blocks/_LIB.sh";
 eval "$(curl -fsL ${URL})"; LoadFailCheck
 
-if eval $PRE_CHROOT; then # PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
+if $PRE_CHROOT; then # PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
 LoadBlock WARN_impending_doom
 LoadEFIModules #DEBUG - IMPORTANT TO LOAD THIS HERE
 LoadBlock PREFLIGHT_default
@@ -47,7 +47,7 @@ FILESYSTEM_PRE_CHROOT # unmount efi boot part
 Chroot_And_Continue
 fi
 
-if eval $POST_CHROOT; then # PHASE TWO - CHROOTED, CONFIGURE SYSTEM
+if $POST_CHROOT; then # PHASE TWO - CHROOTED, CONFIGURE SYSTEM
 LoadBlock FILESYSTEM_gpt_lukspassphrase_ext4_root
 LoadEFIModules #DEBUG - MAY NOT BE NEEDED HERE, BUT LIKELY
 FILESYSTEM_POST_CHROOT # remount efi boot part
@@ -71,7 +71,7 @@ LoadBlock BOOTLOADER_efi_gummiboot
 fi
 
 # PHASE THREE - EXITED CHROOT - OPTIONAL UNMOUNT AND REBOOT
-#if eval $POST_INSTALL; then
+#if $POST_INSTALL; then
 #Unmount_And_Reboot
 #fi
 
