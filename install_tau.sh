@@ -15,7 +15,7 @@
 # curl -sfL http://git.io/rQx7Xw > install.sh; sh install.sh
 
 # CONFIG -----------------------------------------------------------------
-REMOTE=https://raw.github.com/altercation/archblocks/systemd
+REMOTE=https://raw.github.com/altercation/archblocks/dev
 HOSTNAME=tau
 SYSTEMTYPE=thinkpad_x220
 USERNAME=es
