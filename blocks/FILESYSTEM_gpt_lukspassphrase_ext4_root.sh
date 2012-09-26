@@ -12,7 +12,7 @@ LABEL_SWAP_CRYPT=cryptswap
 LABEL_ROOT=root
 LABEL_ROOT_CRYPT=cryptroot
 MOUNT_PATH=/mnt
-EFI_BOOT_PATH=/boot/efi
+EFI_SYSTEM_PARTITION=/boot/efi
 
 # KERNEL_PARAMS used by BOOTLOADER
 KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
@@ -56,8 +56,8 @@ mkfs.ext4 /dev/mapper/${LABEL_ROOT_CRYPT}
 # mount target
 # mkdir ${MOUNT_PATH}
 mount /dev/mapper/${LABEL_ROOT_CRYPT} ${MOUNT_PATH}
-mkdir -p ${MOUNT_PATH}${EFI_BOOT_PATH}
-mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${MOUNT_PATH}${EFI_BOOT_PATH}
+mkdir -p ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}
+mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}
 }
 
 FILESYSTEM_POST_BASEINSTALL () {
@@ -74,14 +74,14 @@ cat > ${MOUNT_PATH}/etc/fstab <<FSTAB_EOF
 #
 # <file system>					<dir>		<type>	<options>				<dump>	<pass>
 tmpfs						/tmp		tmpfs	nodev,nosuid				0	0
-#/dev/disk/by-partlabel/${LABEL_BOOT_EFI}		$EFI_BOOT_PATH	vfat	rw,relatime,discard			0	2
-/dev/disk/by-partlabel/${LABEL_BOOT_EFI}		$EFI_BOOT_PATH	vfat	rw,relatime,discard,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2
+#/dev/disk/by-partlabel/${LABEL_BOOT_EFI}		$EFI_SYSTEM_PARTITION	vfat	rw,relatime,discard			0	2
+/dev/disk/by-partlabel/${LABEL_BOOT_EFI}		$EFI_SYSTEM_PARTITION	vfat	rw,relatime,discard,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2
 /dev/mapper/${LABEL_SWAP_CRYPT}				none		swap	defaults,discard			0	0
 /dev/mapper/${LABEL_ROOT_CRYPT}				/      		ext4	rw,relatime,data=ordered,discard	0	1
 FSTAB_EOF
 }
 
-FILESYSTEM_PRE_CHROOT () { umount ${MOUNT_PATH}${EFI_BOOT_PATH}; }
-FILESYSTEM_POST_CHROOT () { LoadEFIModules && mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_BOOT_PATH} || return 1; }
+FILESYSTEM_PRE_CHROOT () { umount ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}; }
+FILESYSTEM_POST_CHROOT () { LoadEFIModules && mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1; }
 
 
