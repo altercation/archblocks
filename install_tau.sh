@@ -36,7 +36,7 @@ eval "$(curl -fsL ${URL})"; LoadFailCheck
 
 if $PRE_CHROOT; then # PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
 LoadBlock WARN_impending_doom
-LoadEFIModules #DEBUG - IMPORTANT TO LOAD THIS HERE
+LoadEFIModules || echo "failed to load efi modules" #DEBUG - IMPORTANT TO LOAD THIS HERE
 LoadBlock PREFLIGHT_default
 LoadBlock FILESYSTEM_gpt_lukspassphrase_ext4_root
 FILESYSTEM_PRE_BASEINSTALL # make filesystem
@@ -49,7 +49,7 @@ fi
 
 if $POST_CHROOT; then # PHASE TWO - CHROOTED, CONFIGURE SYSTEM
 LoadBlock FILESYSTEM_gpt_lukspassphrase_ext4_root
-LoadEFIModules #DEBUG - MAY NOT BE NEEDED HERE, BUT LIKELY
+LoadEFIModules || echo "failed to load efi modules" #DEBUG - MAY NOT BE NEEDED HERE, BUT LIKELY
 FILESYSTEM_POST_CHROOT # remount efi boot part
 LoadBlock LOCALE_default
 LoadBlock TIME_ntp
