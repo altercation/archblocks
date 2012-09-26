@@ -10,7 +10,7 @@
 #
 # curl -sfL https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; sh install.sh
 #
-#     or (short url)
+# or use git.io / other shortener to create a short url
 #
 # curl -sfL http://git.io/rQx7Xw > install.sh; sh install.sh
 
