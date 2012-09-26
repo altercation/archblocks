@@ -28,9 +28,11 @@ else
     exit 1
 fi
 
-cp /boot/vmlinuz-linux /boot/efi/EFI/arch/vmlinuz-linux.efi
-cp /boot/initramfs-linux.img /boot/efi/EFI/arch/initramfs-linux.img
-cp /boot/initramfs-linux-fallback.img /boot/efi/EFI/arch/initramfs-linux-fallback.img
+ESP_ARCH="${EFI_SYSTEM_PARTITION}/EFI/arch"
+[ -d "${ESP_ARCH}" ] || mkdir "${ESP_ARCH}"
+cp /boot/vmlinuz-linux "${ESP_ARCH}/vmlinuz-linux.efi"
+cp /boot/initramfs-linux.img "${ESP_ARCH}/initramfs-linux.img"
+cp /boot/initramfs-linux-fallback.img "${ESP_ARCH}/initramfs-linux-fallback.img"
 mkdir -p ${EFI_SYSTEM_PARTITION}/loader/entries
 cat >> ${EFI_SYSTEM_PARTITION}/loader/default.conf <<GUMMILOADER
 default arch
