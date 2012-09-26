@@ -1,6 +1,9 @@
 # ------------------------------------------------------------------------
-# 9 BOOTLOADER
+# BOOTLOADER
 # ------------------------------------------------------------------------
+
+# KERNEL_PARAMS get set up in FILESYSTEM and possibly other blocks like
+# SYSTEMD
 
 LoadEFIModules || exit
 InstallPackage wget efibootmgr #gummiboot-efi-x86_64
@@ -19,5 +22,6 @@ GUMMILOADER
 cat >> ${EFI_BOOT_PATH}/loader/entries/arch.conf <<GUMMIENTRIES
 title          Arch Linux
 efi            \\EFI\\arch\\vmlinuz-linux.efi
-options        initrd=\\EFI\\arch\initramfs-linux.img cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4 
+options        initrd=\\EFI\\arch\initramfs-linux.img "${KERNEL_PARAMS}"
 GUMMIENTRIES
+

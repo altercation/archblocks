@@ -14,6 +14,9 @@ LABEL_ROOT_CRYPT=cryptroot
 MOUNT_PATH=/mnt
 EFI_BOOT_PATH=/boot/efi
 
+# KERNEL_PARAMS used by BOOTLOADER
+KERNEL_PARAMS="${KERNEL_PARAMS:- }cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
+
 FILESYSTEM_PRE_BASEINSTALL () {
 # Here we create three partitions:
 # 1. efi and /boot (one partition does double duty)
