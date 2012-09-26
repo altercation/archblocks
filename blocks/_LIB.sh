@@ -10,6 +10,10 @@ PRESCRIPT="${DIR/%\//}/$(basename ${0})"; # normalize prescript to full script p
 #PRESCRIPT="${0}"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# DETECT CHROOT
+[ -e "${POSTSCRIPT}" ] && POST_CHROOT=TRUE || POST_CHROOT=FALSE;
+$POST_CHROOT && PRE_CHROOT=FALSE || PRE_CHROOT=TRUE; POST_INSTALL=$PRE_CHROOT
+
 LoadFailCheck () { :; }
 
 LoadBlock () {

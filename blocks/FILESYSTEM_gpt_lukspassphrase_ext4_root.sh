@@ -15,7 +15,7 @@ MOUNT_PATH=/mnt
 EFI_BOOT_PATH=/boot/efi
 
 # KERNEL_PARAMS used by BOOTLOADER
-KERNEL_PARAMS="${KERNEL_PARAMS:- }cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
+KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
 
 FILESYSTEM_PRE_BASEINSTALL () {
 # Here we create three partitions:

@@ -15,7 +15,7 @@
 # curl -sfL http://git.io/rQx7Xw > install.sh; sh install.sh
 
 # CONFIG -----------------------------------------------------------------
-REMOTE=https://raw.github.com/altercation/archblocks/master
+REMOTE=https://raw.github.com/altercation/archblocks/systemd
 HOSTNAME=tau
 SYSTEMTYPE=thinkpad_x220
 USERNAME=es
@@ -26,15 +26,15 @@ KEYMAP=us
 TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
 HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
-#DRIVE=/dev/sda (doesn't need to be set unless overriding default in FILESYSTEM block)
+KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks
+DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
 
 # LOAD HELPER FUNCTIONS (local if avail, remote otherwise) ---------------
 LoadFailCheck () { exit 1; }; [ -f "$(dirname $0)/blocks/${_LIB}" ] \
 && URL="file://blocks/_LIB.sh" || URL="${REMOTE/%\//}/blocks/_LIB.sh";
 eval "$(curl -fsL ${URL})"; LoadFailCheck
 
-# PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
-if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT/%\//}/${POSTSCRIPT}" ]; then
+if $PRE_CHROOT; then # PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
 LoadBlock WARN_impending_doom
 LoadEFIModules #DEBUG - IMPORTANT TO LOAD THIS HERE
 LoadBlock PREFLIGHT_default
@@ -47,8 +47,7 @@ FILESYSTEM_PRE_CHROOT # unmount efi boot part
 Chroot_And_Continue
 fi
 
-# PHASE TWO - CHROOTED, CONFIGURE SYSTEM
-if [ -e "${POSTSCRIPT}" ]; then
+if $POST_CHROOT; then # PHASE TWO - CHROOTED, CONFIGURE SYSTEM
 LoadBlock FILESYSTEM_gpt_lukspassphrase_ext4_root
 LoadEFIModules #DEBUG - MAY NOT BE NEEDED HERE, BUT LIKELY
 FILESYSTEM_POST_CHROOT # remount efi boot part
@@ -72,7 +71,7 @@ LoadBlock BOOTLOADER_efi_gummiboot
 fi
 
 # PHASE THREE - EXITED CHROOT - OPTIONAL UNMOUNT AND REBOOT
-#if [ ! -e "${POSTSCRIPT}" ] && [ -e "${MNT/%\//}/${POSTSCRIPT}" ]; then
+#if $POST_INSTALL; then
 #Unmount_And_Reboot
 #fi
 
