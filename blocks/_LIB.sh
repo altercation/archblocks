@@ -62,10 +62,10 @@ Unmount_And_Reboot () {
 
 LoadEFIModules () {
 ls -l /sys/firmware/efi/vars/ &>/dev/null && return
-modprobe efivars #|| true
+modprobe efivars || true
 if ls -l /sys/firmware/efi/vars/ >/dev/null; then
 	echo "Kernel EFI module loaded, continuing..."
-	return
+	return 0
 else
 	echo "Failed to boot into EFI mode, exiting..."
 	return 1
