@@ -40,6 +40,11 @@ LoadEFIModules || true
 LoadBlock PREFLIGHT_default
 LoadBlock FILESYSTEM_gpt_lukspassphrase_ext4_root
 FILESYSTEM_PRE_BASEINSTALL # make filesystem
+AnyKey "CHECK MOUNTS"
+mount
+AnyKey "CHECK lsblk"
+lsblk
+AnyKey "CHECK COMPLETE"
 LoadBlock BASEINSTALL_pacstrap
 FILESYSTEM_POST_BASEINSTALL # write filesystem configs
 FILESYSTEM_PRE_CHROOT # unmount efi boot part

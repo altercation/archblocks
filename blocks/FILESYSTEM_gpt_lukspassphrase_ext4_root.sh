@@ -58,8 +58,6 @@ mkfs.ext4 /dev/mapper/${LABEL_ROOT_CRYPT}
 mount /dev/mapper/${LABEL_ROOT_CRYPT} ${MOUNT_PATH}
 mkdir -p ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}
 mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}
-mount
-AnyKey "TESTING"
 }
 
 FILESYSTEM_POST_BASEINSTALL () {
