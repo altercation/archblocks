@@ -61,15 +61,14 @@ Unmount_And_Reboot () {
 }
 
 LoadEFIModules () {
-AnyKey "CONFIRMING..."
 ls -l /sys/firmware/efi/vars/ &>/dev/null && return 1 || true
 modprobe efivars || true
 if ls -l /sys/firmware/efi/vars/ >/dev/null; then
 	echo "Kernel EFI module loaded, continuing..."
 	return 0
 else
-	echo "\nFailed to boot into EFI mode...\nwill install EFI default bootloader."
-	echo "\nRecommend installing proper EFI bootloader via efibootmgr after reboot."
+	echo -e "\nFailed to boot into EFI mode...\nwill install EFI default bootloader."
+	echo -e "\nRecommend installing proper EFI bootloader via efibootmgr after reboot."
 	return 1
 fi
 }
