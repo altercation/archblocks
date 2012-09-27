@@ -3,7 +3,7 @@
 [ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
 # rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
 
-set -o errexit
+#set -o errexit
 MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PRESCRIPT="${DIR/%\//}/$(basename ${0})"; # normalize prescript to full script path
@@ -61,6 +61,7 @@ Unmount_And_Reboot () {
 }
 
 LoadEFIModules () {
+AnyKey "CONFIRMING..."
 ls -l /sys/firmware/efi/vars/ &>/dev/null && return
 modprobe efivars || true
 if ls -l /sys/firmware/efi/vars/ >/dev/null; then
