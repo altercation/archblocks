@@ -45,6 +45,8 @@ sgdisk -c ${PARTITION_EFI_BOOT}:"${LABEL_BOOT_EFI}" ${DRIVE}
 sgdisk -c ${PARTITION_CRYPT_SWAP}:"${LABEL_SWAP}" ${DRIVE}
 sgdisk -c ${PARTITION_CRYPT_ROOT}:"${LABEL_ROOT}" ${DRIVE}
 
+exit
+
 # format LUKS on root
 cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT}
 cryptsetup luksOpen ${DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}

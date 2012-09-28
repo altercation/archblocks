@@ -38,7 +38,7 @@ if $PRE_CHROOT; then # PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE
 LoadBlock WARN_impending_doom
 LoadEFIModules || true
 LoadBlock PREFLIGHT_default
-LoadBlock FILESYSTEM_gpt_lukspassphrase_ext4_root
+LoadBlock FILESYSTEM_gpt_lukspassphrase_ext4_root; exit
 FILESYSTEM_PRE_BASEINSTALL # make filesystem
 LoadBlock BASEINSTALL_pacstrap
 FILESYSTEM_POST_BASEINSTALL # write filesystem configs
