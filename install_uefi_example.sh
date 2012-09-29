@@ -100,7 +100,7 @@ setfont $FONT
 anoint && echo "ANOINT START"
 anoint query/warning
 
-echo "THIS IS A TEST"
+echo "THIS IS A TEST ${POSTSCRIPT}"
 if anoint; then echo "anoint returned true"; fi
 if basics; then echo "basics returned true"; fi
 if custom; then echo "custom returned true"; fi
