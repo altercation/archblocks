@@ -103,7 +103,7 @@ _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR
 #arch-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
 
 arch-prep () {
-_anykey "IN ARCH PREP"
+_anykey "IN ARCH PREP - check for ${MNT} and ${POSTSCRIPT}"
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
 _anykey "EXEC ARCH PREP"
 setfont $FONT
