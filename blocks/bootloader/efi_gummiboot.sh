@@ -11,7 +11,7 @@ EFI_SYSTEM_PARTITION="${EFI_SYSTEM_PARTITION:-/boot/efi}" # only if not yet set
 # $esp/EFI/BOOT/BOOTX64.EFI
 FAIL_TO_DEFAULT_EFI=${FAIL_TO_DEFAULT:-true} # only if not yet set
 
-_loadefimodules && EFI_MODE=true || EFI_MODE=false
+_load_efi_modules && EFI_MODE=true || EFI_MODE=false
 
 _installpkg wget efibootmgr gummiboot-efi
 install -Dm0644 /usr/lib/gummiboot/gummibootx64.efi /boot/efi/EFI/gummiboot/gummiboot.efi
