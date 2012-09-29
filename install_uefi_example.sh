@@ -77,9 +77,9 @@ makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg}; packer -S --no
 _chroot_postscript () { cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"; }
 _loadblock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; } 
 anoint () { if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@";
-elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@"; else [ -z "$@" ] && return false; fi; }
-basics () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return false; fi; }
-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return false; fi; }
+elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@"; else [ -z "$@" ] && return 1; fi; }
+basics () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return 1; fi; }
+custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return 1; fi; }
 
 
 
@@ -97,13 +97,13 @@ setfont $FONT
 
 
 # ANOINT (prep system prior to install; install base)
-anoint && echo "ANOINT START"
+anoint && echo "ANOINT START" || :
 anoint query/warning
 anoint filesystem/gpt_luks_passphrase_ext4_root
 anoint baseinstall/pacstrap
 
 # BASICS (configured in chroot)
-basics && echo "BASICS START"
+basics && echo "BASICS START" || :
 basics time/ntp
 basics daemons/default
 basics hostname/default
@@ -118,7 +118,7 @@ basics ramdisk/default
 basics bootloader/efi_gummiboot
 
 # CUSTOMIZE (still in chroot)
-custom && echo "CUSTOM START"
+custom && echo "CUSTOM START" || :
 custom desktop/xmonad
 custom apps/audio_basics
 custom apps/video_basics
