@@ -127,6 +127,7 @@ fi
 
 # BASICS (arch-configd in chroot)
 arch-config && echo "BASICS START" || true
+arch-config filesystem/gpt_luks_passphrase_ext4_root
 arch-config time/ntp
 arch-config daemons/default
 arch-config hostname/default
