@@ -103,7 +103,9 @@ _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR
 #arch-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
 
 arch-prep () {
+_anykey "IN ARCH PREP"
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
+_anykey "EXEC ARCH PREP"
 setfont $FONT
 $EFI_MODE && _load_efi_modules
 _warn
@@ -113,6 +115,8 @@ pacstrap ${MOUNT_PATH} base base-devel
 _filesystem_post_baseinstall
 _filesystem_pre_chroot
 _chroot_postscript
+else
+_anykey "SKIP ARCH PREP"
 fi
 }
 
@@ -169,4 +173,4 @@ PRIMARY_BOOTLOADER="$(echo "$PRIMARY_BOOTLOADER" | tr [:lower:] [:upper:])";
 
 arch-prep
 arch-config
-arch-customize
+#arch-customize
