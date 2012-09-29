@@ -55,7 +55,7 @@ DefaultIfUnset REMOTE https://raw.github.com/altercation/archblocks/master
 # check if initial (main) install script has been properly saved to local file
 [ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
 # rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
-#set -o errexit
+set -o errexit
 MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PRESCRIPT="${DIR/%\//}/$(basename ${0})"; # normalize prescript to full script path
@@ -77,9 +77,9 @@ makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg}; packer -S --no
 _chroot_postscript () { cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"; }
 _loadblock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; } 
 anoint () { if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@";
-elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@"; else return 1; fi; }
-basics () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else return 1; fi; }
-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else return 1; fi; }
+elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@"; else [ -z "$@" ] && return 1; fi; }
+basics () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return 1; fi; }
+custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return 1; fi; }
 
 
 
