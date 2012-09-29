@@ -76,7 +76,7 @@ wget "https://aur.archlinux.org/packages/${pkg}/${pkg}.tar.gz"; tar -xzvf ${pkg}
 makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg}; packer -S --noconfirm "$@"; fi; }
 _chroot_postscript () { cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"; }
 _loadblock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; } 
-anoint () { if [ ! -e "${POSTSCRIPT}" ] || [ ! -e "${MNT}${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@";
+anoint () { if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@";
 elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@"; else return 1; fi; }
 basics () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else return 1; fi; }
 custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else return 1; fi; }
