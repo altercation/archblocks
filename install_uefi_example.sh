@@ -50,12 +50,13 @@ DefaultIfUnset PRIMARY_BOOTLOADER UEFI # UEFI or BIOS
 DefaultIfUnset REMOTE https://raw.github.com/altercation/archblocks/master
 
 
+#set -o errexit
+
 # CLEAN THIS UP
 # PREFLIGHT
 # check if initial (main) install script has been properly saved to local file
 [ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
 # rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
-set -o errexit
 MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PRESCRIPT="${DIR/%\//}/$(basename ${0})"; # normalize prescript to full script path
@@ -76,10 +77,10 @@ wget "https://aur.archlinux.org/packages/${pkg}/${pkg}.tar.gz"; tar -xzvf ${pkg}
 makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg}; packer -S --noconfirm "$@"; fi; }
 _chroot_postscript () { cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"; }
 _loadblock () { FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; } 
-anoint () { if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@";
+arch-prep () { if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@";
 elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@"; else [ -z "$@" ] && return 1 || return 0; fi; }
-basics () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return 1 || return 0; fi; }
-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return 1 || return 0; fi; }
+arch-config () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return 1 || return 0; fi; }
+arch-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; else [ -z "$@" ] && return 1 || return 0; fi; }
 
 
 
@@ -97,13 +98,13 @@ setfont $FONT
 
 
 # ANOINT (prep system prior to install; install base)
-anoint && echo "ANOINT START" || true
-anoint query/warning
-anoint filesystem/gpt_luks_passphrase_ext4_root
-#anoint baseinstall/pacstrap
+arch-prep && echo "ANOINT START" || true
+arch-prep query/warning
+arch-prep filesystem/gpt_luks_passphrase_ext4_root
+#arch-prep baseinstall/pacstrap
 
 
-if anoint; then
+if arch-prep; then
 # makes filesystem (provided by FILESYSTEM block)
 _filesystem_pre_baseinstall
 
@@ -124,27 +125,27 @@ fi
 
 
 
-# BASICS (configured in chroot)
-basics && echo "BASICS START" || true
-basics time/ntp
-basics daemons/default
-basics hostname/default
-basics network/wired_wireless_minimal
-basics ramdisk/default
-basics audio/alsa
-basics video/intel
-basics power/acpi
-basics hardware/lenovo/thinkpad_x220
-basics kernel/default
-basics ramdisk/default
-basics bootloader/efi_gummiboot
+# BASICS (arch-configd in chroot)
+arch-config && echo "BASICS START" || true
+arch-config time/ntp
+arch-config daemons/default
+arch-config hostname/default
+arch-config network/wired_wireless_minimal
+arch-config ramdisk/default
+arch-config audio/alsa
+arch-config video/intel
+arch-config power/acpi
+arch-config hardware/lenovo/thinkpad_x220
+arch-config kernel/default
+arch-config ramdisk/default
+arch-config bootloader/efi_gummiboot
 
 # CUSTOMIZE (still in chroot)
-custom && echo "CUSTOM START" || true
-custom desktop/xmonad
-custom apps/audio_basics
-custom apps/video_basics
-custom apps/cli_utils
+arch-custom && echo "CUSTOM START" || true
+arch-custom desktop/xmonad
+arch-custom apps/audio_arch-config
+arch-custom apps/video_arch-config
+arch-custom apps/cli_utils
 
 # FINISHED
 #reboot
