@@ -13,3 +13,6 @@ FILESYSTEM_POST_BASEINSTALL
 
 # unmount efi boot part (provided by FILESYSTEM block)
 FILESYSTEM_PRE_CHROOT
+
+# arch-chroot and proceed with script
+_chroot_postscript
