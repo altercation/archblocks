@@ -89,4 +89,6 @@ if _filesystem_post_chroot;
 then _anykey "REMOUNTED EFI PARTITION";
 else _anykey "FAILED TO REMOUNT EFI PARTITION"; exit 1;
 fi
+else
+_anykey "FAILED arch-config CHECK"
 fi
