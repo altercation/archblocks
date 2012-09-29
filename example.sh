@@ -14,7 +14,7 @@
 
 PRIMARY_BOOTLOADER=EFI
 HOSTNAME=tau
-SYSTEMTYPE=thinkpad_x220
+HARDWARE=thinkpad_x220
 USERNAME=es
 USERSHELL=/bin/bash
 FONT=Lat2-Terminus16
@@ -25,30 +25,44 @@ MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
 HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
 KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks
 DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
-REMOTE=https://raw.github.com/altercation/archblocks/newstructure
+REMOTE=https://raw.github.com/altercation/archblocks/newstructure #e.g. file://.
 
+# CONFIG
+TIMESET=NTP
+FILESYSTEM=gpt_lukspassphrase_ext4_root
+BOOTLOADER=efi_gummiboot
+NETWORK=wired_wireless_minimal
+#DAEMONS=default
+#HOSTNAME=default
+#RAMDISK=default
+AUDIO=alsa
+VIDEO=intel
+POWER=acpi
+#KERNEL=default #unneeded?
+POSTFLIGHT="sudo_default create_user"
+DESKTOP=xmonad_minimal
+APPSETS=cli_utils edu_utils vim_core mutt_core
+BACKPAC=
 
 # eval "$(curl -fsL \"${REMOTE}/lib/functions.sh\")"; # LOAD HELPER FUNCS
-
-
+# EVERYTHING BELOW THIS LINE LOADED BY ABOVE COMMAND
 # ------------------------------------------------------------------------
 
-DefaultIfUnset () { eval "${1}=\"${!1:-${2}}\""; }
-#DefaultIfUnset USERNAME user
-#DefaultIfUnset SYSTEMTYPE unknown
-DefaultIfUnset HOSTNAME archlinux
-DefaultIfUnset USERSHELL /bin/bash
-DefaultIfUnset FONT Lat2-Terminus16
-DefaultIfUnset LANGUAGE en_US.UTF-8
-DefaultIfUnset KEYMAP us
-DefaultIfUnset TIMEZONE US/Pacific
-DefaultIfUnset MODULES "dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
-DefaultIfUnset HOOKS "base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
-DefaultIfUnset KERNEL_PARAMS "quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks
-DefaultIfUnset DRIVE /dev/sda # this overrides any default value set in FILESYSTEM block
-DefaultIfUnset PRIMARY_BOOTLOADER UEFI # UEFI or BIOS
-DefaultIfUnset REMOTE https://raw.github.com/altercation/archblocks/master
-
+_default () { eval "${1}=\"${!1:-${2}}\""; } # assign value only if unset
+#_default USERNAME user
+#_default SYSTEMTYPE unknown
+_default HOSTNAME archlinux
+_default USERSHELL /bin/bash
+_default FONT Lat2-Terminus16
+_default LANGUAGE en_US.UTF-8
+_default KEYMAP us
+_default TIMEZONE US/Pacific
+_default MODULES "dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
+_default HOOKS "base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
+_default KERNEL_PARAMS "quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks
+_default DRIVE /dev/sda # this overrides any default value set in FILESYSTEM block
+_default PRIMARY_BOOTLOADER UEFI # UEFI or BIOS
+_default REMOTE https://raw.github.com/altercation/archblocks/master
 
 #set -o errexit
 
@@ -76,11 +90,70 @@ for req in wget git jshon; do command -v $req >/dev/null 2>&1 || _installpkg $re
 wget "https://aur.archlinux.org/packages/${pkg}/${pkg}.tar.gz"; tar -xzvf ${pkg}.tar.gz; cd ${pkg};
 makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg}; packer -S --noconfirm "$@"; fi; }
 _chroot_postscript () { cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"; }
+
+
+#TODO: make loadblock a loop over each argument passed to it
 _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; } 
-arch-prep () { if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME";
-elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
-arch-config () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
-arch-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
+
+
+# should add a first-run (first call to function for each phase) check and initialization phase
+#arch-prep () { if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME";
+#elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
+#arch-config () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
+#arch-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
+
+arch-prep () {
+if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
+setfont $FONT
+$EFI_MODE && _load_efi_modules
+_warn
+_loadblock "filesystem/${FILESYSTEM}"
+_filesystem_pre_baseinstall
+pacstrap ${MOUNT_PATH} base base-devel
+_filesystem_post_baseinstall
+_filesystem_pre_chroot
+_chroot_postscript
+fi
+}
+
+arch-config () {
+if [ -e "${POSTSCRIPT}" ]; then
+setfont $FONT
+$EFI_MODE && _load_efi_modules
+_loadblock filesystem/gpt_luks_passphrase_ext4_root
+_filesystem_post_chroot
+_loadblock time/${TIME}
+
+# HOSTNAME
+echo ${HOSTNAME} > /etc/hostname; sed -i "s/localhost\.localdomain/${HOSTNAME}/g" /etc/hosts
+
+# TIME
+ln -s /usr/share/zoneinfo/${TIMEZONE} /etc/localtime; echo ${TIMEZONE} >> /etc/timezone
+hwclock --systohc --utc # set hardware clock
+_installpkg ntp
+sed -i "/^DAEMONS/ s/hwclock /!hwclock @ntpd /" /etc/rc.conf
+
+# DAEMONS
+# INIT/SYSTEMD
+
+_loadblock network/${NETWORK}
+_loadblock audio/${AUDIO}
+_loadblock video/${VIDEO}
+_loadblock power/${POWER}
+_loadblock kernel/${KERNEL}
+
+# RAMDISK
+# set default values if not set from variables in the config file
+MODULES="${MODULES:-}"
+HOOKS="${HOOKS:-base udev autodetect pata scsi sata filesystems usbinput fsck}"
+cp /etc/mkinitcpio.conf /etc/mkinitcpio.orig
+sed -i "s/^MODULES.*$/MODULES=\"${MODULES}\"/" /etc/mkinitcpio.conf
+sed -i "s/^HOOKS.*$/HOOKS=\"${HOOKS}\"/" /etc/mkinitcpio.conf
+mkinitcpio -p linux
+
+_loadblock bootloader/efi_gummiboot
+fi
+}
 
 
 
@@ -91,62 +164,9 @@ if ls -l /sys/firmware/efi/vars/ >/dev/null; then return 0; else return 1; fi; }
 PRIMARY_BOOTLOADER="$(echo "$PRIMARY_BOOTLOADER" | tr [:lower:] [:upper:])";
 [ "${PRIMARY_BOOTLOADER#U}" == "EFI" ] && _load_efi_modules && EFI_MODE=true || EFI_MODE=false
 
-# set the preferred font
-setfont $FONT
 
 # ------------------------------------------------------------------------
 
-
-# ANOINT (prep system prior to install; install base)
-arch-prep && echo "ANOINT START" || true
-arch-prep query/warning
-arch-prep filesystem/gpt_luks_passphrase_ext4_root
-#arch-prep baseinstall/pacstrap
-
-
-if arch-prep; then
-# makes filesystem (provided by FILESYSTEM block)
-_filesystem_pre_baseinstall
-
-# standard pacstrap helper script
-pacstrap ${MOUNT_PATH} base base-devel
-
-# write filesystem configs (provided by FILESYSTEM block)
-_filesystem_post_baseinstall
-
-# unmount efi boot part (provided by FILESYSTEM block)
-_filesystem_pre_chroot
-
-# arch-chroot and proceed with script
-_chroot_postscript
-else
-:
-fi
-
-
-
-# BASICS (arch-configd in chroot)
-arch-config && echo "BASICS START" || true
-arch-config filesystem/gpt_luks_passphrase_ext4_root
-arch-config time/ntp
-arch-config daemons/default
-arch-config hostname/default
-arch-config network/wired_wireless_minimal
-arch-config ramdisk/default
-arch-config audio/alsa
-arch-config video/intel
-arch-config power/acpi
-arch-config hardware/lenovo/thinkpad_x220
-arch-config kernel/default
-arch-config ramdisk/default
-arch-config bootloader/efi_gummiboot
-
-# CUSTOMIZE (still in chroot)
-arch-custom && echo "CUSTOM START" || true
-arch-custom desktop/xmonad
-arch-custom apps/audio_arch-config
-arch-custom apps/video_arch-config
-arch-custom apps/cli_utils
-
-# FINISHED
-#reboot
+arch-prep
+arch-config
+arch-customize
