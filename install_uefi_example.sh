@@ -68,6 +68,19 @@ basics () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadbloc
 custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; fi; }
 
 
+# CLEAN THIS UP
+# PREFLIGHT
+# check if initial (main) install script has been properly saved to local file
+[ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
+# rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
+set -o errexit
+MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
+DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PRESCRIPT="${DIR/%\//}/$(basename ${0})"; # normalize prescript to full script path
+#PRESCRIPT="${0}"
+DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+
 
 # load efivars (or confirm they've loaded already) and set EFIMODE for later use by bootloader
 _load_efi_modules () {
