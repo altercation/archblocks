@@ -100,10 +100,10 @@ setfont $FONT
 anoint && echo "ANOINT START" || true
 anoint query/warning
 anoint filesystem/gpt_luks_passphrase_ext4_root
-anoint baseinstall/pacstrap
+#anoint baseinstall/pacstrap
 
 
-if anoint: then
+if anoint; then
 # makes filesystem (provided by FILESYSTEM block)
 _filesystem_pre_baseinstall
 
