@@ -97,13 +97,13 @@ setfont $FONT
 
 
 # ANOINT (prep system prior to install; install base)
-anoint && echo "ANOINT START" || :
+anoint && echo "ANOINT START" || true
 anoint query/warning
 anoint filesystem/gpt_luks_passphrase_ext4_root
 anoint baseinstall/pacstrap
 
 # BASICS (configured in chroot)
-basics && echo "BASICS START" || :
+basics && echo "BASICS START" || true
 basics time/ntp
 basics daemons/default
 basics hostname/default
@@ -118,7 +118,7 @@ basics ramdisk/default
 basics bootloader/efi_gummiboot
 
 # CUSTOMIZE (still in chroot)
-custom && echo "CUSTOM START" || :
+custom && echo "CUSTOM START" || true
 custom desktop/xmonad
 custom apps/audio_basics
 custom apps/video_basics
