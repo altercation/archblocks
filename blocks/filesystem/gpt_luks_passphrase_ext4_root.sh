@@ -17,7 +17,7 @@ EFI_SYSTEM_PARTITION=/boot/efi
 # KERNEL_PARAMS used by BOOTLOADER
 KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
 
-FILESYSTEM_PRE_BASEINSTALL () {
+_filesystem_pre_baseinstall () {
 # Here we create three partitions:
 # 1. efi and /boot (one partition does double duty)
 # 2. swap
@@ -45,8 +45,6 @@ sgdisk -c ${PARTITION_EFI_BOOT}:"${LABEL_BOOT_EFI}" ${DRIVE}
 sgdisk -c ${PARTITION_CRYPT_SWAP}:"${LABEL_SWAP}" ${DRIVE}
 sgdisk -c ${PARTITION_CRYPT_ROOT}:"${LABEL_ROOT}" ${DRIVE}
 
-exit
-
 # format LUKS on root
 cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT}
 cryptsetup luksOpen ${DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}
@@ -62,7 +60,7 @@ mkdir -p ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}
 mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}
 }
 
-FILESYSTEM_POST_BASEINSTALL () {
+_filesystem_post_baseinstall () {
 # write to crypttab
 # note: only /dev/disk/by-partuuid, /dev/disk/by-partlabel and
 # /dev/sda2 formats work here
@@ -83,7 +81,7 @@ tmpfs						/tmp		tmpfs	nodev,nosuid				0	0
 FSTAB_EOF
 }
 
-FILESYSTEM_PRE_CHROOT () { umount ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}; }
-FILESYSTEM_POST_CHROOT () { LoadEFIModules || true; mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1; }
+_filesystem_pre_chroot () { umount ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}; }
+_filesystem_post_chroot () { mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1; }
 
-
+basics && _filesystem_post_chroot
