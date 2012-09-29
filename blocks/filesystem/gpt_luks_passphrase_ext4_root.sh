@@ -84,4 +84,4 @@ FSTAB_EOF
 _filesystem_pre_chroot () { umount ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}; }
 _filesystem_post_chroot () { mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1; }
 
-basics && _filesystem_post_chroot || true
+if basics then; _filesystem_post_chroot || _anykey "FAILED TO REMOUNT EFI PARTITION"; fi
