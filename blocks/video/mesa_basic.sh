@@ -1,3 +1,3 @@
 # video
 # ------------------------------------------------------------------------
-InstallPackage base-devel mesa mesa-demos # linux-headers
+_installpkg base-devel mesa mesa-demos # linux-headers

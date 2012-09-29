@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------
 # NETWORK
 # ------------------------------------------------------------------------
-InstallPackage iw wpa_supplicant wpa_actiond
-AddToList net-auto-wireless DAEMONS /etc/rc.conf
+_installpkg iw wpa_supplicant wpa_actiond
+_addtolist net-auto-wireless DAEMONS /etc/rc.conf

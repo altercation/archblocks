@@ -13,7 +13,7 @@ FAIL_TO_DEFAULT_EFI=${FAIL_TO_DEFAULT:-true} # only if not yet set
 
 LoadEFIModules && EFI_MODE=true || EFI_MODE=false
 
-InstallPackage wget efibootmgr gummiboot-efi
+_installpkg wget efibootmgr gummiboot-efi
 install -Dm0644 /usr/lib/gummiboot/gummibootx64.efi /boot/efi/EFI/gummiboot/gummiboot.efi
 
 if $EFI_MODE; then

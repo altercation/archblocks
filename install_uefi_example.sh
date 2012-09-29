@@ -71,7 +71,7 @@ _installpkg () { pacman -S --noconfirm "$@"; }
 _installaur () {
 if command -v packer >/dev/null 2>&1; then packer -S --noconfirm "$@";
 else pkg=packer; orig="$(pwd)"; mkdir -p /tmp/${pkg}; cd /tmp/${pkg};
-for req in wget git jshon; do command -v $req >/dev/null 2>&1 || InstallPackage $req; done
+for req in wget git jshon; do command -v $req >/dev/null 2>&1 || _installpkg $req; done
 wget "https://aur.archlinux.org/packages/${pkg}/${pkg}.tar.gz"; tar -xzvf ${pkg}.tar.gz; cd ${pkg};
 makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg}; packer -S --noconfirm "$@"; fi; }
 _chroot_postscript () { cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"; }

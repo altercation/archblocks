@@ -6,7 +6,7 @@
 
 # sudo
 # ------------------------------------------------------------------------
-InstallPackage sudo
+_installpkg sudo
 cp /etc/sudoers /tmp/sudoers.edit
 sed -i "s/#\s*\(%wheel\s*ALL=(ALL)\s*ALL.*$\)/\1/" /tmp/sudoers.edit
 sed -i "s/#\s*\(%sudo\s*ALL=(ALL)\s*ALL.*$\)/\1/" /tmp/sudoers.edit

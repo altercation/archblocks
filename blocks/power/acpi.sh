@@ -1,6 +1,6 @@
 # power
 # ------------------------------------------------------------------------
-InstallPackage acpi acpid cpupower powertop
+_installpkg acpi acpid cpupower powertop
 #sed -i "/^DAEMONS/ s/)/ @acpid)/" /etc/rc.conf
 #sed -i "/^MODULES/ s/)/ acpi-cpufreq cpufreq_ondemand cpufreq_powersave coretemp)/" /etc/rc.conf
 # following requires my acpi handler script
