@@ -55,7 +55,7 @@ DefaultIfUnset REMOTE https://raw.github.com/altercation/archblocks/master
 # check if initial (main) install script has been properly saved to local file
 [ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
 # rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
-set -o errexit
+#set -o errexit
 MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PRESCRIPT="${DIR/%\//}/$(basename ${0})"; # normalize prescript to full script path
@@ -99,11 +99,6 @@ setfont $FONT
 # ANOINT (prep system prior to install; install base)
 anoint && echo "ANOINT START"
 anoint query/warning
-
-echo "THIS IS A TEST ${POSTSCRIPT}"
-if anoint; then echo "anoint returned true"; fi
-if basics; then echo "basics returned true"; fi
-if custom; then echo "custom returned true"; fi
 anoint filesystem/gpt_luks_passphrase_ext4_root
 anoint baseinstall/pacstrap
 
