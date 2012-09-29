@@ -29,7 +29,7 @@ REMOTE=https://raw.github.com/altercation/archblocks/newstructure #e.g. file://.
 
 # CONFIG
 TIMESET=NTP
-FILESYSTEM=gpt_lukspassphrase_ext4_root
+FILESYSTEM=gpt_luks_passphrase_ext4_root
 BOOTLOADER=efi_gummiboot
 NETWORK=wired_wireless_minimal
 #DAEMONS=default
@@ -64,7 +64,7 @@ _default DRIVE /dev/sda # this overrides any default value set in FILESYSTEM blo
 _default PRIMARY_BOOTLOADER UEFI # UEFI or BIOS
 _default REMOTE https://raw.github.com/altercation/archblocks/master
 
-#set -o errexit
+set -o errexit
 
 # CLEAN THIS UP
 # PREFLIGHT
