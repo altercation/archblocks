@@ -83,12 +83,12 @@ custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadbloc
 
 
 
-# load efivars (or confirm they've loaded already) and set EFIMODE for later use by bootloader
+# load efivars (or confirm they've loaded already) and set EFI_MODE for later use by bootloader
 _load_efi_modules () {
 ls -l /sys/firmware/efi/vars/ &>/dev/null && return 1 || true; modprobe efivars || true;
 if ls -l /sys/firmware/efi/vars/ >/dev/null; then return 0; else return 1; fi; }
 PRIMARY_BOOTLOADER="$(echo "$PRIMARY_BOOTLOADER" | tr [:lower:] [:upper:])";
-[ "${PRIMARY_BOOTLOADER#U}" == "EFI" ] && _load_efi_modules && EFIMODE=true || EFIMODE=false
+[ "${PRIMARY_BOOTLOADER#U}" == "EFI" ] && _load_efi_modules && EFI_MODE=true || EFI_MODE=false
 
 # set the preferred font
 setfont $FONT
@@ -115,7 +115,7 @@ basics power/acpi
 basics hardware/lenovo/thinkpad_x220
 basics kernel/default
 basics ramdisk/default
-basics bootloader/efi/gummiboot
+basics bootloader/efi_gummiboot
 
 # CUSTOMIZE (still in chroot)
 custom && echo "CUSTOM START"
