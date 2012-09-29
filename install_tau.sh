@@ -14,6 +14,12 @@
 #
 # curl -sfL http://git.io/rQx7Xw > install.sh; sh install.sh
 
+
+# CONFIG -----------------------------------------------------------------
+
+PRIMARY_BOOTLOADER=UEFI/BIOS
+
+
 # CONFIG -----------------------------------------------------------------
 REMOTE=https://raw.github.com/altercation/archblocks/master
 HOSTNAME=tau
@@ -35,6 +41,33 @@ LoadFailCheck () { exit 1; }; [ -f "$(dirname $0)/blocks/${_LIB}" ] \
 eval "$(curl -fsL ${URL})"; LoadFailCheck
 
 if $PRE_CHROOT; then # PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
+
+preflight warning/default
+# bootloader is ONLY functions
+bootloader efi/gummiboot # need to load this here to know if we need efi?
+# filesystem is ONLY functions
+filesystem gpt/encrypted/single_partition
+
+#filesystem_pre_baseinstall
+
+# THIS HAPPENS IN BASEINSTALL FUNCTION  filesystem_pre_baseinstall
+blockload baseinstall/default
+# THIS HAPPENS IN BASEINSTALL FUNCTION  filesystem_post_baseinstall
+
+blockload filesystem/gpt/encrypted/single_partition function_name
+
+OR
+
+
+install
+configure
+integrate
+customize
+
+
+# could skip if/then check on chroot if special functions also check...
+
+
 LoadBlock WARN_impending_doom
 LoadEFIModules || true
 LoadBlock PREFLIGHT_default
