@@ -102,6 +102,28 @@ anoint query/warning
 anoint filesystem/gpt_luks_passphrase_ext4_root
 anoint baseinstall/pacstrap
 
+
+if anoint: then
+# makes filesystem (provided by FILESYSTEM block)
+_filesystem_pre_baseinstall
+
+# standard pacstrap helper script
+pacstrap ${MOUNT_PATH} base base-devel
+
+# write filesystem configs (provided by FILESYSTEM block)
+_filesystem_post_baseinstall
+
+# unmount efi boot part (provided by FILESYSTEM block)
+_filesystem_pre_chroot
+
+# arch-chroot and proceed with script
+_chroot_postscript
+else
+:
+fi
+
+
+
 # BASICS (configured in chroot)
 basics && echo "BASICS START" || true
 basics time/ntp
