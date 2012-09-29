@@ -48,6 +48,20 @@ DefaultIfUnset KERNEL_PARAMS "quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER bl
 DefaultIfUnset DRIVE /dev/sda # this overrides any default value set in FILESYSTEM block
 DefaultIfUnset PRIMARY_BOOTLOADER UEFI # UEFI or BIOS
 DefaultIfUnset REMOTE https://raw.github.com/altercation/archblocks/master
+
+
+# CLEAN THIS UP
+# PREFLIGHT
+# check if initial (main) install script has been properly saved to local file
+[ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
+# rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
+set -o errexit
+MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
+DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PRESCRIPT="${DIR/%\//}/$(basename ${0})"; # normalize prescript to full script path
+#PRESCRIPT="${0}"
+DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 _setvalue () { valuename="$1" newvalue="$2" filepath="$3"; sed -i "s+^#\?\(${valuename}\)=.*$+\1=${newvalue}+" "${filepath}"; }
 _commentoutvalue () { valuename="$1" filepath="$2"; sed -i "s/^\(${valuename}.*\)$/#\1/" "${filepath}"; }
 _uncommentvalue () { valuename="$1" filepath="$2"; sed -i "s/^#\(${valuename}.*\)$/\1/" "${filepath}"; }
@@ -66,19 +80,6 @@ anoint () { if [ ! -e "${POSTSCRIPT}" ] || [ ! -e "${MNT}${POSTSCRIPT}" ]; then 
 elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@"; fi; }
 basics () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; fi; }
 custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@"; fi; }
-
-
-# CLEAN THIS UP
-# PREFLIGHT
-# check if initial (main) install script has been properly saved to local file
-[ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
-# rm -rf "${TMP}"; mkdir -p "${TMP}"; cp "${0}" "${PRESCRIPT}";
-set -o errexit
-MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
-DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PRESCRIPT="${DIR/%\//}/$(basename ${0})"; # normalize prescript to full script path
-#PRESCRIPT="${0}"
-DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 
