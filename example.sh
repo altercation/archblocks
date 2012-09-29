@@ -90,6 +90,7 @@ for req in wget git jshon; do command -v $req >/dev/null 2>&1 || _installpkg $re
 wget "https://aur.archlinux.org/packages/${pkg}/${pkg}.tar.gz"; tar -xzvf ${pkg}.tar.gz; cd ${pkg};
 makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg}; packer -S --noconfirm "$@"; fi; }
 _chroot_postscript () { cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"; }
+_warn () { _anykey "WARNING: This script will permanently erase the install drive."; }
 
 
 #TODO: make loadblock a loop over each argument passed to it
