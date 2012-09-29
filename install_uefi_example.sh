@@ -101,9 +101,9 @@ anoint && echo "ANOINT START"
 anoint query/warning
 
 echo "THIS IS A TEST"
-if anoint; then echo "anoint returned true"
-if basics; then echo "basics returned true"
-if custom; then echo "custom returned true"
+if anoint; then echo "anoint returned true"; fi
+if basics; then echo "basics returned true"; fi
+if custom; then echo "custom returned true"; fi
 anoint filesystem/gpt_luks_passphrase_ext4_root
 anoint baseinstall/pacstrap
 
