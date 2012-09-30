@@ -177,7 +177,7 @@ fi
 
 FILE="${_block/%.sh/}.sh";
 
-if isurl; then URL="${FILE}"; else
+if $isurl; then URL="${FILE}"; else
     [ -f "${DIR/%\//}/${FILE}" ] \
     && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}";
     eval "$(curl -fsL ${URL})";
