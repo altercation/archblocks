@@ -6,8 +6,6 @@
 
 # PREFLIGHT --------------------------------------------------------------
 
-_anykey "DEBUG: CORE SCRIPT IS $BASH_SOURCE[0] -- $PWD"
-
 # buckle up
 set -o errexit
 
@@ -16,11 +14,6 @@ set -o errexit
 
 # set mount point, temp directory, script values
 MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
-DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-
-# normalize pre-chroot script name to full script path (currently not critical)
-PRESCRIPT="${DIR/%\//}/$(basename ${0})";
 
 # DEFAULT VALUES ---------------------------------------------------------
 

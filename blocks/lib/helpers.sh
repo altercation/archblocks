@@ -149,7 +149,7 @@ fi;
 # CHROOT POSTSCRIPT ------------------------------------------------------
 _chroot_postscript ()
 {
-cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}";
+cp "${0}" "${MNT}${POSTSCRIPT}";
 chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}";
 }
 
@@ -217,5 +217,3 @@ _filesystem_post_chroot () { :; }
 
 
 #TODO: should add a first-run (first call to function for each phase) check and initialization phase
-
-_anykey "DEBUG: HELPER SCRIPT IS $BASH_SOURCE[0] -- $PWD"
