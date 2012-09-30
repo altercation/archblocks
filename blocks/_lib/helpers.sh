@@ -7,13 +7,15 @@
 # DEFAULTVALUE -----------------------------------------------------------
 _defaultvalue ()
 {
-# Assign value to a variable in the install script only if unset or empty.
+# Assign value to a variable in the install script only if unset.
+# Note that *empty* variables that have purposefully been set as empty
+# are not changed.
 #
 # usage:
 #
 # _defaultvalue VARNAME "value if VARNAME is currently unset or empty"
 #
-eval "${1}=\"${!1:-${2}}\"";
+eval "${1}=\"${!1-${2}}\"";
 }
 
 # SETVALUE ---------------------------------------------------------------
@@ -195,6 +197,10 @@ _load_efi_modules ()
 modprobe efivars || true;
 ls -l /sys/firmware/efi/vars/ &>/dev/null && return 0 || return 1;
 }
+
+# MISC FUNCTIONS ---------------------------------------------------------
+
+_setfont { setfont $FONT; }
 
 # NULL FUNCTIONS (OVERRIDDEN BY EPONYMOUS BLOCKS)-------------------------
 _filesystem_pre_baseinstall () { :; }

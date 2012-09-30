@@ -13,7 +13,7 @@
 
 # SCRIPT PREP ------------------------------------------------------------
 
-REMOTE=https://raw.github.com/altercation/archblocks/newstructure #e.g. file://.
+REMOTE=https://raw.github.com/altercation/archblocks/newstructure
 
 # CONFIG -----------------------------------------------------------------
 
@@ -21,29 +21,29 @@ HOSTNAME=tau
 USERNAME=es
 USERSHELL=/bin/bash
 FONT=Lat2-Terminus16
-LANGUAGE=en_US.UTF-8
+FONT_MAP=
+LANGUAGE="en_US.UTF-8"
 KEYMAP=us
 TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
 HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
 KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks (this gets added to)
+INSTALL_DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
 #AURHELPER=packer # default is packer, any alternate must have pacman syntax parity
-#PRIMARY_BOOTLOADER=EFI
 
 # BLOCKS -----------------------------------------------------------------
 
-BLOCK_HARDWARE=thinkpad_x220
+HARDWARE=thinkpad_x220
 TIME=common/time_ntp_utc # ntp_localtime
-FILESYSTEM=filesystem/gpt_luks_passphrase_ext4_root
-DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
+FILESYSTEM=filesystem/gpt_luks_passphrase_ext4
 BOOTLOADER=bootloader/efi_gummiboot
 NETWORK=network/wired_wireless_minimal
 AUDIO=common/audio_alsa
 VIDEO=common/video_intel
 POWER=common/power_acpi
 DESKTOP=desktop/xmonad_minimal
-APPSETS="cli_utils edu_utils vim_core mutt_core"
-POSTFLIGHT="sudo_default create_user"
+APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core mutt_core"
+POSTFLIGHT="common/sudo_default common/create_user"
 
 # following a block or a standard backpac file? probably just file
 BACKPAC=
