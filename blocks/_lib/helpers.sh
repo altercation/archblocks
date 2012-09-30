@@ -159,7 +159,7 @@ chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}";
 _initialwarning ()
 {
 _anykey "WARNING: This script will permanently erase the install drive.";
-read -t 1 -n 10000 discard 
+sleep 2
 _anykey "CONFIRM: Please confirm again to proceed. CTRL-c to exit."
 
 }
