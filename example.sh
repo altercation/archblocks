@@ -110,6 +110,11 @@ makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg}; packer -S --no
 _chroot_postscript () { cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"; }
 _warn () { _anykey "WARNING: This script will permanently erase the install drive."; }
 
+_filesystem_pre_baseinstall () { :; }
+_filesystem_post_baseinstall () { :; }
+_filesystem_pre_chroot () { :; }
+_filesystem_post_chroot () { :; }
+
 
 #TODO: make loadblock a loop over each argument passed to it
 _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; } 
@@ -137,6 +142,10 @@ _chroot_postscript
 else
 _anykey "SKIP ARCH PREP"
 fi
+}
+arch-prep () {
+echo ">>>>>>>>>>>>>>>> 1"
+_chroot_postscript
 }
 
 arch-config () {
@@ -177,6 +186,11 @@ mkinitcpio -p linux
 _loadblock bootloader/efi_gummiboot
 fi
 }
+arch-config () {
+if [ -e "${POSTSCRIPT}" ]; then
+echo ">>>>>>>>>>>>>>>> 2"
+fi
+}
 
 
 
@@ -184,8 +198,8 @@ fi
 _load_efi_modules () {
 ls -l /sys/firmware/efi/vars/ &>/dev/null && return 1 || true; modprobe efivars || true;
 if ls -l /sys/firmware/efi/vars/ >/dev/null; then return 0; else return 1; fi; }
-PRIMARY_BOOTLOADER="$(echo "$PRIMARY_BOOTLOADER" | tr [:lower:] [:upper:])";
-[ "${PRIMARY_BOOTLOADER#U}" == "EFI" ] && _load_efi_modules && EFI_MODE=true || EFI_MODE=false
+#PRIMARY_BOOTLOADER="$(echo "$PRIMARY_BOOTLOADER" | tr [:lower:] [:upper:])";
+#[ "${PRIMARY_BOOTLOADER#U}" == "EFI" ] && _load_efi_modules && EFI_MODE=true || EFI_MODE=false
 
 
 # ------------------------------------------------------------------------
