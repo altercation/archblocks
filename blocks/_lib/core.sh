@@ -16,7 +16,7 @@ set -o errexit
 MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
 
 # get chroot status
-[ ! -e "${POSTSCRIPT}" ] && INCHROOT=true || INCHROOT=false
+[ -e "${POSTSCRIPT}" ] && INCHROOT=true || INCHROOT=false
 
 # DEFAULT REPOSITORY URL -------------------------------------------------
 # (probably not useful here if initialization script has already used it,
