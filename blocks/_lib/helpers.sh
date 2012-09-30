@@ -200,7 +200,7 @@ ls -l /sys/firmware/efi/vars/ &>/dev/null && return 0 || return 1;
 
 # MISC FUNCTIONS ---------------------------------------------------------
 
-_setfont { setfont $FONT; }
+_setfont () { setfont $FONT; }
 
 # NULL FUNCTIONS (OVERRIDDEN BY EPONYMOUS BLOCKS)-------------------------
 _filesystem_pre_baseinstall () { :; }
