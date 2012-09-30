@@ -12,7 +12,7 @@
 
 # RESPOSITORY ------------------------------------------------------------
 
-REMOTE=https://raw.github.com/altercation/archblocks/master
+REMOTE=https://raw.github.com/altercation/archblocks/newstructure
 
 # CONFIG -----------------------------------------------------------------
 
@@ -51,5 +51,5 @@ BACKPAC=
 # EXECUTE ----------------------------------------------------------------
 
 #eval "$(curl -fsL \"${REMOTE}/blocks/lib/helpers.sh\")"
-. <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh")
-_loadblock "_lib/core"
+. <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh"); _loadblock "_lib/core"
+
