@@ -169,11 +169,8 @@ for _block in "$@"; do
 
 isurl=false ispath=false;
 
-if [ $(expr index "$_block" "://") -gt 0 ]; then
-    isurl=true
-else
-    [ $(expr index "$_block" "/") -eq 1 ] && isrootpath=true
-fi
+if [ $(expr index "$_block" "://") -gt 0 ]; then isurl=true
+elif [ $(expr index "$_block" "/") -eq 1 ]; then isrootpath=true; fi
 
 FILE="${_block/%.sh/}.sh";
 
