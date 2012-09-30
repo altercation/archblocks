@@ -57,15 +57,15 @@ _defaultvalue DRIVE /dev/sda # this overrides any default value set in FILESYSTE
 _defaultvalue RAMDISK common/ramdisk_default
 _defaultvalue BOOTLOADER bootloader/bios_grub
 _defaultvalue NETWORK network/wired_wireless_default
+_defaultvalue XORG xorg/default.sh
 _defaultvalue AUDIO ""
 _defaultvalue VIDEO ""
 _defaultvalue POWER ""
 _defaultvalue DESKTOP ""
-_defaultvalue POSTFLIGHT "common/sudo_default common/create_user"
+_defaultvalue POSTFLIGHT "common/postflight_rootpass common/postflight_sudouser"
 _defaultvalue APPSETS ""
 
 # ARCH PREP & SYSTEM INSTALL (PRE CHROOT) --------------------------------
-#if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
 if ! $INCHROOT; then
 _initialwarning                 # WARN USER OF IMPENDING DOOM
 _setfont                        # SET FONT FOR PLEASANT INSTALL EXPERIENCE
@@ -79,9 +79,7 @@ _chroot_postscript              # CHROOT AND CONTINUE EXECUTION
 fi
 
 # ARCH CONFIG (POST CHROOT) ----------------------------------------------
-#if [ -e "${POSTSCRIPT}" ]; then
 if $INCHROOT; then
-
 _load_efi_modules || true       # ATTEMPT TO RELOAD EVIVARS, EVEN IF NOT USING EFI (REQUIRED)
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
 _filesystem_post_chroot         # FILESYSTEM POST-CHROOT CONFIGURATION
@@ -97,5 +95,9 @@ _loadblock "${POWER}"           # POWER
 #_loadblock "${KERNEL}"         # KERNEL
 _loadblock "${RAMDISK}"         # RAMDISK
 _loadblock "${BOOTLOADER}"      # BOOTLOADER
+_loadblock "${XORG}"            # XORG
+_loadblock "${DESKTOP}"         # DESKTOP/WM/ETC
+_loadblock "${POSTFLIGHT}"      # COMMON POST INSTALL ROUTINES
+_loadblock "${APPSETS}"         # COMMON APPLICATION/UTILITY SETS
 fi
 

@@ -8,12 +8,11 @@
 # INSTRUCTIONS -----------------------------------------------------------
 
 # boot into Arch Install media and run (for this script only):
-#
-# curl -sfL https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; bash install.sh
+# curl https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; bash install.sh
 
-# SCRIPT PREP ------------------------------------------------------------
+# RESPOSITORY ------------------------------------------------------------
 
-REMOTE=https://raw.github.com/altercation/archblocks/newstructure
+REMOTE=https://raw.github.com/altercation/archblocks/master
 
 # CONFIG -----------------------------------------------------------------
 
@@ -41,9 +40,10 @@ NETWORK=network/wired_wireless_minimal
 AUDIO=common/audio_alsa
 VIDEO=common/video_intel
 POWER=common/power_acpi
+XORG=xorg/default.sh
 DESKTOP=desktop/xmonad_minimal
-APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core mutt_core"
 POSTFLIGHT="common/sudo_default common/create_user"
+APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core"
 
 # following a block or a standard backpac file? probably just file
 BACKPAC=
