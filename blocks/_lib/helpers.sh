@@ -169,23 +169,18 @@ _loadblock ()
 {
 [ -z "$@" ] && return
 for _block in "$@"; do
-
 isurl=false ispath=false isrootpath=false;
-
 case "$_block" in
     *://*) isurl=true ;;
     /*)    isrootpath=true ;;
     */*)   ispath=true ;;
 esac
-
 FILE="${_block/%.sh/}.sh";
-
 if $isurl; then URL="${FILE}";
-elif [ -f "${DIR/%\//}/${FILE}" ]; then URL="file://${FILE}"
+elif [ -f "${DIR/%\//}/${FILE}" ]; then URL="file://${FILE}";
 else URL="${REMOTE/%\//}/blocks/${FILE}"; fi
-
-eval "$(curl -fsL ${URL})";
-
+_loaded_block="$(curl -fsL ${URL})";
+[ -n "$_loaded_block" ] && eval "${_loaded_block}";
 done
 } 
 
