@@ -44,6 +44,18 @@ DESKTOP=xmonad_minimal
 APPSETS=cli_utils edu_utils vim_core mutt_core
 BACKPAC=
 
+
+
+
+
+
+
+
+
+
+
+
+
 # eval "$(curl -fsL \"${REMOTE}/lib/functions.sh\")"; # LOAD HELPER FUNCS
 # EVERYTHING BELOW THIS LINE LOADED BY ABOVE COMMAND
 # ------------------------------------------------------------------------
@@ -63,6 +75,12 @@ _default KERNEL_PARAMS "quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks
 _default DRIVE /dev/sda # this overrides any default value set in FILESYSTEM block
 _default PRIMARY_BOOTLOADER UEFI # UEFI or BIOS
 _default REMOTE https://raw.github.com/altercation/archblocks/master
+
+
+
+
+
+
 
 set -o errexit
 
