@@ -28,7 +28,7 @@ DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
 REMOTE=https://raw.github.com/altercation/archblocks/newstructure #e.g. file://.
 
 # CONFIG
-TIMESET=NTP
+TIMESET=ntp_utc # ntp_localtime
 FILESYSTEM=gpt_luks_passphrase_ext4_root
 BOOTLOADER=efi_gummiboot
 NETWORK=wired_wireless_minimal
@@ -140,7 +140,7 @@ if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
 _warn
 setfont $FONT
 #$EFI_MODE && 
-####_load_efi_modules || true
+_load_efi_modules || true
 _loadblock "filesystem/${FILESYSTEM}"
 _filesystem_pre_baseinstall
 pacstrap ${MOUNT_PATH} base base-devel
