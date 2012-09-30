@@ -9,7 +9,7 @@
 
 # boot into Arch Install media and run (for this script only):
 #
-# curl -sfL https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; sh install.sh
+# curl -sfL https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; bash install.sh
 
 # SCRIPT PREP ------------------------------------------------------------
 
@@ -51,5 +51,4 @@ BACKPAC=
 # EXECUTE ----------------------------------------------------------------
 
 #eval "$(curl -fsL \"${REMOTE}/blocks/lib/helpers.sh\")"
-. <(curl -fsL "${REMOTE}/blocks/lib/helpers.sh")
-_loadblock lib/core
+. <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh"); _loadblock _lib/core
