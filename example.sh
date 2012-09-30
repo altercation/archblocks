@@ -144,11 +144,10 @@ _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR
 #fi
 #}
 archprep () {
-_anykey "IN ARCH PREP - check for ${MNT} and ${POSTSCRIPT}"
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
-_anykey "EXEC ARCH PREP"
 setfont $FONT
-$EFI_MODE && _load_efi_modules
+#$EFI_MODE && 
+_load_efi_modules
 _warn
 _loadblock "filesystem/${FILESYSTEM}"
 _filesystem_pre_baseinstall
@@ -156,15 +155,14 @@ pacstrap ${MOUNT_PATH} base base-devel
 _filesystem_post_baseinstall
 _filesystem_pre_chroot
 _chroot_postscript
-else
-_anykey "SKIPPING ARCH PREP"
 fi
 }
 
-archconfigX () {
+archconfig () {
 if [ -e "${POSTSCRIPT}" ]; then
 setfont $FONT
-$EFI_MODE && _load_efi_modules
+#$EFI_MODE && 
+_load_efi_modules
 _loadblock filesystem/gpt_luks_passphrase_ext4_root
 _filesystem_post_chroot
 _loadblock time/${TIME}
@@ -197,11 +195,6 @@ sed -i "s/^HOOKS.*$/HOOKS=\"${HOOKS}\"/" /etc/mkinitcpio.conf
 mkinitcpio -p linux
 
 _loadblock bootloader/efi_gummiboot
-fi
-}
-archconfig () {
-if [ -e "${POSTSCRIPT}" ]; then
-echo ">>>>>>>>>>>>>>>> 2"
 fi
 }
 
