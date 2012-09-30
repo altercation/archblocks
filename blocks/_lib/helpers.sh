@@ -182,12 +182,12 @@ else URL="${REMOTE/%\//}/blocks/${FILE}"; fi
 
 _loaded_block="$(curl -fsL ${URL})";
 
-set +e
+#set +e
 [ -n "$_loaded_block" ] && eval "${_loaded_block}";
 if [ "$?" -gt 0 ]; then
 _anykey "EXECUTION OF BLOCK \"$_block\" EXPERIENCED ERRORS"
 fi
-set -e
+#set -e
 done
 } 
 
