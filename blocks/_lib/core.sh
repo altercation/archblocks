@@ -17,6 +17,7 @@ MNT=/mnt; TMP=/tmp/archblocks; POSTSCRIPT="/post-chroot.sh"
 
 # DEFAULT VALUES ---------------------------------------------------------
 
+#TODO: make sure this is a check for UNSET to allow for user to set to empty value
 #_defaultvalue USERNAME user
 #_defaultvalue SYSTEMTYPE unknown
 _defaultvalue HOSTNAME archlinux
@@ -49,7 +50,7 @@ setfont $FONT
 _load_efi_modules || true
 
 # LOAD FILESYSTEM (FUNCTIONS AND VARIABLE DECLARATION ONLY)
-_loadblock "filesystem/${FILESYSTEM}"
+_loadblock "${FILESYSTEM}"
 
 # FILESYSTEM CREATION AND CONFIG
 _filesystem_pre_baseinstall
@@ -79,7 +80,7 @@ setfont $FONT
 _load_efi_modules || true
 
 # FILESYSTEM POST-CHROOT CONFIGURATION
-_loadblock filesystem/gpt_luks_passphrase_ext4_root
+_loadblock "${FILESYSTEM}"
 _filesystem_post_chroot
 
 # LOCALE
@@ -88,7 +89,7 @@ export LANG=${LANGUAGE}; echo LANG=${LANGUAGE} > /etc/locale.conf
 echo -e "KEYMAP=${KEYMAP}\nFONT=${FONT}\nFONT_MAP=${FONTMAP}" > /etc/vconsole.conf
 
 # TIME
-_loadblock time/${TIME}
+_loadblock "${TIME}"
 
 # HOSTNAME
 echo ${HOSTNAME} > /etc/hostname; sed -i "s/localhost\.localdomain/${HOSTNAME}/g" /etc/hosts
@@ -104,19 +105,19 @@ sed -i "/^DAEMONS/ s/hwclock /!hwclock @ntpd /" /etc/rc.conf
 # INIT/SYSTEMD
 
 # NETWORKING
-_loadblock network/${NETWORK}
+_loadblock "${NETWORK}"
 
 # AUDIO
-_loadblock audio/${AUDIO}
+_loadblock "${AUDIO}"
 
 # VIDEO
-_loadblock video/${VIDEO}
+_loadblock "${VIDEO}"
 
 # POWER
-_loadblock power/${POWER}
+_loadblock "${POWER}"
 
 # KERNEL
-#_loadblock kernel/${KERNEL}
+#_loadblock "${KERNEL}"
 
 # RAMDISK
 cp /etc/mkinitcpio.conf /etc/mkinitcpio.orig
@@ -125,7 +126,7 @@ sed -i "s/^HOOKS.*$/HOOKS=\"${HOOKS}\"/" /etc/mkinitcpio.conf
 mkinitcpio -p linux
 
 # BOOTLOADER
-_loadblock bootloader/efi_gummiboot
+_loadblock "${BOOTLOADER}"
 
 fi
 

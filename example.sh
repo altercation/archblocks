@@ -32,16 +32,16 @@ KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks (this gets
 
 # BLOCKS -----------------------------------------------------------------
 
-HARDWARE=thinkpad_x220
-TIME=ntp_utc # ntp_localtime
-FILESYSTEM=gpt_luks_passphrase_ext4_root
+BLOCK_HARDWARE=thinkpad_x220
+TIME=common/time_ntp_utc # ntp_localtime
+FILESYSTEM=filesystem/gpt_luks_passphrase_ext4_root
 DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
-BOOTLOADER=efi_gummiboot
-NETWORK=wired_wireless_minimal
-AUDIO=alsa
-VIDEO=intel
-POWER=acpi
-DESKTOP=xmonad_minimal
+BOOTLOADER=bootloader/efi_gummiboot
+NETWORK=network/wired_wireless_minimal
+AUDIO=common/audio_alsa
+VIDEO=common/video_intel
+POWER=common/power_acpi
+DESKTOP=desktop/xmonad_minimal
 APPSETS="cli_utils edu_utils vim_core mutt_core"
 POSTFLIGHT="sudo_default create_user"
 
@@ -51,4 +51,4 @@ BACKPAC=
 # EXECUTE ----------------------------------------------------------------
 
 #eval "$(curl -fsL \"${REMOTE}/blocks/lib/helpers.sh\")"
-. <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh"); _loadblock _lib/core
+. <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh"); _loadblock "_lib/core"
