@@ -137,10 +137,10 @@ _load_efi_modules () { modprobe efivars || true; ls -l /sys/firmware/efi/vars/ &
 # ARCH PREP & SYSTEM INSTALL
 # ------------------------------------------------------------------------
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
+_warn
 setfont $FONT
 #$EFI_MODE && 
-_load_efi_modules || true
-_warn
+####_load_efi_modules || true
 _loadblock "filesystem/${FILESYSTEM}"
 _filesystem_pre_baseinstall
 pacstrap ${MOUNT_PATH} base base-devel
