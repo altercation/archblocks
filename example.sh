@@ -110,10 +110,6 @@ makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg}; packer -S --no
 _chroot_postscript () { cp "${PRESCRIPT}" "${MNT}${POSTSCRIPT}"; chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}"; }
 _warn () { _anykey "WARNING: This script will permanently erase the install drive."; }
 
-_filesystem_pre_baseinstall () { :; }
-_filesystem_post_baseinstall () { :; }
-_filesystem_pre_chroot () { :; }
-_filesystem_post_chroot () { :; }
 
 
 #TODO: make loadblock a loop over each argument passed to it
