@@ -173,6 +173,8 @@ case "$_block" in
     *://*) isurl=true ;;
     /*)    isrootpath=true ;;
 esac
+
+_anykey "DEBUG: block: $_block isurl $isurl isrootpath $isrootpath"
 #if [ $(expr index "$_block" "://") -gt 0 ]; then isurl=true
 #elif [ $(expr index "$_block" "/") -eq 1 ]; then isrootpath=true; fi
 
