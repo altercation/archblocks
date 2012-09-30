@@ -51,5 +51,5 @@ BACKPAC=
 # EXECUTE ----------------------------------------------------------------
 
 #eval "$(curl -fsL \"${REMOTE}/blocks/lib/helpers.sh\")"
-. <<< "$(curl -fsL \"${REMOTE}/blocks/lib/helpers.sh\")"
+. <(curl -fsL "${REMOTE}/blocks/lib/helpers.sh")
 _loadblock lib/core
