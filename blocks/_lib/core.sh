@@ -96,8 +96,8 @@ _loadblock "${POWER}"           # POWER
 #_loadblock "${KERNEL}"         # KERNEL
 _loadblock "${RAMDISK}"         # RAMDISK
 _loadblock "${BOOTLOADER}"      # BOOTLOADER
-_loadblock "${XORG}"            # XORG
-_loadblock "${DESKTOP}"         # DESKTOP/WM/ETC
+#_loadblock "${XORG}"            # XORG
+#_loadblock "${DESKTOP}"         # DESKTOP/WM/ETC
 _loadblock "${POSTFLIGHT}"      # COMMON POST INSTALL ROUTINES
 _loadblock "${APPSETS}"         # COMMON APPLICATION/UTILITY SETS
 fi

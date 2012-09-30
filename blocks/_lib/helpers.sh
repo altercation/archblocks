@@ -167,6 +167,7 @@ _anykey "CONFIRM: Please confirm again to proceed. CTRL-c to exit."
 # LOAD BLOCK -------------------------------------------------------------
 _loadblock ()
 {
+[ -z "$@" ] && return
 for _block in "$@"; do
 
 isurl=false ispath=false isrootpath=false;
