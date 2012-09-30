@@ -6,7 +6,7 @@
 
 # PREFLIGHT --------------------------------------------------------------
 
-_anykey "DEBUG: CORE SCRIPT IS $0"
+_anykey "DEBUG: CORE SCRIPT IS $BASH_SOURCE[0] -- $PWD"
 
 # buckle up
 set -o errexit
