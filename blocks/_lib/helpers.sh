@@ -180,7 +180,12 @@ if $isurl; then URL="${FILE}";
 elif [ -f "${DIR/%\//}/${FILE}" ]; then URL="file://${FILE}";
 else URL="${REMOTE/%\//}/blocks/${FILE}"; fi
 _loaded_block="$(curl -fsL ${URL})";
+set +e
 [ -n "$_loaded_block" ] && eval "${_loaded_block}";
+if [ "$?" -gt 0 ]; then
+_anykey "EXECUTION OF BLOCK \"$_block\" EXPERIENCED ERRORS"
+fi
+set -e
 done
 } 
 
