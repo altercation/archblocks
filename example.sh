@@ -52,4 +52,5 @@ BACKPAC=
 
 #eval "$(curl -fsL \"${REMOTE}/blocks/lib/helpers.sh\")"
 . <(curl -fsL "${REMOTE}/blocks/lib/helpers.sh")
+_anykey "DEBUG: SCRIPT IS $0"
 _loadblock lib/core

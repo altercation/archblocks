@@ -6,6 +6,8 @@
 
 # PREFLIGHT --------------------------------------------------------------
 
+_anykey "DEBUG: CORE SCRIPT IS $0"
+
 # buckle up
 set -o errexit
 
