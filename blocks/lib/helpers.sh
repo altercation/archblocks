@@ -174,11 +174,11 @@ elif [ $(expr index "$_block" "/") -eq 1 ]; then isrootpath=true; fi
 
 FILE="${_block/%.sh/}.sh";
 
-if $isurl; then URL="${FILE}"; else
-    [ -f "${DIR/%\//}/${FILE}" ] \
-    && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}";
-    eval "$(curl -fsL ${URL})";
-fi
+if $isurl; then URL="${FILE}";
+elif [ -f "${DIR/%\//}/${FILE}" ]; then URL="file://${FILE}"
+else URL="${REMOTE/%\//}/blocks/${FILE}"; fi
+
+eval "$(curl -fsL ${URL})";
 
 done
 } 
