@@ -144,8 +144,21 @@ _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR
 #fi
 #}
 archprep () {
-echo ">>>>>>>>>>>>>>>> 1"
+_anykey "IN ARCH PREP - check for ${MNT} and ${POSTSCRIPT}"
+if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
+_anykey "EXEC ARCH PREP"
+setfont $FONT
+$EFI_MODE && _load_efi_modules
+_warn
+_loadblock "filesystem/${FILESYSTEM}"
+_filesystem_pre_baseinstall
+pacstrap ${MOUNT_PATH} base base-devel
+_filesystem_post_baseinstall
+_filesystem_pre_chroot
 _chroot_postscript
+else
+_anykey "SKIPPING ARCH PREP"
+fi
 }
 
 archconfigX () {
