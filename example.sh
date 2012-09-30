@@ -45,7 +45,7 @@ DESKTOP=desktop/xmonad_minimal
 POSTFLIGHT="common/sudo_default common/create_user"
 APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core"
 
-# following a block or a standard backpac file? probably just file
+# BACKPAC file or func - future implementation ---------------------------
 BACKPAC=
 
 # EXECUTE ----------------------------------------------------------------
