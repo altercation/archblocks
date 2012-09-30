@@ -57,12 +57,13 @@ _defaultvalue DRIVE /dev/sda # this overrides any default value set in FILESYSTE
 _defaultvalue RAMDISK common/ramdisk_default
 _defaultvalue BOOTLOADER bootloader/bios_grub
 _defaultvalue NETWORK network/wired_wireless_default
-_defaultvalue XORG xorg/default.sh
+_defaultvalue XORG ""
 _defaultvalue AUDIO ""
 _defaultvalue VIDEO ""
 _defaultvalue POWER ""
 _defaultvalue DESKTOP ""
-_defaultvalue POSTFLIGHT "common/postflight_rootpass common/postflight_sudouser"
+#_defaultvalue POSTFLIGHT "common/postflight_rootpass common/postflight_sudouser"
+_defaultvalue POSTFLIGHT ""
 _defaultvalue APPSETS ""
 
 # ARCH PREP & SYSTEM INSTALL (PRE CHROOT) --------------------------------

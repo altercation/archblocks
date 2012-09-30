@@ -28,20 +28,19 @@ MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
 HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
 KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks (this gets added to)
 INSTALL_DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
-#AURHELPER=packer # default is packer, any alternate must have pacman syntax parity
 
 # BLOCKS -----------------------------------------------------------------
 
-HARDWARE=thinkpad_x220
-TIME=common/time_ntp_utc # ntp_localtime
+HARDWARE=hardware/laptop/lenovo/thinkpad_x220
+TIME=common/time_ntp_utc
 FILESYSTEM=filesystem/gpt_luks_passphrase_ext4
 BOOTLOADER=bootloader/efi_gummiboot
 NETWORK=network/wired_wireless_minimal
 AUDIO=common/audio_alsa
 VIDEO=common/video_intel
 POWER=common/power_acpi
-XORG=xorg/default.sh
-DESKTOP=desktop/xmonad_minimal
+#XORG=xorg/default.sh
+#DESKTOP=desktop/xmonad_minimal
 POSTFLIGHT="common/sudo_default common/create_user"
 APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core"
 
