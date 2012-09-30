@@ -175,10 +175,6 @@ case "$_block" in
     */*)   ispath=true ;;
 esac
 
-_anykey "DEBUG: block: $_block isurl $isurl isrootpath $isrootpath ispath $ispath"
-#if [ $(expr index "$_block" "://") -gt 0 ]; then isurl=true
-#elif [ $(expr index "$_block" "/") -eq 1 ]; then isrootpath=true; fi
-
 FILE="${_block/%.sh/}.sh";
 
 if $isurl; then URL="${FILE}";

@@ -83,7 +83,7 @@ _loadblock filesystem/gpt_luks_passphrase_ext4_root
 _filesystem_post_chroot
 
 # LOCALE
-UncommentValue ${LANGUAGE} /etc/locale.gen; locale-gen
+_uncommentvalue ${LANGUAGE} /etc/locale.gen; locale-gen
 export LANG=${LANGUAGE}; echo LANG=${LANGUAGE} > /etc/locale.conf
 echo -e "KEYMAP=${KEYMAP}\nFONT=${FONT}\nFONT_MAP=${FONTMAP}" > /etc/vconsole.conf
 

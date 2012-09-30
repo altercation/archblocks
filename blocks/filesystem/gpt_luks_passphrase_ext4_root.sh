@@ -82,4 +82,4 @@ FSTAB_EOF
 }
 
 _filesystem_pre_chroot () { umount ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}; }
-_filesystem_post_chroot () { _anykey "THIS IS FSPC"; mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1; }
+_filesystem_post_chroot () { mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1; }
