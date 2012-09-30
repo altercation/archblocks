@@ -41,7 +41,7 @@ POWER=acpi
 #KERNEL=default #unneeded?
 POSTFLIGHT="sudo_default create_user"
 DESKTOP=xmonad_minimal
-APPSETS=cli_utils edu_utils vim_core mutt_core
+APPSETS="cli_utils edu_utils vim_core mutt_core"
 BACKPAC=
 
 
@@ -126,7 +126,7 @@ _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR
 #arch-config () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
 #arch-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
 
-arch-prep () {
+arch-prepX () {
 _anykey "IN ARCH PREP - check for ${MNT} and ${POSTSCRIPT}"
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
 _anykey "EXEC ARCH PREP"
@@ -148,7 +148,7 @@ echo ">>>>>>>>>>>>>>>> 1"
 _chroot_postscript
 }
 
-arch-config () {
+arch-configX () {
 if [ -e "${POSTSCRIPT}" ]; then
 setfont $FONT
 $EFI_MODE && _load_efi_modules
