@@ -167,14 +167,15 @@ _loadblock ()
 {
 for _block in "$@"; do
 
-isurl=false isrootpath=false;
+isurl=false ispath=false isrootpath=false;
 
 case "$_block" in
     *://*) isurl=true ;;
     /*)    isrootpath=true ;;
+    */*)   ispath=true ;;
 esac
 
-_anykey "DEBUG: block: $_block isurl $isurl isrootpath $isrootpath"
+_anykey "DEBUG: block: $_block isurl $isurl isrootpath $isrootpath ispath $ispath"
 #if [ $(expr index "$_block" "://") -gt 0 ]; then isurl=true
 #elif [ $(expr index "$_block" "/") -eq 1 ]; then isrootpath=true; fi
 
