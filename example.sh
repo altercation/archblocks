@@ -12,7 +12,7 @@
 
 # RESPOSITORY ------------------------------------------------------------
 
-REMOTE=https://raw.github.com/altercation/archblocks/newstructure
+REMOTE=https://raw.github.com/altercation/archblocks/master
 
 # CONFIG -----------------------------------------------------------------
 
