@@ -126,7 +126,7 @@ _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR
 #arch-config () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
 #arch-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
 
-#arch-prepX () {
+#archprepX () {
 #_anykey "IN ARCH PREP - check for ${MNT} and ${POSTSCRIPT}"
 #if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
 #_anykey "EXEC ARCH PREP"
@@ -148,7 +148,7 @@ echo ">>>>>>>>>>>>>>>> 1"
 _chroot_postscript
 }
 
-arch-configX () {
+archconfigX () {
 if [ -e "${POSTSCRIPT}" ]; then
 setfont $FONT
 $EFI_MODE && _load_efi_modules
@@ -186,7 +186,7 @@ mkinitcpio -p linux
 _loadblock bootloader/efi_gummiboot
 fi
 }
-arch-config () {
+archconfig () {
 if [ -e "${POSTSCRIPT}" ]; then
 echo ">>>>>>>>>>>>>>>> 2"
 fi
@@ -204,6 +204,6 @@ if ls -l /sys/firmware/efi/vars/ >/dev/null; then return 0; else return 1; fi; }
 
 # ------------------------------------------------------------------------
 
-arch-prep
-arch-config
-#arch-customize
+archprep
+archconfig
+#archcustomize
