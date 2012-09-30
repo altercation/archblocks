@@ -123,9 +123,8 @@ _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR
 
 
 # load efivars (or confirm they've loaded already) and set EFI_MODE for later use by bootloader
-_load_efi_modules () {
-ls -l /sys/firmware/efi/vars/ &>/dev/null && return 1 || true; modprobe efivars || true;
-if ls -l /sys/firmware/efi/vars/ >/dev/null; then return 0; else return 1; fi; }
+_load_efi_modules () { modprobe efivars || true; ls -l /sys/firmware/efi/vars/ &>/dev/null && return 0 || return 1; }
+
 #PRIMARY_BOOTLOADER="$(echo "$PRIMARY_BOOTLOADER" | tr [:lower:] [:upper:])";
 #[ "${PRIMARY_BOOTLOADER#U}" == "EFI" ] && _load_efi_modules && EFI_MODE=true || EFI_MODE=false
 
@@ -140,7 +139,7 @@ if ls -l /sys/firmware/efi/vars/ >/dev/null; then return 0; else return 1; fi; }
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
 setfont $FONT
 #$EFI_MODE && 
-_load_efi_modules
+_load_efi_modules || true
 _warn
 _loadblock "filesystem/${FILESYSTEM}"
 _filesystem_pre_baseinstall
@@ -161,7 +160,8 @@ if [ -e "${POSTSCRIPT}" ]; then
 setfont $FONT
 _anykey ">>>>> A"
 #$EFI_MODE && 
-_load_efi_modules
+#_load_efi_modules
+_load_efi_modules || true
 _anykey ">>>>> B"
 _loadblock filesystem/gpt_luks_passphrase_ext4_root
 _anykey ">>>>> C"
