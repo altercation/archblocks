@@ -167,10 +167,14 @@ _loadblock ()
 {
 for _block in "$@"; do
 
-isurl=false ispath=false;
+isurl=false isrootpath=false;
 
-if [ $(expr index "$_block" "://") -gt 0 ]; then isurl=true
-elif [ $(expr index "$_block" "/") -eq 1 ]; then isrootpath=true; fi
+case "$_block" in
+    *://*) isurl=true ;;
+    /*)    isrootpath=true ;;
+esac
+#if [ $(expr index "$_block" "://") -gt 0 ]; then isurl=true
+#elif [ $(expr index "$_block" "/") -eq 1 ]; then isrootpath=true; fi
 
 FILE="${_block/%.sh/}.sh";
 
