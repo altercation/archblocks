@@ -46,6 +46,8 @@ BACKPAC=
 
 
 
+#TODO: if a loadblock value has a slash in it, then eval from root
+#TODO: if a loadblock value is a valid URL then source it with no eval/prefixing
 
 
 
@@ -120,30 +122,21 @@ _filesystem_post_chroot () { :; }
 _loadblock () { echo "PHASE: $2 - LOADING $1"; FILE="${1/%.sh/}.sh"; [ -f "${DIR/%\//}/${FILE}" ] && URL="file://${FILE}" || URL="${REMOTE/%\//}/blocks/${FILE}"; eval "$(curl -fsL ${URL})"; } 
 
 
-# should add a first-run (first call to function for each phase) check and initialization phase
-#arch-prep () { if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME";
-#elif [ -e "${POSTSCRIPT}" ] && [ "$1:0:10" == "filesystem" ]; then _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
-#arch-config () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
-#arch-custom () { if [ -e "${POSTSCRIPT}" ]; then [ -z "$@" ] && return 0 || _loadblock "$@" "$FUNCNAME"; else [ -z "$@" ] && return 1 || return 0; fi; }
+# load efivars (or confirm they've loaded already) and set EFI_MODE for later use by bootloader
+_load_efi_modules () {
+ls -l /sys/firmware/efi/vars/ &>/dev/null && return 1 || true; modprobe efivars || true;
+if ls -l /sys/firmware/efi/vars/ >/dev/null; then return 0; else return 1; fi; }
+#PRIMARY_BOOTLOADER="$(echo "$PRIMARY_BOOTLOADER" | tr [:lower:] [:upper:])";
+#[ "${PRIMARY_BOOTLOADER#U}" == "EFI" ] && _load_efi_modules && EFI_MODE=true || EFI_MODE=false
 
-#archprepX () {
-#_anykey "IN ARCH PREP - check for ${MNT} and ${POSTSCRIPT}"
-#if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
-#_anykey "EXEC ARCH PREP"
-#setfont $FONT
-#$EFI_MODE && _load_efi_modules
-#_warn
-#_loadblock "filesystem/${FILESYSTEM}"
-#_filesystem_pre_baseinstall
-#pacstrap ${MOUNT_PATH} base base-devel
-#_filesystem_post_baseinstall
-#_filesystem_pre_chroot
-#_chroot_postscript
-#else
-#_anykey "SKIP ARCH PREP"
-#fi
-#}
-archprep () {
+
+# should add a first-run (first call to function for each phase) check and initialization phase
+
+
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ARCH PREP & SYSTEM INSTALL
+# ------------------------------------------------------------------------
 if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT}${POSTSCRIPT}" ]; then
 setfont $FONT
 #$EFI_MODE && 
@@ -156,14 +149,22 @@ _filesystem_post_baseinstall
 _filesystem_pre_chroot
 _chroot_postscript
 fi
-}
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
 
-archconfig () {
+
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ARCH CONFIG
+# ------------------------------------------------------------------------
 if [ -e "${POSTSCRIPT}" ]; then
 setfont $FONT
+_anykey ">>>>> A"
 #$EFI_MODE && 
 _load_efi_modules
+_anykey ">>>>> B"
 _loadblock filesystem/gpt_luks_passphrase_ext4_root
+_anykey ">>>>> C"
 _filesystem_post_chroot
 _loadblock time/${TIME}
 
@@ -196,20 +197,11 @@ mkinitcpio -p linux
 
 _loadblock bootloader/efi_gummiboot
 fi
-}
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
 
 
-
-# load efivars (or confirm they've loaded already) and set EFI_MODE for later use by bootloader
-_load_efi_modules () {
-ls -l /sys/firmware/efi/vars/ &>/dev/null && return 1 || true; modprobe efivars || true;
-if ls -l /sys/firmware/efi/vars/ >/dev/null; then return 0; else return 1; fi; }
-#PRIMARY_BOOTLOADER="$(echo "$PRIMARY_BOOTLOADER" | tr [:lower:] [:upper:])";
-#[ "${PRIMARY_BOOTLOADER#U}" == "EFI" ] && _load_efi_modules && EFI_MODE=true || EFI_MODE=false
 
 
 # ------------------------------------------------------------------------
 
-archprep
-archconfig
-#archcustomize
