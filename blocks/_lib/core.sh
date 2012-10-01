@@ -29,8 +29,8 @@ _defaultvalue REMOTE https://raw.github.com/altercation/archblocks/master
 _defaultvalue HOSTNAME archlinux
 _defaultvalue USERSHELL /bin/bash
 _defaultvalue FONT Lat2-Terminus16
-_defaultvalue FONT_MAP ""
-_defaultvalue LANGUAGE "en_US.UTF-8"
+_defaultvalue FONT_MAP 8859-1_to_uni
+_defaultvalue LANGUAGE en_US.UTF-8
 _defaultvalue KEYMAP us
 _defaultvalue TIMEZONE US/Pacific
 _defaultvalue MODULES ""
@@ -57,6 +57,9 @@ _defaultvalue DRIVE /dev/sda # this overrides any default value set in FILESYSTE
 _defaultvalue RAMDISK common/ramdisk_default
 _defaultvalue BOOTLOADER bootloader/bios_grub
 _defaultvalue NETWORK network/wired_wireless_default
+_defaultvalue INIT init/systemd_pure
+#_defaultvalue INIT=init/systemd_coexist
+#_defaultvalue INIT=init/sysvinit_default
 _defaultvalue XORG ""
 _defaultvalue AUDIO ""
 _defaultvalue VIDEO ""
@@ -84,6 +87,7 @@ if $INCHROOT; then
 _load_efi_modules || true       # ATTEMPT TO RELOAD EVIVARS, EVEN IF NOT USING EFI (REQUIRED)
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
 _filesystem_post_chroot         # FILESYSTEM POST-CHROOT CONFIGURATION
+_loadblock "${INIT}"       	# INIT
 _loadblock "${SETLOCALE}"       # SET LOCALE
 _loadblock "${TIME}"            # TIME
 _loadblock "${HOST}"            # HOSTNAME
