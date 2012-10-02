@@ -65,7 +65,7 @@ _defaultvalue AUDIO ""
 _defaultvalue VIDEO ""
 _defaultvalue POWER ""
 _defaultvalue DESKTOP ""
-#_defaultvalue POSTFLIGHT "common/postflight_rootpass common/postflight_sudouser"
+_defaultvalue POSTFLIGHT "common/postflight_rootpass common/postflight_sudouser"
 _defaultvalue POSTFLIGHT ""
 _defaultvalue APPSETS ""
 
@@ -100,8 +100,8 @@ _loadblock "${POWER}"           # POWER
 #_loadblock "${KERNEL}"         # KERNEL
 _loadblock "${RAMDISK}"         # RAMDISK
 _loadblock "${BOOTLOADER}"      # BOOTLOADER
-#_loadblock "${XORG}"            # XORG
-#_loadblock "${DESKTOP}"         # DESKTOP/WM/ETC
+_loadblock "${XORG}"            # XORG
+_loadblock "${DESKTOP}"         # DESKTOP/WM/ETC
 _loadblock "${POSTFLIGHT}"      # COMMON POST INSTALL ROUTINES
 _loadblock "${APPSETS}"         # COMMON APPLICATION/UTILITY SETS
 fi
