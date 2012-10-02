@@ -6,7 +6,8 @@
 
 # 1. Install systemd from the official repositories.
 
-_installpkg systemd systemd-sysvcompat 
+_installpkg systemd
+pacman -S systemd-sysvcompat # interactive
 
 # 2. Add init=/bin/systemd to the kernel parameters in your bootloader.
 
