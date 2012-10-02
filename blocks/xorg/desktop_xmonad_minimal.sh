@@ -11,5 +11,5 @@ _installpkg unclutter #TODO: consider hhp from xmonad-utils instead
 _installpkg dbus upower
 sed -i "/^DAEMONS/ s/)/ @dbus)/" /etc/rc.conf
 
-_installpkg xmonad
+_installpkg xmonad xmonad-contrib
 

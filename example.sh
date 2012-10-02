@@ -38,7 +38,7 @@ POWER=common/power_acpi
 #INIT=init/sysvinit_default
 XORG=xorg/xorg_wacom_fonts
 VIDEO=xorg/video_mesa_default
-DESKTOP=xorg/desktop_xmonad_minimal
+#DESKTOP=xorg/desktop_xmonad_minimal
 APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core"
 
 # BACKPAC file or func - future implementation ---------------------------
