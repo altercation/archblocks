@@ -10,6 +10,7 @@ _installpkg xf86-input-wacom
 # ------------------------------------------------------------------------
 _installpkg terminus-font
 _installaur webcore-fonts
+_installaur ttf-google-webfonts
 _installaur libspiro
 _installaur fontforge
 _installaur fontconfig-infinality-git
