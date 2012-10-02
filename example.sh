@@ -34,11 +34,11 @@ NETWORK=network/wired_wireless_minimal
 AUDIO=common/audio_alsa
 VIDEO=common/video_intel
 POWER=common/power_acpi
-INIT=init/systemd_pure
+#INIT=init/systemd_pure
 #INIT=init/systemd_coexist
 #INIT=init/sysvinit_default
-#XORG=xorg/default.sh
-#DESKTOP=desktop/xmonad_minimal
+XORG=xorg/xorg_wacom_fonts
+DESKTOP=desktop/xmonad_minimal
 POSTFLIGHT="common/sudo_default common/create_user"
 APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core"
 
