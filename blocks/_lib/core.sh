@@ -66,7 +66,6 @@ _defaultvalue VIDEO ""
 _defaultvalue POWER ""
 _defaultvalue DESKTOP ""
 _defaultvalue POSTFLIGHT "common/postflight_rootpass common/postflight_sudouser"
-_defaultvalue POSTFLIGHT ""
 _defaultvalue APPSETS ""
 
 # ARCH PREP & SYSTEM INSTALL (PRE CHROOT) --------------------------------
