@@ -13,7 +13,10 @@ _installaur webcore-fonts
 _installaur ttf-google-webfonts
 _installaur libspiro
 _installaur fontforge
-_installaur fontconfig-infinality-git
+
+#working, but blowing past memory limit
+#_installaur fontconfig-infinality-git
+
 #packer -S freetype2-git-infinality # will prompt for freetype2 replacement
 # TODO: sed infinality and change to OSX or OSX2 mode
 #	and create the sym link from /etc/fonts/conf.avail to conf.d
