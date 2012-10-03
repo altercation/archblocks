@@ -87,6 +87,7 @@ fi
 if $INCHROOT; then
 _load_efi_modules || true       # ATTEMPT TO RELOAD EVIVARS, EVEN IF NOT USING EFI (REQUIRED)
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
+pacman -Sy
 _filesystem_post_chroot         # FILESYSTEM POST-CHROOT CONFIGURATION
 #_loadblock "${INIT}"       	# INIT
 _loadblock "${SETLOCALE}"       # SET LOCALE
