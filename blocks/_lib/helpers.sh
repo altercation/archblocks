@@ -81,6 +81,8 @@ _addtolist ()
 # Add to an existing list format variable (simple space delimited list)
 # such as VARNAME="item1 item2 item3".
 #
+# Handles lists enclosed by either "quotes" or (parentheses)
+#
 # If filepath is provided as third argument, this is changed in a file.
 # If no filepath is provided, the change is made to a script-local
 # variable.
@@ -92,12 +94,55 @@ _addtolist ()
 # _addtolist "newitem" LIST_VAR_NAME "path/to/file"
 #
 if [ "$#" -lt 3 ]; then
-:
-else # add to list variable in an existing file
+newitem="$1" listname="$2"
+${!listname}=
 newitem="$1" listname="$2" filepath="$3";
-sed -i "s/\(${listname}.*\)\()\)/\1 ${newitem}\2/" "${filepath}";
+else # add to list variable in an existing file
+sed -i "s_\(${listname}\s*=\s*[^)]*\))_\1 ${newitem})_" "${filepath}";
+sed -i "s_\(${listname}\s*=\s*\"[^\"]*\)\"_\1 ${newitem}\"_" "${filepath}";
 fi
 }
+
+# DAEMONS ADD/REMOVE -----------------------------------------------------
+_daemon ()
+{
+# TODO: make work for systemd
+# add|enable|change disable remove
+#
+# usage:
+# daemon add @ntp
+# daemon disable network
+# daemon remove hwclock
+# daemon remove hwclock network
+#
+ACTION="$1"; shift; DAEMON_LIST="$@"
+for DAEMON_ITEM in $DAEMON_LIST; do
+DAEMON_BASE=$(echo "$DAEMON_ITEM" | sed "s/[!@]*\(.*\)/\1/") # strip any leading characters
+case $ACTION in # assign DAEMON_NEW based on action
+    add|change|enable|on) DAEMON_NEW="$DAEMON_ITEM" ;;
+    disable|off) DAEMON_NEW="!${DAEMON_BASE}" ;; # normalize in case user passes !daemon format as argument
+    remove|delete) DAEMON_NEW="" ;;
+esac
+echo -e "\nTEST: $ACTION $DAEMON_ITEM -> '$DAEMON_NEW'"
+cat /etc/rc.conf | grep DAEMONS
+# process /etc/rc.conf
+if ! egrep -q "^DAEMONS\s*=.*[!@]?${DAEMON_BASE}" /etc/rc.conf; then # no daemon present
+    [ $ACTION != remove ] && sed -i "/^\s*DAEMONS/ s_)_ ${DAEMON_NEW})_" /etc/rc.conf
+else
+    sed -i "/^\s*DAEMONS/ s_[!@]*${DAEMON_BASE}_${DAEMON_NEW}_" /etc/rc.conf
+fi
+# housekeeping: clean up extraneous spaces
+sed -i "/^\s*DAEMONS/ \
+s/  / /g
+s/( /(/g
+s/ )/)/g" /etc/rc.conf
+done
+}
+
+_daemon add crond
+_daemon add @crond
+_daemon add '!crond'
+_daemon add !crond
 
 # ANYKEY -----------------------------------------------------------------
 _anykey ()
