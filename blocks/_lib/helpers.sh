@@ -139,11 +139,6 @@ s/ )/)/g" /etc/rc.conf
 done
 }
 
-_daemon add crond
-_daemon add @crond
-_daemon add '!crond'
-_daemon add !crond
-
 # ANYKEY -----------------------------------------------------------------
 _anykey ()
 {
