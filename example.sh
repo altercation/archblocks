@@ -33,13 +33,12 @@ BOOTLOADER=bootloader/efi_gummiboot
 NETWORK=network/wired_wireless_minimal
 AUDIO=common/audio_alsa
 POWER=common/power_acpi
-#INIT=init/systemd_pure
-#INIT=init/systemd_coexist
-#INIT=init/sysvinit_default
 XORG=xorg/xorg_wacom_fonts
 VIDEO=xorg/video_mesa_default
-#DESKTOP=xorg/desktop_xmonad_minimal
-APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core"
+DESKTOP=xorg/desktop_xmonad_minimal
+APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core appsets/git_default appsets/server_utils"
+PACKAGES="git"
+AURPACKAGES=
 
 # BACKPAC file or func - future implementation ---------------------------
 BACKPAC=

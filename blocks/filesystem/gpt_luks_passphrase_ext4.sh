@@ -14,8 +14,6 @@ LABEL_ROOT_CRYPT=cryptroot
 MOUNT_PATH=/mnt
 EFI_SYSTEM_PARTITION=/boot/efi
 
-# KERNEL_PARAMS used by BOOTLOADER
-KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
 
 _filesystem_pre_baseinstall () {
 # Here we create three partitions:
@@ -81,5 +79,15 @@ tmpfs						/tmp		tmpfs	nodev,nosuid				0	0
 FSTAB_EOF
 }
 
-_filesystem_pre_chroot () { umount ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}; }
-_filesystem_post_chroot () { mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1; }
+_filesystem_pre_chroot ()
+{
+umount ${MOUNT_PATH}${EFI_SYSTEM_PARTITION};
+}
+
+_filesystem_post_chroot ()
+{
+mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1;
+# KERNEL_PARAMS used by BOOTLOADER
+# KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
+KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }cryptdevice=UUID=$(_get_uuid ${DRIVE}${PARTITION_CRYPT_ROOT}):${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
+}

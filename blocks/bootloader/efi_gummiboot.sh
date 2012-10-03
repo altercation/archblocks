@@ -42,5 +42,5 @@ GUMMILOADER
 cat >> ${EFI_SYSTEM_PARTITION}/loader/entries/arch.conf <<GUMMIENTRIES
 title          Arch Linux
 efi            \\EFI\\arch\\vmlinuz-linux.efi
-options        initrd=\\EFI\\arch\initramfs-linux.img "${KERNEL_PARAMS}"
+options        initrd=\\EFI\\arch\initramfs-linux.img ${KERNEL_PARAMS}
 GUMMIENTRIES

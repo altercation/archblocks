@@ -67,6 +67,8 @@ _defaultvalue POWER ""
 _defaultvalue DESKTOP ""
 _defaultvalue POSTFLIGHT "common/postflight_rootpass common/postflight_sudouser"
 _defaultvalue APPSETS ""
+_defaultvalue PACKAGES "git"
+_defaultvalue AURPACKAGES "git"
 
 # ARCH PREP & SYSTEM INSTALL (PRE CHROOT) --------------------------------
 if ! $INCHROOT; then
@@ -103,5 +105,7 @@ _loadblock "${XORG}"            # XORG
 _loadblock "${DESKTOP}"         # DESKTOP/WM/ETC
 _loadblock "${POSTFLIGHT}"      # COMMON POST INSTALL ROUTINES
 _loadblock "${APPSETS}"         # COMMON APPLICATION/UTILITY SETS
+_installpkg ${PACKAGES}
+_installaur ${AURPACKAGES}
 fi
 

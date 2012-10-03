@@ -201,6 +201,46 @@ modprobe efivars || true;
 ls -l /sys/firmware/efi/vars/ &>/dev/null && return 0 || return 1;
 }
 
+# GET UUID ON DRIVE/PARTITION --------------------------------------------
+_get_uuid ()
+{
+# usage:
+# _get_uuid /dev/sda3
+MATCH="$(echo "$1" | sed "s_/_\\\/_g")"
+blkid -c /dev/null | sed -n "/${MATCH}/ s_.*UUID=\"\([^\"]*\).*_\1_p"
+}
+
+# ENABLE REPOSITORIES FOR SPECIFIC LANGUAGES/FRAMEWORKS ------------------
+
+_enable_haskell_repos ()
+{
+
+# add repos to /etc/pacman.conf
+
+egrep -q "^\[haskell-testing\]" /etc/pacman.conf || \
+sed -i '/^\[core\]/i \
+[haskell-testing]\
+Server = http://www.kiwilight.com/haskell/testing/$arch\
+' /etc/pacman.conf
+
+egrep -q "^\[haskell-extra\]" /etc/pacman.conf && \
+sed -i '/^\[core\]/i \
+[haskell-extra]\
+Server = http://archhaskell.mynerdside.com/$repo/$arch\
+' /etc/pacman.conf
+
+egrep -q "^\[haskell\]" /etc/pacman.conf && \
+sed -i '/^\[core\]/i \
+[haskell]\
+Server = http://xsounds.org/~haskell/$arch\
+' /etc/pacman.conf
+
+# update new repos
+
+pacman --noconfirm -Sy
+
+}
+
 # MISC FUNCTIONS ---------------------------------------------------------
 
 _setfont () { setfont $FONT; }
