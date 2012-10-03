@@ -52,80 +52,95 @@ Each system I install gets a single config file (the "tau" script in the example
 
 A config/install script (the only script you need to manually execute) looks like this (actual script I use to install Arch on a Thinkpad x220):
 
+    # RESPOSITORY ------------------------------------------------------------
+    REMOTE=https://raw.github.com/altercation/archblocks/dev
+    
     # CONFIG -----------------------------------------------------------------
-    REMOTE=https://raw.github.com/altercation/archblocks/master
     HOSTNAME=tau
-    SYSTEMTYPE=thinkpad_x220
     USERNAME=es
     USERSHELL=/bin/bash
     FONT=Lat2-Terminus16
+    FONT_MAP=8859-1_to_uni
     LANGUAGE=en_US.UTF-8
     KEYMAP=us
     TIMEZONE=US/Pacific
     MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
     HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
-    #DRIVE=/dev/sda (doesn't need to be set unless overriding default in FILESYSTEM block)
+    KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks (this gets added to)
+    INSTALL_DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
     
-    # LOAD HELPER FUNCTIONS (local if avail, remote otherwise) ---------------
-    LoadFailCheck () { exit 1; }; [ -f "$(dirname $0)/blocks/${_LIB}" ] \
-    && URL="file://blocks/_LIB.sh" || URL="${REMOTE/%\//}/blocks/_LIB.sh";
-    eval "$(curl -fsL ${URL})"; LoadFailCheck
+    # BLOCKS -----------------------------------------------------------------
+    TIME=common/time_ntp_utc
+    FILESYSTEM=filesystem/gpt_luks_passphrase_ext4
+    BOOTLOADER=bootloader/efi_gummiboot
+    NETWORK=network/wired_wireless_minimal
+    AUDIO=common/audio_alsa
+    POWER=common/power_acpi
+    XORG=xorg/xorg_wacom_fonts
+    VIDEO=xorg/video_mesa_default
+    DESKTOP=xorg/desktop_xmonad_minimal
+    HARDWARE=hardware/laptop/lenovo_thinkpad_x220
+    APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core appsets/git_default appsets/server_utils"
+    PACKAGES="git"
+    AURPACKAGES=
     
-    # PHASE ONE - PREPARE INSTALL FILESYSTEM, INSTALL BASE, PRE-CHROOT
-    if [ ! -e "${POSTSCRIPT}" ] && [ ! -e "${MNT/%\//}/${POSTSCRIPT}" ]; then
-    LoadBlock WARN_impending_doom
-    LoadEFIModules
-    LoadBlock PREFLIGHT_default
-    LoadBlock FILESYSTEM_gpt_luks_ext4_root
-    FILESYSTEM_PRE_BASEINSTALL # make filesystem
-    LoadBlock BASEINSTALL_pacstrap
-    FILESYSTEM_POST_BASEINSTALL # write filesystem configs
-    FILESYSTEM_PRE_CHROOT # unmount efi boot part
-    LoadEFIModules
-    Chroot_And_Continue
-    fi
-    
-    # PHASE TWO - CHROOTED, CONFIGURE SYSTEM
-    if [ -e "${POSTSCRIPT}" ]; then
-    LoadBlock FILESYSTEM_gpt_luks_ext4_root
-    LoadEFIModules
-    FILESYSTEM_POST_CHROOT # remount efi boot part
-    LoadBlock LOCALE_default
-    LoadBlock TIME_ntp
-    LoadBlock DAEMONS_default
-    LoadBlock HOSTNAME_default
-    LoadBlock NETWORK_wired_wireless_minimal
-    LoadBlock KERNEL_default
-    LoadBlock RAMDISK_default
-    LoadBlock BOOTLOADER_efi_gummiboot
-    LoadBlock POSTFLIGHT_add_sudo_user 
-    fi
+    # EXECUTE ----------------------------------------------------------------
+    . <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh"); _loadblock "_lib/core"
 
 The blocks subdirectory (the only subdirectory used) contains blocks of simple bash script and looks something like this (note the variants in items like NETWORK... I am working on alternates for FILESYSTEM and BOOTLOADER as well, but the principle should be clear)::
 
-    AUDIO_alsa_basic.sh
-    BASEINSTALL_pacstrap.sh
-    BOOTLOADER_efi_gummiboot.sh
-    DESKTOP_xmonad-minimal.sh
-    FILESYSTEM_gpt_lukspassphrase_ext4_root.sh
-    HOMESETUP_es.sh
-    HOSTNAME_default.sh
-    KERNEL_default.sh
-    LOCALE_default.sh
-    NETWORK_wired_wireless_default.sh
-    NETWORK_wired_wireless_minimal.sh
-    POSTFLIGHT_add_sudo_user.sh
-    POWER_acpi.sh
-    PREFLIGHT_default.sh
-    PREFLIGHT_efi.sh
-    RAMDISK_default.sh
-    SYSTEM_thinkpad_x220.sh
-    TIME_ntp.sh
-    UTILS_es.sh
-    VIDEO_mesa_basic.sh
-    WARN_impending_doom.sh
-    XORG_wacom_fonts.sh
-    _LIB.sh
+    ├── blocks
+    │   ├── _lib
+    │   │   ├── core.sh <---------------------------- 2. this is the main script,
+    │   │   │                                            no need to customize unless
+    │   │   │                                            you want to.
+    │   │   └── helpers.sh <------------------------- 3. helper function library
+    │   │
+    │   ├── appsets
+    │   │   ├── aurhelper_aura.sh
+    │   │   └── server_utils.sh
+    │   │
+    │   ├── bootloader
+    │   │   ├── bios_grub2.sh
+    │   │   └── efi_gummiboot.sh
+    │   │
+    │   ├── common
+    │   │   ├── audio_alsa.sh
+    │   │   ├── host_default.sh
+    │   │   ├── init_systemd.sh
+    │   │   ├── install_pacstrap.sh
+    │   │   ├── locale_default.sh
+    │   │   ├── postflight_rootpass.sh
+    │   │   ├── postflight_sudouser.sh
+    │   │   ├── power_acpi.sh
+    │   │   ├── ramdisk_default.sh
+    │   │   └── time_ntp_utc.sh
+    │   │
+    │   ├── filesystem
+    │   │   ├── gpt_luks_passphrase_ext4.sh
+    │   │   └── mbr_default.sh
+    │   │
+    │   ├── hardware
+    │   │   ├── desktop
+    │   │   ├── laptop
+    │   │   │   └── lenovo_thinkpad_x220.sh <-------- 4. custom, per-hardware tweaks
+    │   │   ├── peripheral
+    │   │   └── server
+    │   │
+    │   ├── init
+    │   │   └── systemd_pure.sh
+    │   │
+    │   ├── network
+    │   │   ├── wired_wireless_default.sh
+    │   │   └── wired_wireless_minimal.sh
+    │   │
+    │   └── xorg
+    │       ├── desktop_xmonad_minimal.sh
+    │       ├── video_mesa_default.sh
+    │       ├── xorg_default.sh
+    │       └── xorg_wacom_fonts.sh
+    │
+    └── example.sh <--------------------------------- 1. this is the initial installer
     
 That's it, really. Nothing fancy. Comprehensible, reusable, modular.
 
