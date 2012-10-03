@@ -14,6 +14,7 @@ LABEL_ROOT_CRYPT=cryptroot
 MOUNT_PATH=/mnt
 EFI_SYSTEM_PARTITION=/boot/efi
 
+#_add_to_var MODULES "dm_mod dm_crypt aes_x86_64"
 
 _filesystem_pre_baseinstall () {
 # Here we create three partitions:

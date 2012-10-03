@@ -13,5 +13,5 @@ _installpkg wireless_tools # (optional) - for interface renaming through net-ren
 _installpkg wpa_actiond # (optional) - for automatic wireless connections through net-auto-wireless
 _installpkg wpa_supplicant # (optional) - for wireless networking support
 
-_addtolist net-auto-wireless DAEMONS /etc/rc.conf
-_addtolist net-auto-wired DAEMONS /etc/rc.conf
+_daemon_remove network
+_daemon_add net-auto-wireless net-auto-wired ifplugd net-profiles

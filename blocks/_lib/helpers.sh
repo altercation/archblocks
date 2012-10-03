@@ -76,28 +76,21 @@ sed -i "s/^#\(${valuename}.*\)$/\1/" "${filepath}";
 }
 
 # ADDTOLIST --------------------------------------------------------------
-_addtolist ()
+_addtolistvar ()
 {
 # Add to an existing list format variable (simple space delimited list)
 # such as VARNAME="item1 item2 item3".
 #
 # Handles lists enclosed by either "quotes" or (parentheses)
 #
-# If filepath is provided as third argument, this is changed in a file.
-# If no filepath is provided, the change is made to a script-local
-# variable.
-#
 # Usage (internal variable)
-# _addtolist "newitem" LIST_VAR_NAME
-#
-# Usage (change in file)
-# _addtolist "newitem" LIST_VAR_NAME "path/to/file"
+# _addtolist "new item" newitem newitem
 #
 if [ "$#" -lt 3 ]; then
 newitem="$1" listname="$2"
-${!listname}=
-newitem="$1" listname="$2" filepath="$3";
+eval "${listname}=\"${!listname} $newitem\""
 else # add to list variable in an existing file
+newitem="$1" listname="$2" filepath="$3";
 sed -i "s_\(${listname}\s*=\s*[^)]*\))_\1 ${newitem})_" "${filepath}";
 sed -i "s_\(${listname}\s*=\s*\"[^\"]*\)\"_\1 ${newitem}\"_" "${filepath}";
 fi
@@ -138,6 +131,15 @@ s/( /(/g
 s/ )/)/g" /etc/rc.conf
 done
 }
+# convenience functions
+_daemon_add () { _daemon add $@ ; }
+_daemon_enable () { _daemon enable $@ ; }
+_daemon_change () { _daemon change $@ ; }
+_daemon_on () { _daemon on $@ ; }
+_daemon_disable () { _daemon disable $@ ; }
+_daemon_off () { _daemon off $@ ; }
+_daemon_remove () { _daemon remove $@ ; }
+_daemon_delete () { _daemon delete $@ ; }
 
 # ANYKEY -----------------------------------------------------------------
 _anykey ()
