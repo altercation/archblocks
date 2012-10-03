@@ -4,24 +4,20 @@
 # ------------------------------------------------------------------------
 _installpkg sudo bash-completion # bash-completion to allow completion even when enter sudo command
 [ ! -e /etc/sudoers.orig ] && cp /etc/sudoers /etc/sudoers.orig
-[ -e /tmp/sudoers.edit ] && rm /tmp/sudoers.edit
+[ -e /etc/sudoers.temp ] && rm /etc/sudoers.temp
 
 #MATCH="%wheel.ALL=(ALL).ALL"
-#sed -i "s/^#\s*\(${MATCH}\)/\1/" /tmp/sudoers.edit
+#sed -i "s/^#\s*\(${MATCH}\)/\1/" /tmp/sudoers.temp
 
-#MATCH="%sudo.ALL=(ALL).ALL"
-#sed -i "s/^#\s*\(${MATCH}\)/\1/" /tmp/sudoers.edit
-
-cat > /tmp/sudoers.edit << EOF
+cat > /etc/sudoers.temp << EOF
 Cmnd_Alias SYSUTILS = /bin/nice, /bin/kill, /usr/bin/nice, /usr/bin/ionice, /usr/bin/top, /usr/bin/kill, /usr/bin/killall, /usr/bin/ps, /usr/bin/pkill, /usr/bin/pacman, /usr/sbin/lsof, /bin/nice, /bin/ps, /usr/bin/top, /usr/local/bin/nano, /bin/netstat, /usr/bin/locate, /usr/bin/find, /usr/bin/rsync
 Cmnd_Alias EDITORS = /usr/bin/vim, /usr/bin/nano, /usr/bin/cat, /usr/bin/vi
 Cmnd_Alias NETWORKING = /usr/bin/wpa_supplicant, /usr/bin/wpa_cli, /usr/bin/wpa_passphrase, /usr/bin/iw
 
 # a little redundant
-root ALL = (ALL) ALL
-%wheel    ALL=(ALL) ALL
+root      ALL=(ALL) ALL
 %sudo     ALL=(ALL) ALL
-USER_NAME ALL = (ALL) ALL, NOPASSWD: NETWORKING, NOPASSWD: SYSUTILS, NOPASSWD: EDITORS
+%wheel    ALL=(ALL) ALL, NOPASSWD: NETWORKING, NOPASSWD: SYSUTILS, NOPASSWD: EDITORS
  
 Defaults !requiretty, !tty_tickets, !umask
 Defaults visiblepw, path_info, insults, lecture=always
@@ -38,7 +34,8 @@ Defaults insults
 Defaults env_keep += "HOME"
 EOF
 
-visudo -qcsf /tmp/sudoers.edit && cat /tmp/sudoers.edit > /etc/sudoers 
+visudo -qcsf /etc/sudoers.temp && cat /etc/sudoers.temp > /etc/sudoers 
+rm /etc/sudoers.temp
 
 # make sure we have the right permissions and ownership
 chown -c root:root /etc/sudoers
