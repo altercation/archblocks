@@ -1,5 +1,12 @@
 #!/bin/bash
 
+mkdir -p /test/{1,2}
+lsof > /test/1/dump_lsof
+free -m > /test/1/dump_free
+pstree > /test/1/dump_pstree
+df -a > /test/1/dump_df
+ls /dev/fd/** > /test/1/dump_dev_fd
+
 # sudo
 # ------------------------------------------------------------------------
 _installpkg sudo bash-completion # bash-completion to allow completion even when enter sudo command
@@ -34,11 +41,19 @@ Defaults insults
 Defaults env_keep += "HOME"
 EOF
 
+lsof > /test/2/dump_lsof
+free -m > /test/2/dump_free
+pstree > /test/2/dump_pstree
+df -a > /test/2/dump_df
+ls /dev/fd/** > /test/2/dump_dev_fd
+
 visudo -qcsf /etc/sudoers.temp && cat /etc/sudoers.temp > /etc/sudoers && rm /etc/sudoers.temp
 
 # make sure we have the right permissions and ownership
 chown -c root:root /etc/sudoers
 chmod -c 0440 /etc/sudoers
+
+_anykey ">>>>>>>>>>>>>>>>>>>>>>>>>>>CHECK"
 
 # add user
 # ------------------------------------------------------------------------
