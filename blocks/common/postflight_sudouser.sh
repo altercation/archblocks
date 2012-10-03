@@ -34,8 +34,7 @@ Defaults insults
 Defaults env_keep += "HOME"
 EOF
 
-visudo -qcsf /etc/sudoers.temp && cat /etc/sudoers.temp > /etc/sudoers 
-rm /etc/sudoers.temp
+visudo -qcsf /etc/sudoers.temp && cat /etc/sudoers.temp > /etc/sudoers && rm /etc/sudoers.temp
 
 # make sure we have the right permissions and ownership
 chown -c root:root /etc/sudoers
