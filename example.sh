@@ -26,7 +26,6 @@ KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks (this gets
 INSTALL_DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
 
 # BLOCKS -----------------------------------------------------------------
-HARDWARE=hardware/laptop/lenovo/thinkpad_x220
 TIME=common/time_ntp_utc
 FILESYSTEM=filesystem/gpt_luks_passphrase_ext4
 BOOTLOADER=bootloader/efi_gummiboot
@@ -36,6 +35,7 @@ POWER=common/power_acpi
 XORG=xorg/xorg_wacom_fonts
 VIDEO=xorg/video_mesa_default
 DESKTOP=xorg/desktop_xmonad_minimal
+HARDWARE=hardware/laptop/lenovo/thinkpad_x220
 APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core appsets/git_default appsets/server_utils"
 PACKAGES="git"
 AURPACKAGES=

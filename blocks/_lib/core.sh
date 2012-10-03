@@ -104,6 +104,7 @@ _loadblock "${BOOTLOADER}"      # BOOTLOADER
 _loadblock "${XORG}"            # XORG
 _loadblock "${DESKTOP}"         # DESKTOP/WM/ETC
 _loadblock "${POSTFLIGHT}"      # COMMON POST INSTALL ROUTINES
+_loadblock "${HARDWARE}"        # COMMON POST INSTALL ROUTINES
 _loadblock "${APPSETS}"         # COMMON APPLICATION/UTILITY SETS
 _installpkg ${PACKAGES}
 _installaur ${AURPACKAGES}
