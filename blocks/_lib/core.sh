@@ -85,6 +85,7 @@ fi
 
 # ARCH CONFIG (POST CHROOT) ----------------------------------------------
 if $INCHROOT; then
+umount /tmp; mount -t tmpfs tmp "$1/tmp" -o mode=1777,strictatime,nodev,nosuid,size=150M
 _load_efi_modules || true       # ATTEMPT TO RELOAD EVIVARS, EVEN IF NOT USING EFI (REQUIRED)
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
 pacman -Sy
