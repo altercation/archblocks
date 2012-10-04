@@ -15,7 +15,7 @@ _installaur libspiro
 _installaur fontforge
 
 #working, but blowing past memory limit
-#_installaur fontconfig-infinality-git
+_installaur fontconfig-infinality-git
 
 #packer -S freetype2-git-infinality # will prompt for freetype2 replacement
 # TODO: sed infinality and change to OSX or OSX2 mode
