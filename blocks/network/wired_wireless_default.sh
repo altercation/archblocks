@@ -15,3 +15,6 @@ _installpkg wpa_supplicant # (optional) - for wireless networking support
 
 _daemon_remove network
 _daemon_add net-auto-wireless net-auto-wired ifplugd net-profiles
+
+mv /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.orig
+echo -e "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=network\nupdate_config=1" > /etc/wpa_supplicant/wpa_supplicant.conf
