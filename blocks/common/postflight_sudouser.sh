@@ -35,7 +35,7 @@ Defaults env_reset, always_set_home, set_home, set_logname
 Defaults !env_editor, editor="/usr/bin/vim:/usr/bin/vi:/usr/bin/nano"
 Defaults timestamp_timeout=360
 Defaults passprompt="Sudo invoked by [%u] on [%H] - Cmd run as %U - Password for user %p:"
-Defaults insults
+Defaults setenv
 
 # allow sudo to start x
 Defaults env_keep += "HOME"

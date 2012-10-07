@@ -179,13 +179,13 @@ _defaultvalue AURHELPER packer
 if command -v $AURHELPER >/dev/null 2>&1; then
     $AURHELPER -S --noconfirm "$@";
 else
-    pkg=$AURHELPER; orig="$(pwd)"; mkdir -p /tmp/${pkg}; cd /tmp/${pkg};
+    pkg=$AURHELPER; orig="$(pwd)"; build_dir=/var/build/${pkg}; mkdir -p $build_dir; cd $build_dir;
     for req in wget git jshon; do
         command -v $req >/dev/null 2>&1 || _installpkg $req;
     done
     wget "https://aur.archlinux.org/packages/${pkg}/${pkg}.tar.gz";
     tar -xzvf ${pkg}.tar.gz; cd ${pkg};
-    makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf /tmp/${pkg};
+    makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf $build_dir;
     $AURHELPER -S --noconfirm "$@";
 fi;
 }

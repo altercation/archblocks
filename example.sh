@@ -6,7 +6,10 @@
 
 # INSTRUCTIONS -----------------------------------------------------------
 # boot into Arch Install media and run (for this script only):
-# curl https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; bash install.sh
+#
+# curl https://raw.github.com/altercation/archblocks/master/sample_laptop.sh" > install.sh
+#     (...manually review the code! look at the blocks in the repo, then...)
+# bash install.sh
 
 # RESPOSITORY ------------------------------------------------------------
 REMOTE=https://raw.github.com/altercation/archblocks/dev
@@ -25,6 +28,14 @@ HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt file
 #KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks (this gets added to)
 INSTALL_DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
 
+# DOTFILES / HOME SETUP --------------------------------------------------
+# mr (available in AUR) allows you to setup your home dir using dvcs such
+# as git, hg, svn and execute shell scripts automatically. 
+# list a url to use as a mr config file and archblocks core install will
+# su to the new user's (USERNAME above) home and bootstrap using it.
+# mr will be installed if this variable is set.
+MR_BOOTSTRAP=https://raw.github.com/altercation/es-etc/master/vcs/.mrconfig
+
 # BLOCKS -----------------------------------------------------------------
 TIME=common/time_ntp_utc
 FILESYSTEM=filesystem/gpt_luks_passphrase_ext4
@@ -36,12 +47,10 @@ XORG=xorg/xorg_wacom_fonts
 VIDEO=xorg/video_mesa_default
 DESKTOP=xorg/desktop_xmonad_minimal
 HARDWARE=hardware/laptop/lenovo_thinkpad_x220
-APPSETS="appsets/cli_utils appsets/edu_utils appsets/vim_core appsets/mutt_core appsets/git_default appsets/server_utils"
+APPSETS="appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git_basics appsets/server_utils"
+# if you don't want to create a new block, you can specify extra packages from official repos or AUR here
 PACKAGES="git"
 AURPACKAGES=
-
-# BACKPAC file or func - future implementation ---------------------------
-BACKPAC=
 
 # EXECUTE ----------------------------------------------------------------
 . <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh"); _loadblock "_lib/core"

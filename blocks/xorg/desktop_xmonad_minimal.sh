@@ -4,7 +4,7 @@ _enable_haskell_repos
 
 # install haskell-xmonad, related from haskell-testing
 
-_installpkg haskell-xmonad haskell-xmonad-contrib haskell-xmonad-extras
+_installpkg ghc cabal-install haskell-xmonad haskell-xmonad-contrib haskell-xmonad-extras
 
 # depending on xmonad config
 
@@ -14,7 +14,10 @@ _installpkg haskell-edit-distance
 # ------------------------------------------------------------------------
 #_installpkg xfce4 compiz ccsm
 _installpkg xcompmgr xscreensaver hsetroot
-_installpkg rxvt-unicode urxvt-url-select
+
+#_installpkg rxvt-unicode urxvt-url-select
+_installaur termite-git
+
 #_installaur rxvt-unicode-cvs # need to manually edit out patch lines
 #_installpkg gtk2
 #_installpkg ghc alex happy gtk2hs-buildtools cabal-install
