@@ -112,5 +112,6 @@ _loadblock "${HARDWARE}"        # COMMON POST INSTALL ROUTINES
 _loadblock "${APPSETS}"         # COMMON APPLICATION/UTILITY SETS
 _installpkg ${PACKAGES}
 _installaur ${AURPACKAGES}
+[ -n "${MR_BOOTSTRAP}" ] && _loadblock "common/mr_bootstrap"
 fi
 
