@@ -239,8 +239,8 @@ _countdown ()
 # countdown 10 "message here"
 #
 for i in `seq $1 -1 1`; do
-echo -en "\r$2 in $i seconds (ctrl-c to cancel and exit)"
-for j in `seq 1 $i`; do echo -n "."; done; echo -en "  \b\b"
+echo -en "\r$2 in $i seconds (ctrl-c to cancel and exit) <"
+for j in `seq 1 $i`; do echo -n "=="; done; echo -en "     \b\b\b\b\b"
 sleep 1; done; echo
 }
 
