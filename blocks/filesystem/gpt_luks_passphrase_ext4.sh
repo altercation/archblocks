@@ -6,6 +6,8 @@
 # path (e.g. /dev/sda) or if INSTALL_DRIVE is set to "query"
 _drivequery;
 
+_countdown 10 "ERASING $INSTALL_DRIVE"
+
 PARTITION_EFI_BOOT=1
 PARTITION_CRYPT_SWAP=2
 PARTITION_CRYPT_ROOT=3

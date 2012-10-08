@@ -245,6 +245,17 @@ grep -v "^\s*INSTALL_DRIVE.*" "${0}" >> "${MNT}${POSTSCRIPT}";
 chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}";
 }
 
+# COUNTDOWN --------------------------------------------------------------
+_countdown ()
+{
+# countdown 10 "message here"
+#
+for i in `seq $1 -1 1`; do
+echo -en "\r$2 in $i seconds (ctrl-c to cancel and exit)"
+for j in `seq 1 $i`; do echo -n "."; done; echo -en "  \b\b"
+sleep 1; done
+}
+
 # WARN -------------------------------------------------------------------
 _initialwarning ()
 {
