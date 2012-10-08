@@ -57,4 +57,4 @@ useradd -m -g users -G audio,lp,optical,storage,video,games,power,scanner,networ
 #_double_check_until_match
 #echo $_DOUBLE_CHECK_RESULT | passwd ${USERNAME} --stdin
 #passwd ${USERNAME} --stdin
-_try_until_success "passwd ${USERNAME}"
+_try_until_success "passwd ${USERNAME}" 5 || echo -e "\nERROR: password unchanged for ${USERNAME}\n"
