@@ -2,7 +2,26 @@
 # FILESYSTEM
 #
 
-DRIVE=${INSTALL_DRIVE:-/dev/sda}
+case "$DRIVE" in
+query|QUERY|interactive|INTERACTIVE|ask|ASK)
+if [ "$DRIVE" == "query" ]; then
+echo -e "\nInstall drive selection\n-----------------------\n"
+lsblk -d
+echo -e "\nPlease enter the full drive (not partition) path starting \
+with /dev (e.g. /dev/sda) that you wish to use as the install volume. \
+NOTE THAT THIS DRIVE WILL BE ERASED.\n"
+_invalid_entry=true; while $_invalid_entry; do read _drive
+if ! [[ "$DRIVE" == /dev* ]]; then echo -e "\nPlease prefix entry with /dev.\n"
+elif echo "${DRIVE}" | grep -q ".*[0-9]$"; then echo -e "\nPlease enter a root volume, not a partition number (e.g. /dev/sda, not /dev/sda1).\n"
+elif [ -z "$DRIVE" ]; then echo "\nNo value entered. Please enter a value for the install volume."
+else _invalid_entry=false; fi; done
+fi
+;;
+*) DRIVE=${INSTALL_DRIVE:-/dev/sda} ;;
+esac
+
+echo -e "\n\nDRIVE ENTERED AS: $DRIVE"; exit
+
 PARTITION_EFI_BOOT=1
 PARTITION_CRYPT_SWAP=2
 PARTITION_CRYPT_ROOT=3
