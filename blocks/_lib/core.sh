@@ -85,10 +85,7 @@ fi
 
 # ARCH CONFIG (POST CHROOT) ----------------------------------------------
 if $INCHROOT; then
-ls /sys/firmware/efi/vars #DEBUG
-_anykey #DEBUG
 umount /tmp; mount -t tmpfs tmp "$1/tmp" -o mode=1777,strictatime,nodev,nosuid,size=150M
-#DEBUG _load_efi_modules || true       # ATTEMPT TO RELOAD EVIVARS, EVEN IF NOT USING EFI (REQUIRED)
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
 pacman -Sy
 _filesystem_post_chroot         # FILESYSTEM POST-CHROOT CONFIGURATION

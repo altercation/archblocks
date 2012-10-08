@@ -24,8 +24,10 @@ _auth_passphrase="$_DOUBLE_CHECK_RESULT"
 MR_BOOTSTRAP="$(echo "${MR_BOOTSTRAP}" | sed "s+^\(.*://\)\(.*\)$+\1${_auth_username}:${_auth_password}@\2+")"
 
 # we're exporting env with su below, so these variables should be accessible to the mr config file as well
+# see https://github.com/altercation/es-etc/blob/master/vcs/.mrconfig for a sample of a mrconfig that uses this
 export AUTH_USERNAME="$_auth_username"
 export AUTH_PASSWORD="$_auth_password"
 fi
 
 su $USERNAME -l -c "mr --trust-all bootstrap \"${MR_BOOTSTRAP}\""
+
