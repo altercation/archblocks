@@ -20,9 +20,6 @@ ls -l /sys/firmware/efi/vars && EFI_MODE=true || EFI_MODE=false
 _installpkg wget efibootmgr gummiboot-efi
 install -Dm0644 /usr/lib/gummiboot/gummibootx64.efi /boot/efi/EFI/gummiboot/gummiboot.efi
 
-# DEBUG TEST
-_anykey ">>>>>>> EFI_MODE IS $EFI_MODE"
-
 if $EFI_MODE; then
     efibootmgr -c -L "Gummiboot" -l '\EFI\gummiboot\gummiboot.efi'
 elif $FAIL_TO_DEFAULT_EFI; then
