@@ -209,6 +209,16 @@ _installaur ()
 # _installpkg pkgname1 [pkgname2] [pkgname3]
 #
 _defaultvalue AURHELPER packer
+echo ">>>>>>>>>>>>>>"
+echo ">>>>>>>>>>>>>>"
+echo ">>>>>>>>>>>>>>"
+echo ">>>>>>>>>>>>>>"
+echo ">>>>>>>>>>>>>>"
+echo ">>>>>>>>>>>>>>"
+echo ">>>>>>>>>>>>>>"
+echo ">>>>>>>>>>>>>>"
+echo ">>>>>>>>>>>>>>"
+_anykey "TEST $@"
 if command -v $AURHELPER >/dev/null 2>&1; then
     _anykey "AUR STANDARD INSTALL OF $@"
     $AURHELPER -S --noconfirm "$@";
@@ -228,7 +238,10 @@ fi;
 # CHROOT POSTSCRIPT ------------------------------------------------------
 _chroot_postscript ()
 {
-cp "${0}" "${MNT}${POSTSCRIPT}";
+# handle interactively assigned install drive value
+echo -e "#!/bin/bash\nINSTALL_DRIVE=$INSTALL_DRIVE" > "${MNT}${POSTSCRIPT}";
+grep -v "^\s*INSTALL_DRIVE.*" "${0}" >> "${MNT}${POSTSCRIPT}";
+#cp "${0}" "${MNT}${POSTSCRIPT}";
 chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}";
 }
 
@@ -306,6 +319,14 @@ _get_uuid ()
 {
 # usage:
 # _get_uuid /dev/sda3
+MATCH="$(echo "$1" | sed "s_/_\\\/_g")"
+blkid -c /dev/null | sed -n "/${MATCH}/ s_.*UUID=\"\([^\"]*\).*_\1_p"
+}
+# GET UUID ON DRIVE/PARTITION --------------------------------------------
+_get_label ()
+{
+# usage:
+# _get_label /dev/sda3
 MATCH="$(echo "$1" | sed "s_/_\\\/_g")"
 blkid -c /dev/null | sed -n "/${MATCH}/ s_.*UUID=\"\([^\"]*\).*_\1_p"
 }
