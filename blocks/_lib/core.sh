@@ -7,7 +7,7 @@
 # PREFLIGHT --------------------------------------------------------------
 
 # buckle up
-#set -o errexit
+set -o errexit
 
 # check if we're in an IO redirect or incorrectly sourced script
 [ ! -f "${0}" ] && echo "Don't run this directly from curl. Save to file first." && exit
