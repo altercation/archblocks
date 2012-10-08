@@ -12,7 +12,7 @@
 # bash install.sh
 
 # RESPOSITORY ------------------------------------------------------------
-REMOTE=https://raw.github.com/altercation/archblocks/dev
+REMOTE=https://raw.github.com/altercation/archblocks/master
 
 # CONFIG -----------------------------------------------------------------
 HOSTNAME=tau
