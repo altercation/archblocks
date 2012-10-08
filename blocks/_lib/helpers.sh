@@ -278,9 +278,7 @@ echo -e "\nInstall drive selection\n-----------------------\n"
 lsblk -d | grep -v "loop"
 if [ -z "$INSTALL_DRIVE" -o "$INSTALL_DRIVE" == "query" -o "$INSTALL_DRIVE" == "QUERY" ]; then
     unset INSTALL_DRIVE
-    echo -e "\nPlease enter the full drive (not partition) path starting \
-    with /dev (e.g. /dev/sda) that you wish to use as the install drive. \
-    NOTE THAT THIS INSTALL_DRIVE WILL BE ERASED.\n"
+    echo -e "\nPlease enter the full drive (not partition) path starting with /dev (e.g. /dev/sda) that you wish to use as the install drive. NOTE THAT THIS INSTALL_DRIVE WILL BE ERASED.\n"
 else
     echo -e "\nConfig value already set to $INSTALL_DRIVE.\n"
 fi
