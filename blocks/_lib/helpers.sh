@@ -253,15 +253,15 @@ _countdown ()
 for i in `seq $1 -1 1`; do
 echo -en "\r$2 in $i seconds (ctrl-c to cancel and exit)"
 for j in `seq 1 $i`; do echo -n "."; done; echo -en "  \b\b"
-sleep 1; done
+sleep 1; done; echo
 }
 
 # WARN -------------------------------------------------------------------
 _initialwarning ()
 {
 _anykey "WARNING: This script will permanently erase the install drive.";
-sleep 2
-_anykey "CONFIRM: Please confirm again to proceed. CTRL-c to exit."
+#sleep 2
+#_anykey "CONFIRM: Please confirm again to proceed. CTRL-c to exit."
 
 }
 
