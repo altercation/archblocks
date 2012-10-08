@@ -51,16 +51,18 @@ _tries=0; _failed=true; while $_failed; do
 _tries=$((_tries+1))
 cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT}
 echo "RESULT IS $?"
+[ $? -eq 0 ] && _failed=false;
 [ $_tries -gt 2 ] && exit;
-[ $? -eq 0 ] && _failed=false; done
+done
 
 # let cryptsetup handle password entry, exit after 3 successive failures
 _tries=0; _failed=true; while $_failed; do
 _tries=$((_tries+1))
 cryptsetup luksOpen ${DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}
 echo "RESULT IS $?"
+[ $? -eq 0 ] && _failed=false;
 [ $_tries -gt 2 ] && exit;
-[ $? -eq 0 ] && _failed=false; done
+done
 
 # make filesystems
 mkfs.vfat ${DRIVE}${PARTITION_EFI_BOOT}
