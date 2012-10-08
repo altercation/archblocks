@@ -107,12 +107,7 @@ _loadblock "${POSTFLIGHT}"      # COMMON POST INSTALL ROUTINES
 _loadblock "${HARDWARE}"        # COMMON POST INSTALL ROUTINES
 _loadblock "${APPSETS}"         # COMMON APPLICATION/UTILITY SETS
 _installpkg ${PACKAGES}
-#DEBUG
-for _aurpkg in ${AURPACKAGES}; do
-_installaur ${_aurpkg}
-done
-
-# DEBUG DONE - UNCOMMENT _installaur ${AURPACKAGES}
+_installaur ${AURPACKAGES}
 [ -n "${MR_BOOTSTRAP}" ] && _loadblock "common/mr_bootstrap"
 fi
 
