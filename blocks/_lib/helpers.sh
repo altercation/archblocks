@@ -333,17 +333,8 @@ _get_uuid ()
 MATCH="$(echo "$1" | sed "s_/_\\\/_g")"
 blkid -c /dev/null | sed -n "/${MATCH}/ s_.*UUID=\"\([^\"]*\).*_\1_p"
 }
-# GET UUID ON DRIVE/PARTITION --------------------------------------------
-_get_label ()
-{
-# usage:
-# _get_label /dev/sda3
-MATCH="$(echo "$1" | sed "s_/_\\\/_g")"
-blkid -c /dev/null | sed -n "/${MATCH}/ s_.*UUID=\"\([^\"]*\).*_\1_p"
-}
 
 # ENABLE REPOSITORIES FOR SPECIFIC LANGUAGES/FRAMEWORKS ------------------
-
 _enable_haskell_repos ()
 {
 
