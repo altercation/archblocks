@@ -26,7 +26,7 @@ TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
 HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
 #KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks (this gets added to)
-INSTALL_DRIVE=/dev/sda # this overrides any default value set in FILESYSTEM block
+INSTALL_DRIVE=query # "/dev/sda" "query" or blank (blank is the same as "query")
 
 # DOTFILES / HOME SETUP --------------------------------------------------
 # mr (available in AUR) allows you to setup your home dir using dvcs such

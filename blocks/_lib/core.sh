@@ -35,9 +35,9 @@ _defaultvalue KEYMAP us
 _defaultvalue TIMEZONE US/Pacific
 _defaultvalue MODULES ""
 _defaultvalue HOOKS "base udev autodetect pata scsi sata filesystems usbinput fsck"
-_defaultvalue KERNEL_PARAMS "quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks
+_defaultvalue KERNEL_PARAMS # "quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks
 _defaultvalue AURHELPER packer
-_defaultvalue INSTALL_DRIVE /dev/sda # this overrides any default value set in FILESYSTEM block
+_defaultvalue INSTALL_DRIVE query # this overrides any default value set in FILESYSTEM block
 
 #TODO: REMOVE THIS #_defaultvalue PRIMARY_BOOTLOADER UEFI # UEFI or BIOS (case insensitive)
 
@@ -53,7 +53,6 @@ _defaultvalue TIME common/time_ntp_utc # or, e.g. time_ntp_localtime
 _defaultvalue SETLOCALE common/locale_default
 _defaultvalue HOST common/host_default
 _defaultvalue FILESYSTEM filesystem/mbr_ext4
-_defaultvalue DRIVE /dev/sda # this overrides any default value set in FILESYSTEM block
 _defaultvalue RAMDISK common/ramdisk_default
 _defaultvalue BOOTLOADER bootloader/bios_grub
 _defaultvalue NETWORK network/wired_wireless_default

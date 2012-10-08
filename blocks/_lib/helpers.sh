@@ -158,9 +158,9 @@ _double_check_until_match ()
 # ask for input twice for match confirmation; loop until matches
 entry1="x" entry2="y"
 while [ "$entry1" != "$entry2" -o -z "$entry1" ]; do
-read -s -p "${1:-Passphrase}:" entry1
+read -s -p "${1:-Passphrase}: " entry1
 echo
-read -s -p "${1:-Passphrase} again:" entry2
+read -s -p "${1:-Passphrase} again: " entry2
 echo
 if [ "$entry1" != "$entry2" ]; then
     echo -e "\n${1:-Passphrase} entry doesn't match.\n" 
@@ -267,6 +267,31 @@ fi
 #set -e
 done
 } 
+
+# QUERY FOR INSTALL DRIVE ------------------------------------------------
+_drivequery ()
+{
+# displays list of drives for initial selection
+# sets $DRIVE to queried install drive selection
+#
+echo -e "\nInstall drive selection\n-----------------------\n"
+lsblk -d
+if [ -z "$INSTALL_DRIVE" -o "$INSTALL_DRIVE" == "query" -o "$INSTALL_DRIVE" == "QUERY" ]; then
+    unset INSTALL_DRIVE
+    echo -e "\nPlease enter the full drive (not partition) path starting \
+    with /dev (e.g. /dev/sda) that you wish to use as the install drive. \
+    NOTE THAT THIS INSTALL_DRIVE WILL BE ERASED.\n"
+else
+    echo -e "\nConfig value already set to $INSTALL_DRIVE.\n"
+fi
+_invalid_entry=true; while $_invalid_entry; do
+[ -z "$INSTALL_DRIVE" ] && read -p "INSTALL DRIVE: " INSTALL_DRIVE
+if [ -z "$INSTALL_DRIVE" ]; then echo -e "\nNo value entered.\n"; unset INSTALL_DRIVE
+elif ! echo "$INSTALL_DRIVE" | grep -q "^/dev.*"; then echo -e "\nPlease prefix entry with /dev.\n"; unset INSTALL_DRIVE
+elif echo "$INSTALL_DRIVE" | grep -q ".*[0-9]$"; then echo -e "\nPlease enter a root volume, not a partition number (e.g. /dev/sda, not /dev/sda1).\n"; unset INSTALL_DRIVE
+else _invalid_entry=false; fi;
+done;
+}
 
 # LOAD EFIVARS MODULE ----------------------------------------------------
 _load_efi_modules ()

@@ -2,25 +2,9 @@
 # FILESYSTEM
 #
 
-case "$DRIVE" in
-query|QUERY|interactive|INTERACTIVE|ask|ASK)
-if [ "$DRIVE" == "query" ]; then
-echo -e "\nInstall drive selection\n-----------------------\n"
-lsblk -d
-echo -e "\nPlease enter the full drive (not partition) path starting \
-with /dev (e.g. /dev/sda) that you wish to use as the install volume. \
-NOTE THAT THIS DRIVE WILL BE ERASED.\n"
-_invalid_entry=true; while $_invalid_entry; do read _drive
-if ! [[ "$DRIVE" == /dev* ]]; then echo -e "\nPlease prefix entry with /dev.\n"
-elif echo "${DRIVE}" | grep -q ".*[0-9]$"; then echo -e "\nPlease enter a root volume, not a partition number (e.g. /dev/sda, not /dev/sda1).\n"
-elif [ -z "$DRIVE" ]; then echo "\nNo value entered. Please enter a value for the install volume."
-else _invalid_entry=false; fi; done
-fi
-;;
-*) DRIVE=${INSTALL_DRIVE:-/dev/sda} ;;
-esac
-
-echo -e "\n\nDRIVE ENTERED AS: $DRIVE"; exit
+# queries if INSTALL_DRIVE not already set in main install-config file to valid 
+# path (e.g. /dev/sda) or if INSTALL_DRIVE is set to "query"
+_drivequery;
 
 PARTITION_EFI_BOOT=1
 PARTITION_CRYPT_SWAP=2
@@ -45,53 +29,53 @@ _filesystem_pre_baseinstall () {
 # boot partitions and the like.
 
 # disk prep
-sgdisk -Z ${DRIVE} # zap all on disk
-sgdisk -a 2048 -o ${DRIVE} # new gpt disk 2048 alignment
+sgdisk -Z ${INSTALL_DRIVE} # zap all on disk
+sgdisk -a 2048 -o ${INSTALL_DRIVE} # new gpt disk 2048 alignment
 
 # create partitions
-sgdisk -n ${PARTITION_EFI_BOOT}:0:+200M ${DRIVE} # (UEFI BOOT), default start block, 200MB
-sgdisk -n ${PARTITION_CRYPT_SWAP}:0:+2G ${DRIVE} # (SWAP), default start block, 2GB
-sgdisk -n ${PARTITION_CRYPT_ROOT}:0:0 ${DRIVE}   # (LUKS), default start, remaining space
+sgdisk -n ${PARTITION_EFI_BOOT}:0:+200M ${INSTALL_DRIVE} # (UEFI BOOT), default start block, 200MB
+sgdisk -n ${PARTITION_CRYPT_SWAP}:0:+2G ${INSTALL_DRIVE} # (SWAP), default start block, 2GB
+sgdisk -n ${PARTITION_CRYPT_ROOT}:0:0 ${INSTALL_DRIVE}   # (LUKS), default start, remaining space
 
 # set partition types
-sgdisk -t ${PARTITION_EFI_BOOT}:ef00 ${DRIVE}
-sgdisk -t ${PARTITION_CRYPT_SWAP}:8200 ${DRIVE}
-sgdisk -t ${PARTITION_CRYPT_ROOT}:8300 ${DRIVE}
+sgdisk -t ${PARTITION_EFI_BOOT}:ef00 ${INSTALL_DRIVE}
+sgdisk -t ${PARTITION_CRYPT_SWAP}:8200 ${INSTALL_DRIVE}
+sgdisk -t ${PARTITION_CRYPT_ROOT}:8300 ${INSTALL_DRIVE}
 
 # label partitions
-sgdisk -c ${PARTITION_EFI_BOOT}:"${LABEL_BOOT_EFI}" ${DRIVE}
-sgdisk -c ${PARTITION_CRYPT_SWAP}:"${LABEL_SWAP}" ${DRIVE}
-sgdisk -c ${PARTITION_CRYPT_ROOT}:"${LABEL_ROOT}" ${DRIVE}
+sgdisk -c ${PARTITION_EFI_BOOT}:"${LABEL_BOOT_EFI}" ${INSTALL_DRIVE}
+sgdisk -c ${PARTITION_CRYPT_SWAP}:"${LABEL_SWAP}" ${INSTALL_DRIVE}
+sgdisk -c ${PARTITION_CRYPT_ROOT}:"${LABEL_ROOT}" ${INSTALL_DRIVE}
 
 # format LUKS on root
 
 # let cryptsetup handle password entry, exit after 3 successive failures
-_try_until_success "cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT}" 3 || exit
+_try_until_success "cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${INSTALL_DRIVE}${PARTITION_CRYPT_ROOT}" 3 || exit
 #_tries=0; _failed=true; while $_failed; do
 #_tries=$((_tries+1))
-#cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT}
+#cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${INSTALL_DRIVE}${PARTITION_CRYPT_ROOT}
 #[ ! $? -gt 0 ] && _failed=false;
 #[ $_tries -gt 6 ] && exit;
 #done
 
 # let cryptsetup handle password entry, exit after 3 successive failures
-_try_until_success "cryptsetup luksOpen ${DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}" 3 || exit
+_try_until_success "cryptsetup luksOpen ${INSTALL_DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}" 3 || exit
 #_tries=0; _failed=true; while $_failed; do
 #_tries=$((_tries+1))
-#cryptsetup luksOpen ${DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}
+#cryptsetup luksOpen ${INSTALL_DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}
 #[ $? -eq 0 ] && _failed=false;
 #[ $_tries -gt 6 ] && exit;
 #done
 
 # make filesystems
-mkfs.vfat ${DRIVE}${PARTITION_EFI_BOOT}
+mkfs.vfat ${INSTALL_DRIVE}${PARTITION_EFI_BOOT}
 mkfs.ext4 /dev/mapper/${LABEL_ROOT_CRYPT}
 
 # mount target
 # mkdir ${MOUNT_PATH}
 mount /dev/mapper/${LABEL_ROOT_CRYPT} ${MOUNT_PATH}
 mkdir -p ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}
-mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}
+mount -t vfat ${INSTALL_DRIVE}${PARTITION_EFI_BOOT} ${MOUNT_PATH}${EFI_SYSTEM_PARTITION}
 }
 
 _filesystem_post_baseinstall () {
@@ -122,8 +106,8 @@ umount ${MOUNT_PATH}${EFI_SYSTEM_PARTITION};
 
 _filesystem_post_chroot ()
 {
-mount -t vfat ${DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1;
+mount -t vfat ${INSTALL_DRIVE}${PARTITION_EFI_BOOT} ${EFI_SYSTEM_PARTITION} || return 1;
 # KERNEL_PARAMS used by BOOTLOADER
 # KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }cryptdevice=/dev/sda3:${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
-KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }cryptdevice=UUID=$(_get_uuid ${DRIVE}${PARTITION_CRYPT_ROOT}):${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
+KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }cryptdevice=UUID=$(_get_uuid ${INSTALL_DRIVE}${PARTITION_CRYPT_ROOT}):${LABEL_ROOT_CRYPT} root=/dev/mapper/${LABEL_ROOT_CRYPT} ro rootfstype=ext4"
 }
