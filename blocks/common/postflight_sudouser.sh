@@ -41,24 +41,19 @@ Defaults setenv
 Defaults env_keep += "HOME"
 EOF
 
-#lsof > /test/2/dump_lsof
-#free -m > /test/2/dump_free
-#pstree > /test/2/dump_pstree
-#df -a > /test/2/dump_df
-#ls /dev/fd/** > /test/2/dump_dev_fd
-
+# check and copy /etc/sudoers
 visudo -qcsf /etc/sudoers.temp && cat /etc/sudoers.temp > /etc/sudoers && rm /etc/sudoers.temp
 
 # make sure we have the right permissions and ownership
 chown -c root:root /etc/sudoers
 chmod -c 0440 /etc/sudoers
 
-_anykey ">>>>>>>>>>>>>>>>>>>>>>>>>>>CHECK"
-
 # add user
 # ------------------------------------------------------------------------
 echo -e "\nNew non-root user password (username:${USERNAME})\n"
 groupadd sudo
 useradd -m -g users -G audio,lp,optical,storage,video,games,power,scanner,network,sudo,wheel -s ${USERSHELL} ${USERNAME}
-passwd ${USERNAME}
+
+_newpass="$(_double_check_until_match)"
+echo $_newpass | passwd ${USERNAME} --stdin
 

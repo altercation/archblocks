@@ -1,4 +1,4 @@
-#!/bin/bash
+e!/bin/bash
 # ------------------------------------------------------------------------
 # archblocks - modular Arch Linux install script
 # ------------------------------------------------------------------------
@@ -150,6 +150,19 @@ _anykey ()
 # _anykey "optional custom message"
 #
 echo -e "\n$@"; read -sn 1 -p "Any key to continue..."; echo;
+}
+
+# DOUBLE CHECK UNTIL MATCH -----------------------------------------------
+_double_check_until_match ()
+{
+# ask for input twice for match confirmation; loop until matches
+entry1="x" entry2="y"
+while [ "$entry1" != "$entry2" -o -z "$entry1" ]; do
+read -s -p "${1+Passphrase}:" entry1
+echo "Again"
+read -s -p "${1+Passphrase}:" entry2
+done
+echo "$entry1"
 }
 
 # INSTALLPKG -------------------------------------------------------------
