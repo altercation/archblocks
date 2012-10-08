@@ -50,7 +50,6 @@ sgdisk -c ${PARTITION_CRYPT_ROOT}:"${LABEL_ROOT}" ${DRIVE}
 _tries=0; _failed=true; while $_failed; do
 _tries=$((_tries+1))
 cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${DRIVE}${PARTITION_CRYPT_ROOT}
-echo "RESULT IS $?"
 [ $? -eq 0 ] && _failed=false;
 [ $_tries -gt 2 ] && exit;
 done
@@ -59,7 +58,6 @@ done
 _tries=0; _failed=true; while $_failed; do
 _tries=$((_tries+1))
 cryptsetup luksOpen ${DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}
-echo "RESULT IS $?"
 [ $? -eq 0 ] && _failed=false;
 [ $_tries -gt 2 ] && exit;
 done
