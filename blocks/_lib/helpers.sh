@@ -210,8 +210,10 @@ _installaur ()
 #
 _defaultvalue AURHELPER packer
 if command -v $AURHELPER >/dev/null 2>&1; then
+    _anykey "AUR STANDARD INSTALL OF $@"
     $AURHELPER -S --noconfirm "$@";
 else
+    _anykey "AUR PRE INSTALL OF $AURHELPER"
     pkg=$AURHELPER; orig="$(pwd)"; build_dir=/var/build/${pkg}; mkdir -p $build_dir; cd $build_dir;
     for req in wget git jshon; do
         command -v $req >/dev/null 2>&1 || _installpkg $req;
