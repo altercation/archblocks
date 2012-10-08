@@ -21,7 +21,9 @@ _installpkg wget efibootmgr gummiboot-efi
 install -Dm0644 /usr/lib/gummiboot/gummibootx64.efi /boot/efi/EFI/gummiboot/gummiboot.efi
 
 if $EFI_MODE; then
-    efibootmgr -c -L "Gummiboot" -l '\EFI\gummiboot\gummiboot.efi'
+    # BOOT_DRIVE must be set by filesystem to be used
+    [ -n "$BOOT_DRIVE" ] && BOOT_ARG="-d $BOOT_DRIVE" || BOOT_ARG=""
+    efibootmgr -c -L "Gummiboot" -l '\EFI\gummiboot\gummiboot.efi' $BOOT_ARG
 elif $FAIL_TO_DEFAULT_EFI; then
     install -Dm0644 /usr/lib/gummiboot/gummibootx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
 else

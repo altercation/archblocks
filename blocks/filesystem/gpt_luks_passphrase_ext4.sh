@@ -6,8 +6,7 @@
 # path (e.g. /dev/sda) or if INSTALL_DRIVE is set to "query"
 _drivequery;
 
-_countdown 10 "ERASING $INSTALL_DRIVE"
-
+BOOT_DRIVE=$INSTALL_DRIVE
 PARTITION_EFI_BOOT=1
 PARTITION_CRYPT_SWAP=2
 PARTITION_CRYPT_ROOT=3
@@ -22,6 +21,7 @@ EFI_SYSTEM_PARTITION=/boot/efi
 #_add_to_var MODULES "dm_mod dm_crypt aes_x86_64"
 
 _filesystem_pre_baseinstall () {
+_countdown 10 "ERASING $INSTALL_DRIVE"
 # Here we create three partitions:
 # 1. efi and /boot (one partition does double duty)
 # 2. swap
