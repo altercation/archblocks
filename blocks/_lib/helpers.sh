@@ -275,7 +275,7 @@ _drivequery ()
 # sets $DRIVE to queried install drive selection
 #
 echo -e "\nInstall drive selection\n-----------------------\n"
-lsblk -d
+lsblk -d | grep -v "loop"
 if [ -z "$INSTALL_DRIVE" -o "$INSTALL_DRIVE" == "query" -o "$INSTALL_DRIVE" == "QUERY" ]; then
     unset INSTALL_DRIVE
     echo -e "\nPlease enter the full drive (not partition) path starting \
