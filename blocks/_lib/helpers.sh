@@ -158,11 +158,17 @@ _double_check_until_match ()
 # ask for input twice for match confirmation; loop until matches
 entry1="x" entry2="y"
 while [ "$entry1" != "$entry2" -o -z "$entry1" ]; do
-read -s -p "${1+Passphrase}:" entry1
-echo "Again"
-read -s -p "${1+Passphrase}:" entry2
+read -s -p "${1:-Passphrase}:" entry1
+echo
+read -s -p "${1:-Passphrase} again:" entry2
+echo
+if [ "$entry1" != "$entry2" ]; then
+    echo -e "\n${1:-Passphrase} entry doesn't match.\n" 
+elif [ -z "$entry1" ]; then
+    echo -e "\n${1:-Passphrase} cannot be blank.\n" 
+fi
 done
-echo "$entry1"
+_DOUBLE_CHECK_RESULT="$entry1"
 }
 
 # INSTALLPKG -------------------------------------------------------------
