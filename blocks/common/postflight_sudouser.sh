@@ -54,6 +54,7 @@ echo -e "\nNew non-root user password (username:${USERNAME})\n"
 groupadd sudo
 useradd -m -g users -G audio,lp,optical,storage,video,games,power,scanner,network,sudo,wheel -s ${USERSHELL} ${USERNAME}
 
-_newpass="$(_double_check_until_match)"
-echo $_newpass | passwd ${USERNAME} --stdin
-
+#_double_check_until_match
+#echo $_DOUBLE_CHECK_RESULT | passwd ${USERNAME} --stdin
+#passwd ${USERNAME} --stdin
+_try_until_success "passwd ${USERNAME}"

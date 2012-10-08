@@ -171,6 +171,20 @@ done
 _DOUBLE_CHECK_RESULT="$entry1"
 }
 
+# TRY_UNTIL_SUCCESS
+_try_until_success ()
+{
+# first argument is statement that must evaluate as true in order to continue
+# optional second argument specifies number of tries to limit to
+_tries=0; _failed=true; while $_failed; do
+_tries=$((_tries+1))
+eval "$1"
+[ $? -eq 0 ] && _failed=false;
+[ -n "$2" -a $_tries -gt $2 ] && return 1;
+done
+return 0
+}
+
 # INSTALLPKG -------------------------------------------------------------
 _installpkg ()
 {
