@@ -50,7 +50,7 @@ NETWORK=network/wired_wireless_default
 #APPSETS="appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git_basics appsets/server_utils"
 # if you don't want to create a new block, you can specify extra packages from official repos or AUR here
 PACKAGES="urxvt"
-AURPACKAGES="urxvi urxvtcd"
+AURPACKAGES="urxvi urxvtcd urxvtcd"
 
 # EXECUTE ----------------------------------------------------------------
 . <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh"); _loadblock "_lib/core"
