@@ -38,7 +38,7 @@ _defaultvalue HOOKS "base udev autodetect pata scsi sata filesystems usbinput fs
 _defaultvalue KERNEL_PARAMS # "quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks
 _defaultvalue AURHELPER packer
 _defaultvalue INSTALL_DRIVE query # this overrides any default value set in FILESYSTEM block
-_defaultvalue INIT_MODE=systemd # systemd vs anything else. Blocks/helpers can check this to confirm systemd use
+_defaultvalue INIT_MODE systemd # systemd vs anything else. Blocks/helpers can check this to confirm systemd use
 
 #TODO: REMOVE THIS #_defaultvalue PRIMARY_BOOTLOADER UEFI # UEFI or BIOS (case insensitive)
 
