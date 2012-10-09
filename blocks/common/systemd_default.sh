@@ -6,8 +6,15 @@
 _anykey ">>>>>>>>>>>SYSTEMD TEST"
 
 _installpkg systemd
-pacman -S systemd-sysvcompat # interactive
+pacman -R --noconfirm sysvinit
+_anykey ">>>>>>>>>>>SYSTEMD TEST"
+
+pacman -S --noconfirm systemd-sysvcompat
+_anykey ">>>>>>>>>>>SYSTEMD TEST"
+
 pacman -R --noconfirm initscripts # going for pure systemd
+_anykey ">>>>>>>>>>>SYSTEMD TEST"
+
 
 # NOT NEEDED IN PURE SYSTEMD MODE
 # KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }init=/bin/systemd"
