@@ -1,9 +1,8 @@
-# ------------------------------------------------------------------------
-# SYSTEMD
-# ------------------------------------------------------------------------
+#!/bin/bash
+#
+# pure systemd installation
+# https://wiki.archlinux.org/index.php/Systemd#A_pure_systemd_installation
 
-_installpkg systemd 
-
-# KERNEL_PARAMS used by BOOTLOADER
-KERNEL_PARAMS="${KERNEL_PARAMS:+${KERNEL_PARAMS} }init=/bin/systemd"
+pacman -S --noconfirm systemd systemd-sysvcompat
+pacman -R --noconfirm initscripts
 

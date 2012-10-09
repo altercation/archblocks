@@ -352,6 +352,11 @@ pacman --noconfirm -Sy
 
 }
 
+# INIT/SYSTEMD FUNCTIONS -------------------------------------------------
+
+# return true if INIT_MODE is systemd (this is the INIT_MODE default)
+_systemd () { [ "$INIT_MODE" == "systemd" ] && return 0 || return 1; }
+
 # MISC FUNCTIONS ---------------------------------------------------------
 
 _setfont () { setfont $FONT; }

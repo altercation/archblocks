@@ -38,6 +38,7 @@ _defaultvalue HOOKS "base udev autodetect pata scsi sata filesystems usbinput fs
 _defaultvalue KERNEL_PARAMS # "quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks
 _defaultvalue AURHELPER packer
 _defaultvalue INSTALL_DRIVE query # this overrides any default value set in FILESYSTEM block
+_defaultvalue INIT_MODE=systemd # systemd vs anything else. Blocks/helpers can check this to confirm systemd use
 
 #TODO: REMOVE THIS #_defaultvalue PRIMARY_BOOTLOADER UEFI # UEFI or BIOS (case insensitive)
 
@@ -88,7 +89,7 @@ umount /tmp && mount -t tmpfs tmp "/tmp" -o mode=1777,strictatime,nodev,nosuid,s
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
 pacman -Sy
 _filesystem_post_chroot         # FILESYSTEM POST-CHROOT CONFIGURATION
-#_loadblock "${INIT}"       	# INIT
+_systemd && _loadblock "common/systemd_default" # PURE SYSTEMD INSTALL
 _loadblock "${SETLOCALE}"       # SET LOCALE
 _loadblock "${TIME}"            # TIME
 _loadblock "${HOST}"            # HOSTNAME
