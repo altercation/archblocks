@@ -34,13 +34,11 @@ EOF
 
 echo "1 mypassword" > /etc/chrony.keys
 
-systemctl start chrony
-
 # following chronyc commands useful if your clock is signficantly off from ntp servers
-chronyc << EOF
-password mypassword
-online
-makestep
-trimrtc
-writertc
-EOF
+#chronyc << EOF
+#password mypassword
+#online
+#makestep
+#trimrtc
+#writertc
+#EOF
