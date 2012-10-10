@@ -85,7 +85,8 @@ fi
 
 # ARCH CONFIG (POST CHROOT) ----------------------------------------------
 if $INCHROOT; then
-umount /tmp && mount -t tmpfs tmp "/tmp" -o mode=1777,strictatime,nodev,nosuid,size=150M
+#umount /tmp || _anykey "didn't unmount tmp..."
+#mount -t tmpfs tmp "/tmp" -o mode=1777,strictatime,nodev,nosuid,size=150M
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
 pacman -Sy
 _filesystem_post_chroot         # FILESYSTEM POST-CHROOT CONFIGURATION
