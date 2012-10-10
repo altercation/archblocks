@@ -86,8 +86,6 @@ fi
 # ARCH CONFIG (POST CHROOT) ----------------------------------------------
 if $INCHROOT; then
 umount /tmp || _anykey "didn't unmount tmp..."
-#mount -t tmpfs tmp "/tmp" -o mode=1777,strictatime,nodev,nosuid,size=250M
-
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
 pacman -Sy
 _filesystem_post_chroot         # FILESYSTEM POST-CHROOT CONFIGURATION
@@ -105,15 +103,12 @@ _loadblock "${POWER}"           # POWER
 _loadblock "${RAMDISK}"         # RAMDISK
 _loadblock "${BOOTLOADER}"      # BOOTLOADER
 _loadblock "${POSTFLIGHT}"      # COMMON POST INSTALL ROUTINES
-
 _loadblock "${XORG}"            # XORG
 _loadblock "${DESKTOP}"         # DESKTOP/WM/ETC
 _loadblock "${HARDWARE}"        # COMMON POST INSTALL ROUTINES
 _loadblock "${APPSETS}"         # COMMON APPLICATION/UTILITY SETS
-
 _installpkg ${PACKAGES}
 _installaur ${AURPACKAGES}
-
 _loadblock "${MR_BOOTSTRAP+common/mr_bootstrap}" # only if MR_BOOTSTRAP set
 fi
 
