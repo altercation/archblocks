@@ -107,13 +107,16 @@ _loadblock "${POWER}"           # POWER
 #_loadblock "${KERNEL}"         # KERNEL
 _loadblock "${RAMDISK}"         # RAMDISK
 _loadblock "${BOOTLOADER}"      # BOOTLOADER
+_loadblock "${POSTFLIGHT}"      # COMMON POST INSTALL ROUTINES
+
 _loadblock "${XORG}"            # XORG
 _loadblock "${DESKTOP}"         # DESKTOP/WM/ETC
-_loadblock "${POSTFLIGHT}"      # COMMON POST INSTALL ROUTINES
 _loadblock "${HARDWARE}"        # COMMON POST INSTALL ROUTINES
 _loadblock "${APPSETS}"         # COMMON APPLICATION/UTILITY SETS
+
 _installpkg ${PACKAGES}
 _installaur ${AURPACKAGES}
+
 _loadblock "${MR_BOOTSTRAP+common/mr_bootstrap}" # only if MR_BOOTSTRAP set
 fi
 
