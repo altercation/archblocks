@@ -36,8 +36,7 @@ echo "1 mypassword" > /etc/chrony.keys
 
 systemctl start chrony
 
-_anykey "TESTING CHRONY >>>>>>"
-# chronyc makestep to adjust if large differential
+# following chronyc commands useful if your clock is signficantly off from ntp servers
 chronyc << EOF
 password mypassword
 online
@@ -45,4 +44,3 @@ makestep
 trimrtc
 writertc
 EOF
-_anykey "TESTING CHRONY >>>>>>"
