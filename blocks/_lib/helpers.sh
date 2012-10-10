@@ -212,7 +212,7 @@ _defaultvalue AURHELPER packer
 if command -v $AURHELPER >/dev/null 2>&1; then
     $AURHELPER -S --noconfirm "$@";
 else
-    pkg=$AURHELPER; orig="$(pwd)"; build_dir=/var/build/${pkg}; mkdir -p $build_dir; cd $build_dir;
+    pkg=$AURHELPER; orig="$(pwd)"; build_dir=/tmp/build/${pkg}; mkdir -p $build_dir; cd $build_dir;
     for req in wget git jshon; do
         command -v $req >/dev/null 2>&1 || _installpkg $req;
     done
