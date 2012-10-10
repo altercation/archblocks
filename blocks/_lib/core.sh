@@ -87,9 +87,6 @@ fi
 if $INCHROOT; then
 umount /tmp || _anykey "didn't unmount tmp..."
 mount -t tmpfs tmp "/tmp" -o mode=1777,strictatime,nodev,nosuid,size=150M
-_anykey "CHECK MOUNT"
-mount
-_anykey "CHECK MOUNT"
 
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
 pacman -Sy
