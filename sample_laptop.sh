@@ -25,9 +25,9 @@ KEYMAP=us
 TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
 HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
-INIT_MODE=systemd # systemd is the default value; change to anything else or blank to skip systemd install/config
-KERNEL_PARAMS="quiet" # set/used in FILESYSTEM,INIT,BOOTLOADER blocks (this gets added to)
-INSTALL_DRIVE=query # "/dev/sda" "query" or blank (blank is the same as "query")
+INIT_MODE=systemd     # systemd is the default value; change to blank or any other-value to skip
+KERNEL_PARAMS="quiet" # used in FILESYSTEM, INIT, BOOTLOADER blocks (gets added to)
+INSTALL_DRIVE=query   # "/dev/sda" "query" or blank (blank is the same as "query")
 
 # DOTFILES / HOME SETUP --------------------------------------------------
 # mr (available in AUR) allows you to setup your home dir using dvcs such
@@ -49,9 +49,12 @@ VIDEO=xorg/video_mesa_default
 DESKTOP=xorg/desktop_xmonad_minimal
 HARDWARE=hardware/laptop/lenovo_thinkpad_x220
 APPSETS="appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git_basics appsets/server_utils"
-# if you don't want to create a new block, you can specify extra packages from official repos or AUR here
+
+# EXTRA PACKAGES ---------------------------------------------------------
+# if you don't want to create a new block, you can specify extra packages
+# from official repos or AUR here (simple space separated list of packages)
 PACKAGES="git"
-AURPACKAGES=
+AURPACKAGES=""
 
 # EXECUTE ----------------------------------------------------------------
 . <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh"); _loadblock "_lib/core"
