@@ -38,7 +38,7 @@ INSTALL_DRIVE=query # "/dev/sda" "query" or blank (blank is the same as "query")
 MR_BOOTSTRAP=https://raw.github.com/altercation/es-etc/master/vcs/.mrconfig
 
 # BLOCKS -----------------------------------------------------------------
-TIME=common/time_ntp_utc
+TIME=common/time_chrony_utc
 FILESYSTEM=filesystem/gpt_luks_passphrase_ext4
 BOOTLOADER=bootloader/efi_gummiboot
 NETWORK=network/wired_wireless_default
