@@ -86,7 +86,8 @@ fi
 # ARCH CONFIG (POST CHROOT) ----------------------------------------------
 if $INCHROOT; then
 umount /tmp || _anykey "didn't unmount tmp..."
-mount -t tmpfs tmp "/tmp" -o mode=1777,strictatime,nodev,nosuid,size=250M
+mkdir /tmp || _anykey "failed mkdir tmp"
+#mount -t tmpfs tmp "/tmp" -o mode=1777,strictatime,nodev,nosuid,size=250M
 
 _loadblock "${FILESYSTEM}"      # LOAD FILESYSTEM FUNCTIONS
 pacman -Sy
