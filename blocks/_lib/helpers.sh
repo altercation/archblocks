@@ -334,13 +334,13 @@ _enable_haskell_repos ()
 #Server = http://www.kiwilight.com/haskell/testing/$arch\
 #' /etc/pacman.conf
 
-egrep -q "^\[haskell-extra\]" /etc/pacman.conf && \
+egrep -q "^\[haskell-extra\]" /etc/pacman.conf || \
 sed -i '/^\[core\]/i \
 [haskell-extra]\
 Server = http://archhaskell.mynerdside.com/$repo/$arch\
 ' /etc/pacman.conf
 
-egrep -q "^\[haskell\]" /etc/pacman.conf && \
+egrep -q "^\[haskell\]" /etc/pacman.conf || \
 sed -i '/^\[core\]/i \
 [haskell]\
 Server = http://xsounds.org/~haskell/$arch\
