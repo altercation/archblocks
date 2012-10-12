@@ -44,8 +44,8 @@ BOOTLOADER=bootloader/efi_gummiboot
 NETWORK=network/wired_wireless_default
 AUDIO=common/audio_alsa
 POWER=common/power_acpi
-XORG=xorg/xorg_wacom_fonts
-VIDEO=xorg/video_mesa_default
+XORG=xorg/xorg_default xorg/xorg_fonts_infinality xorg/xorg_wacom xorg/xorg_synaptics xorg/mesa_dri
+VIDEO=video/video_intel
 DESKTOP=xorg/desktop_xmonad_minimal
 HARDWARE=hardware/laptop/lenovo_thinkpad_x220
 APPSETS="appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git_basics appsets/server_utils"
@@ -53,8 +53,8 @@ APPSETS="appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git
 # EXTRA PACKAGES ---------------------------------------------------------
 # if you don't want to create a new block, you can specify extra packages
 # from official repos or AUR here (simple space separated list of packages)
-PACKAGES="git"
-AURPACKAGES=""
+PACKAGES="git rxvt-unicode"
+AURPACKAGES="termite-git"
 
 # EXECUTE ----------------------------------------------------------------
 . <(curl -fsL "${REMOTE}/blocks/_lib/helpers.sh"); _loadblock "_lib/core"
