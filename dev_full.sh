@@ -53,7 +53,7 @@ APPSETS="appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git
 # EXTRA PACKAGES ---------------------------------------------------------
 # if you don't want to create a new block, you can specify extra packages
 # from official repos or AUR here (simple space separated list of packages)
-PACKAGES="git rxvt-unicode"
+PACKAGES="git rxvt-unicode xterm"
 AURPACKAGES="termite-git"
 
 # EXECUTE ----------------------------------------------------------------

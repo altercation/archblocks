@@ -328,11 +328,11 @@ _enable_haskell_repos ()
 
 # add repos to /etc/pacman.conf
 
-egrep -q "^\[haskell-testing\]" /etc/pacman.conf || \
-sed -i '/^\[core\]/i \
-[haskell-testing]\
-Server = http://www.kiwilight.com/haskell/testing/$arch\
-' /etc/pacman.conf
+#egrep -q "^\[haskell-testing\]" /etc/pacman.conf || \
+#sed -i '/^\[core\]/i \
+#[haskell-testing]\
+#Server = http://www.kiwilight.com/haskell/testing/$arch\
+#' /etc/pacman.conf
 
 egrep -q "^\[haskell-extra\]" /etc/pacman.conf && \
 sed -i '/^\[core\]/i \
