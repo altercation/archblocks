@@ -62,7 +62,7 @@ options        initrd=\\EFI\\arch\initramfs-linux.img ${KERNEL_PARAMS}
 GUMMIENTRIES
 
 mkdir /etc/kernel
-cat "${KERNEL_PARAMS}" > /etc/kernel/cmdline # for use in script below
+echo "${KERNEL_PARAMS}" > /etc/kernel/cmdline # for use in script below
 
 # ------------------------------------------------------------------------
 # POST KERNEL UPGRADE SYSTEMD SERVICE
