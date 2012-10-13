@@ -24,9 +24,15 @@ LANGUAGE=en_US.UTF-8
 KEYMAP=us
 TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
-HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck shutdown"
+
+#HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck shutdown"
+# possible fix for occasional blank screen on resume? https://wiki.archlinux.org/index.php/Pm-utils#Blank_screen_issue
+HOOKS="base udev pata scsi sata usb usbinput consolefont encrypt filesystems fsck shutdown"
+
 INIT_MODE=systemd     # systemd is the default value; change to blank or any other-value to skip
-KERNEL_PARAMS="quiet" # used in FILESYSTEM, INIT, BOOTLOADER blocks (gets added to)
+
+# see http://www.phoronix.com/scan.php?page=article&item=intel_i915_power&num=1
+KERNEL_PARAMS="quiet i915.i915_enable_rc6=1 i915.i915_enable_fbc=1 i915.lvds_downclock=1" # used in FILESYSTEM, INIT, BOOTLOADER blocks (gets added to)
 INSTALL_DRIVE=query   # "/dev/sda" "query" or blank (blank is the same as "query")
 
 # DOTFILES / HOME SETUP --------------------------------------------------

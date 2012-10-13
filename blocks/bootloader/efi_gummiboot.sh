@@ -28,8 +28,8 @@ if $EFI_MODE; then
     [ -n "$BOOT_DRIVE" ] && BOOT_ARG="-d $BOOT_DRIVE" || BOOT_ARG=""
 
     # delete if existing
-    if efibootmgr | grep -q "$EFI_LISTING_NAME"; then
-   	: 
+    if efibootmgr | grep -q "\*${EFI_LISTING_NAME}$"; then
+        efibootmgr -b $(efibootmgr | grep -q "\*${EFI_LISTING_NAME}$" | sed "s/Boot\(....\).*$/\1/") -B
     fi
 
     # write new bootloader entry
@@ -230,11 +230,9 @@ BOOT_OPTIONS=${BOOT_OPTIONS[*]}
 
 check_kernel "${1:-linux}"
 EOF
+chmod a+x /boot/kernel-post-upgrade.sh
 
-# note: will have to enable this post reboot with:
-# systemctl enable kernel-post-upgrade.path
-
-echo "systemctl enable kernel-post-upgrade.path" >> /root/post-reboot.sh
+systemctl enable kernel-post-upgrade.path
 
 fi
 # ------------------------------------------------------------------------
