@@ -28,8 +28,8 @@ if $EFI_MODE; then
     [ -n "$BOOT_DRIVE" ] && BOOT_ARG="-d $BOOT_DRIVE" || BOOT_ARG=""
 
     # delete if existing
-    if efibootmgr | grep -q "$EFI_LISTING_NAME"
-    
+    if efibootmgr | grep -q "$EFI_LISTING_NAME"; then
+   	: 
     fi
 
     # write new bootloader entry
