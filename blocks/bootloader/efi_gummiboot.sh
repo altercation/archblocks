@@ -29,6 +29,7 @@ if $EFI_MODE; then
 
     # delete if existing
     if efibootmgr | grep -q "$EFI_LISTING_NAME"
+    
     fi
 
     # write new bootloader entry
@@ -65,7 +66,7 @@ GUMMIENTRIES
 # from https://github.com/grawity/code/tree/master/os/arch
 # cf https://wiki.archlinux.org/index.php/UEFI_Bootloaders#Sync_EFISTUB_Kernel_in_UEFISYS_partition_using_Systemd
 # ------------------------------------------------------------------------
-if _systemd
+if _systemd; then
 
 cat > /etc/systemd/system/kernel-post-upgrade.path << 'EOF'
 [Unit]
