@@ -61,6 +61,9 @@ efi            \\EFI\\arch\\vmlinuz-linux.efi
 options        initrd=\\EFI\\arch\initramfs-linux.img ${KERNEL_PARAMS}
 GUMMIENTRIES
 
+mkdir /etc/kernel
+cat "${KERNEL_PARAMS}" > /etc/kernel/cmdline # for use in script below
+
 # ------------------------------------------------------------------------
 # POST KERNEL UPGRADE SYSTEMD SERVICE
 # from https://github.com/grawity/code/tree/master/os/arch
@@ -113,7 +116,7 @@ ExecStart=/boot/kernel-post-upgrade.sh linux-%i
 EOF
 
 
-cat > /etc/systemd/system/kernel-post-upgrade.sh << 'EOF'
+cat > /boot/kernel-post-upgrade.sh << 'EOF'
 #!/bin/bash -eu
 
 die() {
