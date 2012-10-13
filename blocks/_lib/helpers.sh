@@ -248,9 +248,18 @@ sleep 1; done; echo
 _initialwarning ()
 {
 _anykey "WARNING: This script will permanently erase the install drive.";
-#sleep 2
-#_anykey "CONFIRM: Please confirm again to proceed. CTRL-c to exit."
+}
 
+# POST INSTALL MESSAGES --------------------------------------------------
+_display_postinstall_messages ()
+{
+echo "\n\nInstallation complete; Reboot and then execute the post-reboot.sh script in the /root directory."
+echo "\n"
+[ -n "${POSTINSTALL_MSGS:-}" ] && echo "${POSTINSTALL_MSGS}"
+}
+_add_postinstall_messags ()
+{
+:
 }
 
 # LOAD BLOCK -------------------------------------------------------------

@@ -7,6 +7,8 @@
 
 # echo blacklist mei > /etc/modprobe.d/mei.conf
 
+
+
 # boot error: Unknown user uuidd
 # _anykey "Please reinstall util-linux after reboot to eliminate uuidd related error"
 # pacman -Syu util-linux
