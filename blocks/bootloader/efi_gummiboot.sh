@@ -28,9 +28,9 @@ if $EFI_MODE; then
     [ -n "$BOOT_DRIVE" ] && BOOT_ARG="-d $BOOT_DRIVE" || BOOT_ARG=""
 
     # delete if existing
-    if efibootmgr | grep -q "\*${EFI_LISTING_NAME}$"; then
-        efibootmgr -b $(efibootmgr | grep -q "\*${EFI_LISTING_NAME}$" | sed "s/Boot\(....\).*$/\1/") -B
-    fi
+    while efibootmgr | grep -q "\*${EFI_LISTING_NAME}$"; do
+        efibootmgr -B -b $(efibootmgr | grep -m 1 "\*${EFI_LISTING_NAME}$" | sed "s/Boot\(....\).*$/\1/")
+    done
 
     # write new bootloader entry
     efibootmgr -c -L "$EFI_LISTING_NAME" -l '\EFI\gummiboot\gummiboot.efi' $BOOT_ARG
