@@ -26,7 +26,7 @@ LANGUAGE=en_US.UTF-8
 KEYMAP=us
 TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
-HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck"
+HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck shutdown"
 INSTALL_DRIVE=query # "/dev/sda" "query" or blank (blank is the same as "query")
 
 # BLOCKS -----------------------------------------------------------------

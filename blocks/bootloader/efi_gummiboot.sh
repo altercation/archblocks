@@ -2,6 +2,8 @@
 # BOOTLOADER
 # ------------------------------------------------------------------------
 
+#EFI_LISTING_NAME="Gummiboot"
+EFI_LISTING_NAME="Arch Linux"
 
 EFI_SYSTEM_PARTITION="${EFI_SYSTEM_PARTITION:-/boot/efi}" # only if not yet set
 [ ! -d "${EFI_SYSTEM_PARTITION}" ] && mkdir -p "${EFI_SYSTEM_PARTITION}"
@@ -21,9 +23,17 @@ _installpkg wget efibootmgr gummiboot-efi
 install -Dm0644 /usr/lib/gummiboot/gummibootx64.efi /boot/efi/EFI/gummiboot/gummiboot.efi
 
 if $EFI_MODE; then
+
     # BOOT_DRIVE must be set by filesystem to be used
     [ -n "$BOOT_DRIVE" ] && BOOT_ARG="-d $BOOT_DRIVE" || BOOT_ARG=""
-    efibootmgr -c -L "Gummiboot" -l '\EFI\gummiboot\gummiboot.efi' $BOOT_ARG
+
+    # delete if existing
+    if efibootmgr | grep -q "$EFI_LISTING_NAME"
+    fi
+
+    # write new bootloader entry
+    efibootmgr -c -L "$EFI_LISTING_NAME" -l '\EFI\gummiboot\gummiboot.efi' $BOOT_ARG
+    
 elif $FAIL_TO_DEFAULT_EFI; then
     install -Dm0644 /usr/lib/gummiboot/gummibootx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
 else
