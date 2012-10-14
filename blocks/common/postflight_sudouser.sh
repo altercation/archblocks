@@ -20,11 +20,13 @@ cat > /etc/sudoers.temp << EOF
 Cmnd_Alias SYSUTILS = /bin/nice, /bin/kill, /usr/bin/nice, /usr/bin/ionice, /usr/bin/top, /usr/bin/kill, /usr/bin/killall, /usr/bin/ps, /usr/bin/pkill, /usr/bin/pacman, /usr/sbin/lsof, /bin/nice, /bin/ps, /usr/bin/top, /usr/local/bin/nano, /bin/netstat, /usr/bin/locate, /usr/bin/find, /usr/bin/rsync
 Cmnd_Alias EDITORS = /usr/bin/vim, /usr/bin/nano, /usr/bin/cat, /usr/bin/vi
 Cmnd_Alias NETWORKING = /usr/bin/wpa_supplicant, /usr/bin/wpa_cli, /usr/bin/wpa_passphrase, /usr/bin/iw, /usr/bin/netcfg, /usr/bin/wifi-menu
+Cmnd_Alias AUDIO = /usr/bin/amixer, /usr/bin/pamixer
 
 # a little redundant
 root      ALL=(ALL) ALL
 %sudo     ALL=(ALL) ALL
 %wheel    ALL=(ALL) ALL, NOPASSWD: NETWORKING, NOPASSWD: SYSUTILS, NOPASSWD: EDITORS
+%audio    ALL=(ALL) ALL, NOPASSWD: AUDIO
  
 Defaults !requiretty, !tty_tickets, !umask
 Defaults visiblepw, path_info, insults, lecture=always

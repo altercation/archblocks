@@ -29,6 +29,7 @@ if $EFI_MODE; then
 
     # delete if existing
     while efibootmgr | grep -q "\*${EFI_LISTING_NAME}$"; do
+        
         efibootmgr -B -b $(efibootmgr | grep -m 1 "\*${EFI_LISTING_NAME}$" | sed "s/Boot\(....\).*$/\1/")
     done
 
