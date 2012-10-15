@@ -26,3 +26,6 @@ _installpkg unclutter #TODO: consider hhp from xmonad-utils instead
 
 #_installpkg dbus upower
 #sed -i "/^DAEMONS/ s/)/ @dbus)/" /etc/rc.conf
+
+# onscreen keyboard
+_installpkg onboard at-spi2-atk
