@@ -4,7 +4,7 @@ _enable_haskell_repos
 
 # install haskell-xmonad, related from haskell-testing
 
-_installpkg ghc cabal-install haskell-xmonad haskell-xmonad-contrib haskell-xmonad-extras xmobar
+_installpkg ghc cabal-install haskell-xmonad haskell-xmonad-contrib haskell-xmonad-extras xmobar trayer
 
 # depending on xmonad config
 
