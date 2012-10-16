@@ -2,4 +2,4 @@
 #
 # hardcore cli, that's how we roll
 
-_installpkg w3m
+_installpkg w3m keychain
