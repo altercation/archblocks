@@ -12,3 +12,8 @@
 # boot error: Unknown user uuidd
 # _anykey "Please reinstall util-linux after reboot to eliminate uuidd related error"
 # pacman -Syu util-linux
+
+
+_installaur thinkfan
+sudo systemctl enable thinkfan.service
+echo "options thinkpad_acpi fan_control=1" > /etc/modprobe.d/thinkfan.conf
