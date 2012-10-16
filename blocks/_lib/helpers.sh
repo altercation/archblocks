@@ -289,6 +289,22 @@ fi
 done
 } 
 
+# QUERY WITH CONFIRMATION ------------------------------------------------
+_queryconfirm ()
+{
+# prompt user for input, confirm that input is correct before proceeding
+# outputs to global QUERYRESPONSE variable
+shopt -s nocasematch
+_confirmation=x
+while [ "$_confirmation" != "y" ]; do
+echo
+read -p "${1:-Enter value}: " QUERYRESPONSE
+read -sn 1 -p "Is this correct: $QUERYRESPONSE (y/n) " _confirmation
+done
+echo
+shopt -u nocasematch
+}
+
 # QUERY FOR INSTALL DRIVE ------------------------------------------------
 _drivequery ()
 {

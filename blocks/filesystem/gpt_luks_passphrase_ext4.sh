@@ -6,6 +6,12 @@
 # path (e.g. /dev/sda) or if INSTALL_DRIVE is set to "query"
 _drivequery;
 
+# query for swap space size
+echo "Enter swap space size in GB (e.g. enter \"2\" for a 2GB partition)";
+echo "For reference, your current RAM size is reporting as $(echo -n $(($(free -m | awk '/^[Mm]em/ {print $2}')/1024)))GB."
+_queryconfirm "Swap space size in GB"
+SWAP_SIZE=$RESPONSE
+
 BOOT_DRIVE=$INSTALL_DRIVE
 PARTITION_EFI_BOOT=1
 PARTITION_CRYPT_SWAP=2
@@ -36,7 +42,7 @@ sgdisk -a 2048 -o ${INSTALL_DRIVE} # new gpt disk 2048 alignment
 
 # create partitions
 sgdisk -n ${PARTITION_EFI_BOOT}:0:+200M ${INSTALL_DRIVE} # (UEFI BOOT), default start block, 200MB
-sgdisk -n ${PARTITION_CRYPT_SWAP}:0:+2G ${INSTALL_DRIVE} # (SWAP), default start block, 2GB
+sgdisk -n ${PARTITION_CRYPT_SWAP}:0:+${SWAP_SIZE}G ${INSTALL_DRIVE} # (SWAP), default start block
 sgdisk -n ${PARTITION_CRYPT_ROOT}:0:0 ${INSTALL_DRIVE}   # (LUKS), default start, remaining space
 
 # set partition types
@@ -53,21 +59,9 @@ sgdisk -c ${PARTITION_CRYPT_ROOT}:"${LABEL_ROOT}" ${INSTALL_DRIVE}
 
 # let cryptsetup handle password entry, exit after 3 successive failures
 _try_until_success "cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${INSTALL_DRIVE}${PARTITION_CRYPT_ROOT}" 3 || exit
-#_tries=0; _failed=true; while $_failed; do
-#_tries=$((_tries+1))
-#cryptsetup --cipher=aes-xts-plain --verify-passphrase --key-size=512 luksFormat ${INSTALL_DRIVE}${PARTITION_CRYPT_ROOT}
-#[ ! $? -gt 0 ] && _failed=false;
-#[ $_tries -gt 6 ] && exit;
-#done
 
 # let cryptsetup handle password entry, exit after 3 successive failures
 _try_until_success "cryptsetup luksOpen ${INSTALL_DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}" 3 || exit
-#_tries=0; _failed=true; while $_failed; do
-#_tries=$((_tries+1))
-#cryptsetup luksOpen ${INSTALL_DRIVE}${PARTITION_CRYPT_ROOT} ${LABEL_ROOT_CRYPT}
-#[ $? -eq 0 ] && _failed=false;
-#[ $_tries -gt 6 ] && exit;
-#done
 
 # make filesystems
 mkfs.vfat ${INSTALL_DRIVE}${PARTITION_EFI_BOOT}
