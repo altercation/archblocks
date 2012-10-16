@@ -64,6 +64,7 @@ _defaultvalue XORG ""
 _defaultvalue AUDIO ""
 _defaultvalue VIDEO ""
 _defaultvalue POWER ""
+_defaultvalue SENSORS ""
 _defaultvalue DESKTOP ""
 _defaultvalue POSTFLIGHT "common/postflight_rootpass common/postflight_sudouser"
 _defaultvalue APPSETS ""
@@ -99,6 +100,7 @@ _loadblock "${NETWORK}"         # NETWORKING
 _loadblock "${AUDIO}"           # AUDIO
 _loadblock "${VIDEO}"           # VIDEO
 _loadblock "${POWER}"           # POWER
+_loadblock "${SENSORS}"         # SENSORS
 #_loadblock "${KERNEL}"         # KERNEL
 _loadblock "${RAMDISK}"         # RAMDISK
 _loadblock "${BOOTLOADER}"      # BOOTLOADER
