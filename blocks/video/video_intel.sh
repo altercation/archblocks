@@ -9,5 +9,6 @@ Section "Device"
 	Identifier  "Intel Graphics"
 	Driver      "intel"
 	Option      "AccelMethod"  "sna"
+	Option      "TearFree" "true"
 EndSection
 EOF
