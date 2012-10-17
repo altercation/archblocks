@@ -12,6 +12,7 @@ _installpkg ifplugd # (optional) - for automatic wired connections through net-a
 _installpkg wireless_tools # (optional) - for interface renaming through net-rename
 _installpkg wpa_actiond # (optional) - for automatic wireless connections through net-auto-wireless
 _installpkg wpa_supplicant # (optional) - for wireless networking support
+_installpkg iw rfkill
 
 if _systemd; then
     systemctl enable net-auto-wired.service

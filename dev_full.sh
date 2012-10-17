@@ -49,7 +49,7 @@ XORG="xorg/xorg_default xorg/xorg_fonts_infinality xorg/xorg_wacom xorg/xorg_syn
 VIDEO=video/video_intel
 DESKTOP=xorg/desktop_xmonad_minimal
 HARDWARE=hardware/laptop/lenovo_thinkpad_x220
-APPSETS="appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git_basics appsets/server_utils appsets/chromium_basics"
+APPSETS="appsets/hw_utils appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git_basics appsets/server_utils appsets/chromium_basics"
 
 # EXTRA PACKAGES ---------------------------------------------------------
 # if you don't want to create a new block, you can specify extra packages
