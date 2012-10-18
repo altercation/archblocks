@@ -24,3 +24,42 @@ cat > /etc/modprobe.d/iwlwifi.conf << EOF
 options iwlwifi led_mode=2
 options iwlwifi power_save=1
 EOF
+
+mv /etc/acpi/handler.sh /etc/acpi/handler.sh.prethinkpad
+cat > /etc/acpi/handler.sh << EOF
+#!/bin/bash
+
+set $*
+
+case $2 in
+#VOLDN) dispatch volume down ;;
+#VOLUP) dispatch volume up ;;
+MUTE) dispatch volume toggle ;;
+ZOOM) ;;
+CDSTOP) ;;
+CDPREV) ;;
+CDPLAY) ;;
+CDNEXT) ;;
+BRTDN) ;;
+BRTUP) ;;
+VMOD) ;;
+WLAN) ;;
+BAT) dispatch power cycle ;;
+#BAT) dispatch power toggle ;;
+PROG1) dispatch power mov ;; # thinkvantage button
+SCRNLCK) system lock ;;
+PBTN) ;; # power button
+SBTN) ;; # sleep button
+SUSP) ;; # suspend button
+LID) case $3 in open) : ;; close) : ;; esac ;;
+TBLT) case $3 in on) : ;; off) : ;; esac ;; # rotate to tablet mode
+LEN0068:00) case $3 in
+	0000500c) ;; # undock tablet pen
+	0000500b) ;; # dock tablet pen
+	00004011) ;; # undock battery
+	00004010) ;; # dock battery
+esac ;;
+esac
+
+
+EOF
