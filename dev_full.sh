@@ -47,6 +47,7 @@ POWER=common/power_acpi
 SENSORS=common/sensors_default
 XORG="xorg/xorg_default xorg/xorg_fonts_infinality xorg/xorg_wacom xorg/xorg_synaptics xorg/mesa_dri"
 VIDEO=video/video_intel
+SOUND=sound/sound_intel
 DESKTOP=xorg/desktop_xmonad_minimal
 HARDWARE=hardware/laptop/lenovo_thinkpad_x220
 APPSETS="appsets/hw_utils appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git_basics appsets/server_utils appsets/chromium_basics"

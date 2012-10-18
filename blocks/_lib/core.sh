@@ -63,6 +63,7 @@ _defaultvalue NETWORK network/wired_wireless_default
 _defaultvalue XORG ""
 _defaultvalue AUDIO ""
 _defaultvalue VIDEO ""
+_defaultvalue SOUND ""
 _defaultvalue POWER ""
 _defaultvalue SENSORS ""
 _defaultvalue DESKTOP ""
@@ -99,6 +100,7 @@ _loadblock "${HOST}"            # HOSTNAME
 _loadblock "${NETWORK}"         # NETWORKING
 _loadblock "${AUDIO}"           # AUDIO
 _loadblock "${VIDEO}"           # VIDEO
+_loadblock "${SOUND}"           # SOUND
 _loadblock "${POWER}"           # POWER
 _loadblock "${SENSORS}"         # SENSORS
 #_loadblock "${KERNEL}"         # KERNEL
