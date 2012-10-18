@@ -63,3 +63,11 @@ esac
 
 
 EOF
+
+# we're going to handle power events in acpi for now
+cat >> /etc/systemd/logind.conf << EOF
+HandlePowerKey=ignore
+HandleSuspendKey=ignore
+HandleHibernateKey=ignore
+HandleLidSwitch=ignore
+EOF
