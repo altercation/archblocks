@@ -25,44 +25,57 @@ options iwlwifi led_mode=2
 options iwlwifi power_save=1
 EOF
 
+# ACPI HANDLER --------------------------------------------------------
 mv /etc/acpi/handler.sh /etc/acpi/handler.sh.prethinkpad
 cat > /etc/acpi/handler.sh << EOF
 #!/bin/bash
 
 set $*
 
+case $1 in
+ac_adapter) /usr/bin/dispatch power auto ;; # unplug or plug ac cord
+esac
+
 case $2 in
-#VOLDN) dispatch volume down ;;
-#VOLUP) dispatch volume up ;;
-MUTE) dispatch volume toggle ;;
-ZOOM) ;;
+
+#VOLDN) /usr/bin/dispatch volume down ;; # handling in xmonad
+#VOLUP) /usr/bin/dispatch volume up ;; # handling in xmonad
+#MUTE) /usr/bin/dispatch volume toggle ;; # handling in xmonad
+
 CDSTOP) ;;
 CDPREV) ;;
 CDPLAY) ;;
 CDNEXT) ;;
+
 BRTDN) ;;
 BRTUP) ;;
 VMOD) ;;
-WLAN) ;;
-BAT) dispatch power cycle ;;
-#BAT) dispatch power toggle ;;
-PROG1) dispatch power mov ;; # thinkvantage button
-SCRNLCK) system lock ;;
-PBTN) ;; # power button
-SBTN) ;; # sleep button
-SUSP) ;; # suspend button
-LID) case $3 in open) : ;; close) : ;; esac ;;
-TBLT) case $3 in on) : ;; off) : ;; esac ;; # rotate to tablet mode
+
+WLAN) ;; # handled by bios
+F24) /usr/bin/dispatch bluetooth toggle ;; # fn-F9
+FF11) : ;; # fn-F11
+
+PROG1) ;; # thinkvantage button
+ZOOM) ;;
+
+SCRNLCK) system consolelock ;;
+BAT) /usr/bin/dispatch power cycle ;;
+PBTN) /usr/bin/dispatch system poweroff ;; # power button
+SBTN) /usr/bin/dispatch system sleep ;; # sleep button
+SUSP) ;; # suspend button (hibernate)
+LID) case $3 in open) : ;; close) /usr/bin/dispatch system sleep ;; esac ;;
+TBLT) case $3 in on) /usr/bin/dispatch tablet on ;; off) /usr/bin/dispatch tablet off ;; esac ;; # rotate to tablet mode
+
 LEN0068:00) case $3 in
 	0000500c) ;; # undock tablet pen
 	0000500b) ;; # dock tablet pen
 	00004011) ;; # undock battery
 	00004010) ;; # dock battery
-esac ;;
+        esac ;;
 esac
-
-
 EOF
+
+# SYSTEMD LOGIND.CONF -------------------------------------------------
 
 # we're going to handle power events in acpi for now
 cat >> /etc/systemd/logind.conf << EOF
