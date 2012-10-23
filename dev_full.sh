@@ -26,8 +26,10 @@ KEYMAP=us
 TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
 HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck shutdown"
-KERNEL_PARAMS="quiet i915.i915_enable_rc6=1 i915.i915_enable_fbc=1 i915.lvds_downclock=1"
 # KERNEL_PARAMS is used in FILESYSTEM, INIT, BOOTLOADER blocks (gets added to)
+# No longer require these i915 tweaks
+#KERNEL_PARAMS="quiet i915.modeset=1 i915.i915_enable_rc6=1 i915.i915_enable_fbc=1 i915.lvds_downclock=1"
+KERNEL_PARAMS=""
 
 # DOTFILES / HOME SETUP --------------------------------------------------
 # mr (available in AUR) allows you to setup your home dir using dvcs such
