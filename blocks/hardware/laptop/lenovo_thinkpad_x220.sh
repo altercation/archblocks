@@ -52,7 +52,7 @@ BRTUP) ;;
 VMOD) ;;
 
 WLAN) ;; # handled by bios
-F24) /usr/bin/dispatch bluetooth toggle ;; # fn-F9
+F24) /usr/bin/wireless bluetooth toggle ;; # fn-F9
 FF11) : ;; # fn-F11
 PROG1) ;; # thinkvantage button
 
