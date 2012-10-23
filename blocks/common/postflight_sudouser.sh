@@ -17,16 +17,20 @@ _installpkg sudo bash-completion # bash-completion to allow completion even when
 #sed -i "s/^#\s*\(${MATCH}\)/\1/" /tmp/sudoers.temp
 
 cat > /etc/sudoers.temp << EOF
-Cmnd_Alias SYSUTILS = /bin/nice, /bin/kill, /usr/bin/nice, /usr/bin/ionice, /usr/bin/top, /usr/bin/kill, /usr/bin/killall, /usr/bin/ps, /usr/bin/pkill, /usr/bin/pacman, /usr/sbin/lsof, /bin/nice, /bin/ps, /usr/bin/top, /usr/local/bin/nano, /bin/netstat, /usr/bin/locate, /usr/bin/find, /usr/bin/rsync, /usr/bin/powertop, /usr/sbin/powertop, /usr/bin/dispatch
+# for reference, see well document example at http://www.gratisoft.us/sudo/sample.sudoers
+Cmnd_Alias SYSUTILS = /bin/nice, /bin/kill, /usr/bin/nice, /usr/bin/ionice, /usr/bin/top, /usr/bin/kill, /usr/bin/killall, /usr/bin/ps, /usr/bin/pkill, /usr/bin/pacman, /usr/sbin/lsof, /bin/nice, /bin/ps, /usr/bin/top, /usr/local/bin/nano, /bin/netstat, /usr/bin/locate, /usr/bin/find, /usr/bin/rsync, /usr/sbin/powertop
 Cmnd_Alias EDITORS = /usr/bin/vim, /usr/bin/nano, /usr/bin/cat, /usr/bin/vi
-Cmnd_Alias NETWORKING = /usr/bin/wpa_supplicant, /usr/bin/wpa_cli, /usr/bin/wpa_passphrase, /usr/bin/iw, /usr/bin/netcfg, /usr/bin/wifi-menu, /usr/bin/wifi
-Cmnd_Alias AUDIO = /usr/bin/amixer, /usr/bin/pamixer
+Cmnd_Alias NETWORKING = /usr/bin/wpa_supplicant, /usr/bin/wpa_cli, /usr/bin/wpa_passphrase, /usr/bin/iw, /usr/bin/netcfg, /usr/bin/wifi-menu, /usr/sbin/rfkill
+Cmnd_Alias AUDIO = /usr/bin/amixer, /usr/bin/pamixer, /usr/bin/beep
+Cmnd_Alias POWER = /sbin/shutdown, /sbin/poweroff, /sbin/reboot, /usr/bin/systemctl suspend, /usr/bin/systemctl poweroff, /usr/bin/systemctl reboot
+Cmnd_Alias UTILS = /usr/bin/display, /usr/bin/power, /usr/bin/volume, /usr/bin/bloop, /usr/bin/wireless, /usr/bin/slowrestart
 
 # a little redundant
 root      ALL=(ALL) ALL
 %sudo     ALL=(ALL) ALL
-%wheel    ALL=(ALL) ALL, NOPASSWD: NETWORKING, NOPASSWD: SYSUTILS, NOPASSWD: EDITORS
-%audio    ALL=(ALL) ALL, NOPASSWD: AUDIO
+%wheel    ALL=(ALL) ALL
+%audio    ALL=NOPASSWD: AUDIO
+%wheel    ALL=NOPASSWD: NETWORKING, SYSUTILS, EDITORS, POWER, UTILS
  
 Defaults !requiretty, !tty_tickets, !umask
 Defaults visiblepw, path_info, insults, lecture=always
@@ -35,7 +39,7 @@ Defaults mailto=es@ethanschoonover.com, mail_badpass, mail_no_user, mail_no_perm
 Defaults passwd_tries = 8, passwd_timeout = 1
 Defaults env_reset, always_set_home, set_home, set_logname
 Defaults !env_editor, editor="/usr/bin/vim:/usr/bin/vi:/usr/bin/nano"
-Defaults timestamp_timeout=360
+#Defaults timestamp_timeout=360
 Defaults passprompt="Sudo invoked by [%u] on [%H] - Cmd run as %U - Password for user %p:"
 Defaults setenv
 
