@@ -4,7 +4,7 @@ _enable_haskell_repos
 
 # install haskell-xmonad, related from haskell-testing
 
-_installpkg ghc cabal-install haskell-xmonad haskell-xmonad-contrib haskell-xmonad-extras xmobar trayer
+_installpkg ghc cabal-install haskell-xmonad haskell-xmonad-contrib haskell-xmonad-extras xmobar trayer dunst
 
 # depending on xmonad config
 
@@ -13,7 +13,8 @@ _installpkg haskell-edit-distance
 # environment/wm/etc.
 # ------------------------------------------------------------------------
 #_installpkg xfce4 compiz ccsm
-_installpkg xcompmgr xscreensaver hsetroot
+_installpkg xscreensaver hsetroot
+_installaur compton-git # xcompmgr no longer maintained
 
 #_installpkg rxvt-unicode urxvt-url-select
 _installaur termite-git

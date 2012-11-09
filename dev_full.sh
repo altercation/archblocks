@@ -52,7 +52,7 @@ VIDEO=video/video_intel
 SOUND=sound/sound_intel
 DESKTOP=xorg/desktop_xmonad_minimal
 HARDWARE=hardware/laptop/lenovo_thinkpad_x220
-APPSETS="appsets/hw_utils appsets/cli_hardcore appsets/vim_basics appsets/mutt_basics appsets/git_basics appsets/server_utils appsets/chromium_basics"
+APPSETS="common/cron_default appsets/hw_utils appsets/cli_hardcore appsets/vim_basics appsets/mutt_advanced appsets/git_basics appsets/server_utils appsets/chromium_basics"
 
 # EXTRA PACKAGES ---------------------------------------------------------
 # if you don't want to create a new block, you can specify extra packages
