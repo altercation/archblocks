@@ -216,7 +216,7 @@ else
     for req in wget git jshon; do
         command -v $req >/dev/null 2>&1 || _installpkg $req;
     done
-    wget "https://aur.archlinux.org/packages/${pkg}/${pkg}.tar.gz";
+    wget "https://aur.archlinux.org/packages/${pkg:0:2}/${pkg}/${pkg}.tar.gz";
     tar -xzvf ${pkg}.tar.gz; cd ${pkg};
     makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf $build_dir;
     $AURHELPER -S --noconfirm "$@";

@@ -7,7 +7,7 @@
 # INSTRUCTIONS -----------------------------------------------------------
 # boot into Arch Install media and run (for this script only):
 #
-# curl https://raw.github.com/altercation/archblocks/master/sample_installer.sh" > install.sh
+# curl https://raw.github.com/altercation/archblocks/master/dev_bramble.sh > install.sh
 #     (...manually review the code! look at the blocks in the repo, then...)
 # bash install.sh
 
