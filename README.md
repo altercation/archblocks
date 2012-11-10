@@ -16,7 +16,7 @@ Arch BBS: https://bbs.archlinux.org/viewtopic.php?id=149597
 
 Boot Arch install media (in the example config I expect an EFI boot, but it's trivial to make this work for non EFI):
 
-    # curl -sfL https://raw.github.com/altercation/archblocks/master/install_tau.sh" > install.sh; bash install.sh
+    # curl -sfL https://raw.github.com/altercation/archblocks/master/install_tau.sh > install.sh; bash install.sh
 
 or in short url form:
 

@@ -108,6 +108,7 @@ _daemon ()
 # daemon remove hwclock
 # daemon remove hwclock network
 #
+! [ -e "/etc/rc.conf" ] && return 0
 ACTION="$1"; shift; DAEMON_LIST="$@"
 for DAEMON_ITEM in $DAEMON_LIST; do
 DAEMON_BASE=$(echo "$DAEMON_ITEM" | sed "s/[!@]*\(.*\)/\1/") # strip any leading characters
