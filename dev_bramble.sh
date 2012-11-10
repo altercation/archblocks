@@ -16,7 +16,7 @@ REMOTE=https://raw.github.com/altercation/archblocks/dev
 
 # CONFIG -----------------------------------------------------------------
 
-HOSTNAME=mylittlepony
+HOSTNAME=cthulu
 USERNAME=trevor
 USERSHELL=/bin/bash
 FONT=Lat2-Terminus16
