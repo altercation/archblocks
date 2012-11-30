@@ -52,7 +52,7 @@ cp /boot/vmlinuz-linux "${ESP_ARCH}/vmlinuz-linux.efi"
 cp /boot/initramfs-linux.img "${ESP_ARCH}/initramfs-linux.img"
 cp /boot/initramfs-linux-fallback.img "${ESP_ARCH}/initramfs-linux-fallback.img"
 mkdir -p ${EFI_SYSTEM_PARTITION}/loader/entries
-cat >> ${EFI_SYSTEM_PARTITION}/loader/default.conf <<GUMMILOADER
+cat >> ${EFI_SYSTEM_PARTITION}/loader/loader.conf <<GUMMILOADER
 default arch
 timeout 4
 GUMMILOADER

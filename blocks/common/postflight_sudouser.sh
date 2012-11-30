@@ -58,7 +58,7 @@ chmod -c 0440 /etc/sudoers
 # ------------------------------------------------------------------------
 echo -e "\nNew non-root user password (username:${USERNAME})\n"
 groupadd sudo
-useradd -m -g users -G audio,lp,optical,storage,video,games,power,scanner,network,sudo,wheel -s ${USERSHELL} ${USERNAME}
+useradd -m -g users -G audio,lp,optical,storage,video,games,power,scanner,network,sudo,wheel,sys -s ${USERSHELL} ${USERNAME}
 
 #_double_check_until_match
 #echo $_DOUBLE_CHECK_RESULT | passwd ${USERNAME} --stdin
