@@ -8,6 +8,8 @@ _drivequery;
 
 BOOT_DRIVE=$INSTALL_DRIVE # expected format /dev/sda
 PARTITION_EFI_BOOT=1
+PARTITION_SWAP=2
+PARTITION_ROOT=3
 LABEL_BOOT_EFI=bootefi
 LABEL_SWAP=swap
 LABEL_ROOT=root
