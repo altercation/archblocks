@@ -1,10 +1,4 @@
 #!/bin/bash
-# ------------------------------------------------------------------------
-# archblocks - modular Arch Linux install script
-# ------------------------------------------------------------------------
-# blocks/lib/core.sh - main installer execution sequence
-
-# PREFLIGHT --------------------------------------------------------------
 
 # buckle up
 #set -o errexit

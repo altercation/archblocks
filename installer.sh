@@ -1,8 +1,4 @@
 #!/bin/bash
-# ------------------------------------------------------------------------
-# archblocks - minimal, modular, manual Arch Linux install script
-# ------------------------------------------------------------------------
-# es@ethanschoonover.com @ethanschoonover http://github.com/altercation/archblocks
 
 # INSTRUCTIONS -----------------------------------------------------------
 # boot into Arch Install media and run (for this script only):
@@ -12,7 +8,7 @@
 # bash install.sh
 
 # RESPOSITORY ------------------------------------------------------------
-REMOTE=https://raw.github.com/altercation/archblocks/master
+REMOTE=https://raw.github.com/throwbly/archblocks/master
 
 # CONFIG -----------------------------------------------------------------
 
@@ -25,9 +21,9 @@ LANGUAGE=en_US.UTF-8
 KEYMAP=us
 TIMEZONE=US/Pacific
 MODULES="dm_mod dm_crypt aes_x86_64 ext2 ext4 vfat intel_agp drm i915"
-HOOKS="base udev autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck shutdown"
+HOOKS="base systemd autodetect pata scsi sata usb usbinput consolefont encrypt filesystems fsck shutdown"
 KERNEL_PARAMS="quiet i915.i915_enable_rc6=1 i915.i915_enable_fbc=1 i915.lvds_downclock=1"
-# KERNEL_PARAMS is used in FILESYSTEM, INIT, BOOTLOADER blocks (gets added to)
+
 
 # DOTFILES / HOME SETUP --------------------------------------------------
 # mr (available in AUR) allows you to setup your home dir using dvcs such

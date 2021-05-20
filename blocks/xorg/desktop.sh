@@ -17,7 +17,7 @@ _installpkg xscreensaver hsetroot
 _installaur compton-git # xcompmgr no longer maintained
 
 #_installpkg rxvt-unicode urxvt-url-select
-_installaur termite-git
+_installaur kitty
 
 #_installaur rxvt-unicode-cvs # need to manually edit out patch lines
 #_installpkg gtk2

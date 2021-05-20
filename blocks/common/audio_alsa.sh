@@ -1,17 +1,10 @@
 #!/bin/bash
-#
-# alsa sound
-# ------------------------------------------------------------------------
 
-_installpkg alsa-utils alsa-plugins
 
+_installpkg alsa-utils pulseaudio pulseaudio-alsa alsa-tools
 if _systemd; then
     systemctl enable alsa-store.service
     systemctl enable alsa-restore.service
 else
     _daemon_add @alsa
 fi
-
-# if alsamixer isn't working, try alsamixer -Dhw and speaker-test -Dhw -c 2
-
-

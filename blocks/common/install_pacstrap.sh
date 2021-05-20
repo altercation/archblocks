@@ -2,4 +2,4 @@
 #
 # INSTALL
 
-pacstrap ${MOUNT_PATH} base base-devel
+pacstrap ${MOUNT_PATH} base base-devel linux linux-firmware

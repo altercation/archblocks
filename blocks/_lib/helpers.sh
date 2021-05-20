@@ -186,45 +186,11 @@ done
 return 0
 }
 
-# INSTALLPKG -------------------------------------------------------------
 _installpkg ()
-{
-# Install package(s) from official repositories, no confirmation needed.
-# Takes single or multiple package names as arguments.
-#
-# Usage:
-# _installpkg pkgname1 [pkgname2] [pkgname3]
-#
-pacman -S --noconfirm "$@";
+{ 
+    pacman -S --noconfirm "$@";
 }
 
-# INSTALLAUR -------------------------------------------------------------
-_installaur ()
-{
-# Install package(s) from arch user repository, no confirmation needed.
-# Takes single or multiple package names as arguments.
-#
-# Installs default helper first ($AURHELPER)
-#
-# Usage:
-# _installpkg pkgname1 [pkgname2] [pkgname3]
-#
-_defaultvalue AURHELPER packer
-if command -v $AURHELPER >/dev/null 2>&1; then
-    $AURHELPER -S --noconfirm "$@";
-else
-    pkg=$AURHELPER; orig="$(pwd)"; build_dir=/tmp/build/${pkg}; mkdir -p $build_dir; cd $build_dir;
-    for req in wget git jshon; do
-        command -v $req >/dev/null 2>&1 || _installpkg $req;
-    done
-    wget "https://aur.archlinux.org/packages/${pkg:0:2}/${pkg}/${pkg}.tar.gz";
-    tar -xzvf ${pkg}.tar.gz; cd ${pkg};
-    makepkg --asroot -si --noconfirm; cd "$orig"; rm -rf $build_dir;
-    $AURHELPER -S --noconfirm "$@";
-fi;
-}
-
-# CHROOT POSTSCRIPT ------------------------------------------------------
 _chroot_postscript ()
 {
 # handle interactively assigned install drive value
@@ -234,37 +200,30 @@ grep -v "^\s*INSTALL_DRIVE.*" "${0}" >> "${MNT}${POSTSCRIPT}";
 chmod a+x "${MNT}${POSTSCRIPT}"; arch-chroot "${MNT}" "${POSTSCRIPT}";
 }
 
-# COUNTDOWN --------------------------------------------------------------
 _countdown ()
 {
-# countdown 10 "message here"
-#
 for i in `seq $1 -1 1`; do
 echo -en "\r$2 in $i seconds (ctrl-c to cancel and exit) <"
 for j in `seq 1 $i`; do echo -n "=="; done; echo -en "     \b\b\b\b\b"
 sleep 1; done; echo
 }
 
-# WARN -------------------------------------------------------------------
-_initialwarning ()
-{
-_anykey "WARNING: This script will permanently erase the install drive.";
-}
+_initialwarning () { _anykey "WARNING: This script will permanently erase the install drive."; }
 
-# POST INSTALL MESSAGES --------------------------------------------------
-_display_postinstall_messages ()
+_display_postinstall_messages () 
 {
 echo "\n\nInstallation complete; Reboot and then execute the post-reboot.sh script in the /root directory."
 echo "\n"
 [ -n "${POSTINSTALL_MSGS:-}" ] && echo "${POSTINSTALL_MSGS}"
 }
+
 _add_postinstall_messags ()
 {
 :
 }
 
 # LOAD BLOCK -------------------------------------------------------------
-_loadblock ()
+_loadblock () 
 {
 [ -z "$@" ] && return
 for _block in $@; do
